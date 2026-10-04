@@ -86,6 +86,16 @@ class MonthRange:
     def count(self) -> int:
         return self.index(self.last) + 1
 
+    @property
+    def labels(self) -> list[str]:
+        """Every snapshot month from first to last as YYYY-MM."""
+        year, month = _parse_month(self.first, "months.first")
+        labels = []
+        for offset in range(self.count):
+            total = month - 1 + offset
+            labels.append(f"{year + total // 12}-{total % 12 + 1:02d}")
+        return labels
+
 
 @dataclass(frozen=True)
 class ModelSettings:

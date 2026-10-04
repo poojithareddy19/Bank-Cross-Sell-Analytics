@@ -148,3 +148,9 @@ def test_cli_config_stage():
 
 def test_cli_reports_config_error(tmp_path):
     assert main(["--config", str(tmp_path / "missing.yaml"), "config"]) == 2
+
+
+def test_month_labels_cover_every_snapshot():
+    labels = load_config(CONFIG_PATH, env={}).months.labels
+    assert len(labels) == 17
+    assert labels[0] == "2015-01" and labels[11] == "2015-12" and labels[-1] == "2016-05"

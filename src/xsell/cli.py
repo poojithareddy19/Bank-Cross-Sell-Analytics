@@ -7,6 +7,8 @@ from collections.abc import Callable, Sequence
 
 from xsell import __version__
 from xsell.config import Config, ConfigError, load_config
+from xsell.data.fetch import run_fetch
+from xsell.errors import XsellError
 from xsell.logging_utils import get_logger, setup_logging
 
 logger = get_logger("xsell.cli")
@@ -22,6 +24,16 @@ STAGES: dict[str, tuple[str, int]] = {
 }
 
 
+def _share(text: str) -> float:
+    try:
+        value = float(text)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"{text!r} is not a number") from None
+    if not 0 < value <= 1:
+        raise argparse.ArgumentTypeError(f"share must be in (0, 1], got {value}")
+    return value
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="xsell",
@@ -32,10 +44,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     subparsers = parser.add_subparsers(dest="stage", metavar="<stage>", required=True)
 
+    fetch_options = argparse.ArgumentParser(add_help=False)
+    fetch_options.add_argument(
+        "--sample-customers",
+        type=_share,
+        default=None,
+        metavar="SHARE",
+        help="keep a deterministic share of customers, e.g. 0.1 for a fast dev subset",
+    )
+    fetch_options.add_argument("--keep-zip", action="store_true", help="keep the zip after conversion")
+    fetch_options.add_argument("--force", action="store_true", help="rebuild the cache even if it is current")
+
     subparsers.add_parser("config", help="validate the configuration and print a summary")
     for name, (help_text, _) in STAGES.items():
-        subparsers.add_parser(name, help=help_text)
-    subparsers.add_parser("all", help="run every stage in order")
+        subparsers.add_parser(name, help=help_text, parents=[fetch_options] if name == "fetch" else [])
+    subparsers.add_parser("all", help="run every stage in order", parents=[fetch_options])
     return parser
 
 
@@ -56,14 +79,20 @@ def show_config(config: Config) -> None:
         logger.info("split %s: t from %s to %s", name, start, end)
 
 
-def _not_implemented(stage: str) -> Callable[[Config], None]:
-    def run(_: Config) -> None:
+def run_fetch_stage(config: Config, args: argparse.Namespace) -> None:
+    run_fetch(config, sample_share=args.sample_customers, keep_zip=args.keep_zip, force=args.force)
+
+
+def _not_implemented(stage: str) -> StageRunner:
+    def run(config: Config, args: argparse.Namespace) -> None:
         raise NotImplementedError(f"stage '{stage}' is not implemented yet (milestone {STAGES[stage][1]})")
 
     return run
 
 
-STAGE_RUNNERS: dict[str, Callable[[Config], None]] = {name: _not_implemented(name) for name in STAGES}
+StageRunner = Callable[[Config, argparse.Namespace], None]
+STAGE_RUNNERS: dict[str, StageRunner] = {name: _not_implemented(name) for name in STAGES}
+STAGE_RUNNERS["fetch"] = run_fetch_stage
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -83,9 +112,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     for stage in stages:
         logger.info("stage %s: starting", stage)
         try:
-            STAGE_RUNNERS[stage](config)
+            STAGE_RUNNERS[stage](config, args)
         except NotImplementedError as error:
             logger.error("%s", error)
             return 2
+        except XsellError as error:
+            logger.error("stage %s failed: %s", stage, error)
+            return 1
         logger.info("stage %s: done", stage)
     return 0

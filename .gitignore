@@ -16,15 +16,15 @@ venv/
 kaggle.json
 
 # Data and generated artifacts (never committed)
-data/
-artifacts/
+/data/
+/artifacts/
 *.duckdb
 *.duckdb.wal
 *.parquet
 *.zip
 *.csv.gz
 mlruns/
-logs/
+/logs/
 *.log
 
 # IDE and OS
