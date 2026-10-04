@@ -17,9 +17,9 @@ FIXTURE_LADDER = (
 
 # Hand-counted from tests/fixture_data.py:
 #   step 1: all 60 customers hold a current account from their first month
-#   step 2: 12 fillers with direct debit, plus 1002, 1003 (after its gap), 1010, 2002, 2003 = 17
+#   step 2: 12 fillers with direct debit, plus 1002, 1003 (after its gap), 1010, 2002, 2003, 2006 = 18
 #   step 3: only 2002 holds a credit card after reaching step 2 (1001 never reaches step 2)
-EXPECTED_FUNNEL = [(1, 60, 60), (2, 60, 17), (3, 17, 1)]  # (step, previous_reached, reached)
+EXPECTED_FUNNEL = [(1, 60, 60), (2, 60, 18), (3, 18, 1)]  # (step, previous_reached, reached)
 
 
 def with_ladder(config, top_channels: int = 10):
@@ -40,7 +40,7 @@ def test_funnel_overall_matches_hand_count(ladder_results):
     overall = funnel[funnel["dimension"] == "all"]
     assert list(zip(overall["step"], overall["previous_reached"], overall["reached"], strict=True)) == EXPECTED_FUNNEL
     assert overall["step_name"].tolist() == [step.name for step in FIXTURE_LADDER]
-    assert overall["conversion_rate"].tolist() == pytest.approx([1.0, 17 / 60, 1 / 17])
+    assert overall["conversion_rate"].tolist() == pytest.approx([1.0, 18 / 60, 1 / 18])
     assert (overall["conversion_rate_ci_lower"] <= overall["conversion_rate"]).all()
 
 
@@ -89,18 +89,19 @@ def test_dim_product_carries_ladder_steps(ladder_results):
 def test_time_to_next_product(ladder_results):
     _, results = ladder_results
     times = results["14_time_to_next_product"]
-    # First adoptions: 1001 at m3 and 1008 at m5 (first seen m2) -> 3 months; 2002 and 2003 at m2 -> 2 months.
-    assert dict(zip(times["months_to_first_adoption"], times["customers"], strict=True)) == {2: 2, 3: 2}
-    assert times["cumulative_share"].tolist() == pytest.approx([0.5, 1.0])
-    assert times["median_months"].iloc[0] == pytest.approx(2.5)
+    # First first-time adoptions: 2006 at m1 -> 1 month; 2002 and 2003 at m2 -> 2 months;
+    # 1001 at m3 and 1008 at m5 (first seen m2) -> 3 months. 2006's repeat adoption at m5 is ignored.
+    assert dict(zip(times["months_to_first_adoption"], times["customers"], strict=True)) == {1: 1, 2: 2, 3: 2}
+    assert times["cumulative_share"].tolist() == pytest.approx([0.2, 0.6, 1.0])
+    assert times["median_months"].iloc[0] == pytest.approx(2)
     assert times["customers_observed"].iloc[0] == 60
 
 
 def test_summary_and_proposal_reports(ladder_results):
     config, _ = ladder_results
     summary = (config.paths.reports_dir / "customer_analytics.md").read_text(encoding="utf-8")
-    assert "| 3 | Credit card | 1 | 5.9% (1.0% to 27.0%) | 1.7% |" in summary
-    assert "4 of 60 customers (6.7%) adopted at least one product" in summary
+    assert "| 3 | Credit card | 1 | 5.6% (1.0% to 25.8%) | 1.7% |" in summary
+    assert "5 of 60 customers (8.3%) adopted at least one product for the first time" in summary
     proposal = (config.paths.reports_dir / "ladder_proposal.md").read_text(encoding="utf-8")
     assert "most held product in 2015-08 (100.0% of customers)" in proposal
     assert "3. Credit card: ind_tjcr_fin_ult1" in proposal

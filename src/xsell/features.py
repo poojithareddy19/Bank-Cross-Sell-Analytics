@@ -35,6 +35,8 @@ BINARY_FEATURES = ("is_active", "is_new_customer", "income_missing")
 CATEGORICAL_FEATURES = ("segment", "relation_type", "age_band", "sex", "channel")
 ID_COLUMNS = ("customer_id", "feature_month", "label_month", "split")
 LABEL_COLUMNS = ("holds_target_at_t", "adopts_target", "adopts_any")
+# Reporting segment, never a model feature: held the target product in some month before t.
+SEGMENT_COLUMN = "held_target_before_t"
 
 
 @dataclass(frozen=True)

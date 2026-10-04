@@ -22,8 +22,10 @@ earlier.
 | Adoption event | Flag = 0 in the previous snapshot and 1 in month t, where the previous snapshot is exactly one month earlier for that customer. | `sql/analysis/10_product_events.sql` |
 | Attrition event | Flag = 1 in the previous snapshot and 0 in month t, consecutive months only. | same |
 | Change across a gap | A flag change where the customer's previous row is more than one month earlier. Stored in `product_changes_across_gaps` and reported, never counted as an event. | same |
+| First-time adoption | An adoption of a product the customer had not dropped earlier in the window. | same |
+| Repeat adoption | An adoption of a product the customer dropped earlier in the window (an attrition, or a 1 to 0 change across a gap). Holding a product earlier but not in the previous month implies such a drop, so the rule is exact. Payment-type products (direct debit, payroll, pension payments, credit card) switch off and on often, so repeats are common for them. | same |
 | First month | A customer's first observed month has no previous snapshot, so products held then are not adoptions. | same |
-| Next-product transition A to B | For each adoption of B, the product(s) A adopted in the same customer's most recent earlier adoption month. Adoptions in the same month are not transitions between each other. `share_of_from` = transitions A to B / all transitions from A. | `sql/analysis/12_next_product_transitions.sql` |
+| Next-product transition A to B | For each first-time adoption of B, the product(s) A first-adopted in the same customer's most recent earlier first-time adoption month. Repeat adoptions are excluded, so there are no A to A transitions; adoptions in the same month are not transitions between each other. `share_of_from` = transitions A to B / all transitions from A. | `sql/analysis/12_next_product_transitions.sql` |
 
 ## Journeys and cohorts
 
@@ -31,7 +33,7 @@ earlier.
 |---|---|---|
 | Ladder step reached | Ladder steps are defined in `config/products.yaml`; each step lists one or more products. A customer reaches step 1 in the first month they hold any step-1 product, and step n in the first month at or after reaching step n-1 in which they hold any step-n product. Reached counts can therefore never increase down the ladder. | `sql/analysis/13_ladder_funnel.sql` |
 | Ladder conversion | Reached(step n) / reached(step n-1); step 1 is measured against all customers in the group. Groups: all customers, latest segment, joining channel (top `analysis.top_channels`, the rest "other"). | same |
-| Time to next product | Months between a customer's first observed snapshot and their first adoption event. Customers with no adoption in the window are not in the distribution (right-censored); the report states how many adopted at all. For customers already present in the first snapshot this is time since observation started, not time since joining the bank. | `sql/analysis/14_time_to_next_product.sql` |
+| Time to next product | Months between a customer's first observed snapshot and their first first-time adoption (repeat adoptions are not a next product). Customers with no adoption in the window are not in the distribution (right-censored); the report states how many adopted at all. For customers already present in the first snapshot this is time since observation started, not time since joining the bank. | `sql/analysis/14_time_to_next_product.sql` |
 | Join cohort | Month of `fecha_alta` (earliest reported join date), only for customers who joined on or after the first snapshot month, so their first months are observed. Customers without a join date are excluded and counted in the data quality report. | `sql/analysis/15_join_cohort_retention.sql` |
 | Cohort retention at k | Share of the cohort present in the snapshot k months after the join month and holding at least one product. Only k values that can be observed (join month + k up to the last snapshot) are reported. | same |
 | Customer value proxy | Product families held, income band and activity in the latest month. The data has no revenue, so this is a proxy for relationship breadth, not value. Income bands are quartiles of known income among customers present in the latest month; unknown income is "missing". | `sql/analysis/17_customer_value_proxy.sql` |
@@ -58,6 +60,7 @@ earlier.
 |---|---|---|
 | Target | `adopts_target`: the customer does not hold `model.target_product` at t and holds it at t+1. Population: customers present at t and t+1 who do not hold the product at t. If the training base rate is below `model.min_base_rate`, the target becomes `adopts_any` (at least one adoption event at t+1, population: customers present at t and t+1) and the report records why. | `sql/features/20_propensity_features.sql`, `src/xsell/train.py` |
 | Base rate | Share of the population with label 1 in a split. | `src/xsell/train.py` |
+| First-time vs re-adoption split | Test metrics computed separately for customers who never held the target product before t (first-time adoption, the cross-sell result) and for customers who held it in an earlier month (re-adoption). Uses `held_target_before_t`, a reporting column built from months before t; it is never a model feature. | same |
 | ROC-AUC | Probability that a random adopter is scored above a random non-adopter (ties count half). | `src/xsell/evaluate.py` |
 | PR-AUC | Average precision: precision averaged over the recall levels reached at each distinct score threshold (scikit-learn definition). The selection metric, because adopters are rare and a no-skill model scores the base rate. | same |
 | Brier score | Mean squared difference between the predicted probability and the 0/1 label. Lower is better; reported before and after calibration. | same |

@@ -99,6 +99,9 @@ def test_report_contents(trained_model):
     assert report["test"]["metrics"]["n_boot"] == 50
     assert [row["share_contacted"] for row in report["test"]["capacity"]] == list(config.model.capacity_shares)
     assert report["test"]["per_month"][0]["label_month"] == "2015-08"
+    segments = {row["segment"]: row for row in report["test"]["by_prior_holding"]}
+    assert set(segments) == {"never held before t (first-time)", "held earlier (re-adoption)"}
+    assert sum(row["rows"] for row in segments.values()) == report["data"]["splits"]["test"]["rows"]
     assert len(report["test"]["lift"]) == 10
     assert report["interpretation"]["odds_ratios"][0]["feature"] == "ind_ecue_fin_ult1", "planted signal"
 

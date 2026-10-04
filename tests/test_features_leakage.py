@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 
 from xsell.db import connect
-from xsell.features import ID_COLUMNS, LABEL_COLUMNS, build_features, load_dataset
+from xsell.features import ID_COLUMNS, LABEL_COLUMNS, SEGMENT_COLUMN, build_features, load_dataset
 from xsell.train import candidate_models
 
 CUTOFF = 5  # feature month 2015-06 (the validation month)
@@ -47,7 +47,7 @@ def test_target_flag_and_labels_are_not_features(model_warehouse):
     dataset = load_dataset(model_warehouse, "product")
     target = model_warehouse.model.target_product
     assert target not in dataset.feature_columns
-    assert not set(dataset.feature_columns) & {*LABEL_COLUMNS, *ID_COLUMNS}
+    assert not set(dataset.feature_columns) & {*LABEL_COLUMNS, *ID_COLUMNS, SEGMENT_COLUMN}
     assert len(dataset.product_flags) == 23
 
 

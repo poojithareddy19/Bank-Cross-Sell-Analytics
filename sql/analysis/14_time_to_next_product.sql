@@ -1,5 +1,6 @@
 -- Time to next product = months between a customer's first observed snapshot and their
--- first adoption event. Customers with no adoption in the window are not in this
+-- first FIRST-TIME adoption (a product they had not dropped earlier in the window; repeat
+-- adoptions are not a next product). Customers with no such adoption are not in this
 -- distribution (right-censored); the summary reports how many adopted at all.
 -- Customers first seen in the first snapshot were already customers, so this is time
 -- since observation started, not time since joining the bank.
@@ -7,7 +8,7 @@
 WITH first_adoption AS (
     SELECT customer_id, min(month_index) AS first_adoption_month
     FROM product_events
-    WHERE event_type = 'adoption'
+    WHERE adoption_kind = 'first'
     GROUP BY customer_id
 ),
 times AS (

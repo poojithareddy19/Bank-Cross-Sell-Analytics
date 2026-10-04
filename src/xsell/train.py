@@ -51,6 +51,7 @@ from xsell.features import (
     BINARY_FEATURES,
     CATEGORICAL_FEATURES,
     NUMERIC_FEATURES,
+    SEGMENT_COLUMN,
     Dataset,
     build_features,
     load_dataset,
@@ -223,6 +224,17 @@ def train_and_evaluate(config: Config) -> tuple[dict[str, Any], Any]:
             group[dataset.label].to_numpy(), test_probabilities[mask]
         )})  # fmt: skip
 
+    # First-time adoption versus re-adoption: the same scores, split by whether the customer
+    # held the target in an earlier month. Only meaningful for the single-product target.
+    segments = []
+    if dataset.target_mode == "product":
+        held_before = test_part[SEGMENT_COLUMN].to_numpy() == 1
+        for name, mask in (
+            ("never held before t (first-time)", ~held_before),
+            ("held earlier (re-adoption)", held_before),
+        ):
+            segments.append({"segment": name, **point_metrics(y_test_array[mask], test_probabilities[mask])})
+
     importance = permutation_importance_table(
         fitted[selected], x_valid, y_valid, config.model.permutation_rows, config.model.seed
     )
@@ -279,6 +291,7 @@ def train_and_evaluate(config: Config) -> tuple[dict[str, Any], Any]:
             "baselines": baselines["test"],
             "at_operating_threshold": _threshold_metrics(y_test_array, test_probabilities, threshold),
             "per_month": per_month,
+            "by_prior_holding": segments,
             "lift": lift_table(y_test_array, test_probabilities).to_dict(orient="records"),
             "calibration": calibration_table(y_test_array, test_probabilities).to_dict(orient="records"),
             "capacity": capacity_table(
@@ -388,6 +401,14 @@ def render_report(report: dict[str, Any]) -> str:
         f"At the validation threshold: {test['at_operating_threshold']['share_selected']:.1%} of test rows selected, "
         f"precision {test['at_operating_threshold']['precision']:.3f}, "
         f"recall {test['at_operating_threshold']['recall']:.3f}.",
+        "",
+        "### First-time adoption versus re-adoption",
+        "",
+        "The same test scores, split by whether the customer held the target product in an earlier month of the "
+        "window. Re-adoptions (a product that switched off and on again) are much easier to predict; the first-time "
+        "row is the cross-sell result.",
+        "",
+        markdown_table(pd.DataFrame(test["by_prior_holding"])) if test["by_prior_holding"] else "Not applicable.",
         "",
         "### Stability by test month",
         "",

@@ -35,4 +35,11 @@ products:
   - {code: ind_nom_pens_ult1, name: Pension payments, family: services}
   - {code: ind_recibo_ult1, name: Direct debit, family: services}
 
-ladder: []
+# Confirmed 2026-10-05 from the first-time transitions on the real data
+# (reports/ladder_proposal.md): payroll account, payroll and pension payments are adopted
+# within about a month of each other, so they form one step.
+ladder:
+  - {name: Current account, products: [ind_cco_fin_ult1]}
+  - {name: Direct debit, products: [ind_recibo_ult1]}
+  - {name: Payroll package, products: [ind_cno_fin_ult1, ind_nomina_ult1, ind_nom_pens_ult1]}
+  - {name: Credit card, products: [ind_tjcr_fin_ult1]}

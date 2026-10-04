@@ -105,7 +105,7 @@ def test_reports_are_written(results, built_warehouse):
     for name in results:
         assert (reports / "analysis" / f"{name}.csv").is_file()
     summary = (reports / "customer_analytics.md").read_text(encoding="utf-8")
-    assert "Adoption events: 7. Attrition events: 1." in summary
+    assert "Adoption events: 9, of which 8 first-time and 1 repeat" in summary
     assert "| E-account | Credit card | 1 | 1 | 50.0% | 3 |" in summary
     assert "| 2015-01 | 2 | 100.0% | 100.0% | 100.0% | 50.0% |  |" in summary
 

@@ -1,11 +1,13 @@
--- Next-product transitions: for each adoption of product B, the product(s) A the same
--- customer adopted in their most recent earlier adoption month. Adoptions in the same
--- month are not transitions between each other.
+-- Next-product transitions: for each FIRST-TIME adoption of product B, the product(s) A
+-- the same customer first-adopted in their most recent earlier adoption month. Repeat
+-- adoptions (a product dropped and picked up again) are not journeys, so they are left
+-- out; this also removes A -> A self-transitions. Adoptions in the same month are not
+-- transitions between each other.
 
 WITH adoptions AS (
     SELECT customer_id, month_index, product_code
     FROM product_events
-    WHERE event_type = 'adoption'
+    WHERE adoption_kind = 'first'
 ),
 adoption_months AS (
     SELECT
@@ -23,6 +25,7 @@ transitions AS (
     FROM adoption_months AS m
     JOIN adoptions AS b ON b.customer_id = m.customer_id AND b.month_index = m.month_index
     JOIN adoptions AS a ON a.customer_id = m.customer_id AND a.month_index = m.previous_adoption_month
+    WHERE a.product_code <> b.product_code
 )
 SELECT
     t.from_product,

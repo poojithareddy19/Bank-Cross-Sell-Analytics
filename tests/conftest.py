@@ -17,6 +17,7 @@ def make_config(work_dir: Path, **model_overrides) -> Config:
     """Repository config pointed at work_dir and the fixtures' 8 months (2015-01 to 2015-08)."""
     raw = yaml.safe_load((ROOT / "config" / "config.yaml").read_text(encoding="utf-8"))
     raw_products = yaml.safe_load((ROOT / "config" / "products.yaml").read_text(encoding="utf-8"))
+    raw_products["ladder"] = []  # tests that need a ladder set their own
     raw["paths"].update(
         data_dir=str(work_dir / "data"),
         reports_dir=str(work_dir / "reports"),

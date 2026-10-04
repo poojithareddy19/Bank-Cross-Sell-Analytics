@@ -10,6 +10,8 @@ so the machine spec is recorded with them.
 
 from __future__ import annotations
 
+import contextlib
+import os
 import statistics
 import time
 from dataclasses import dataclass
@@ -131,7 +133,11 @@ class PairResult:
 
 
 def performance_params(config: Config) -> dict[str, str]:
-    return {"holdings_glob": base_params(config)["holdings_glob"], "month_label": config.months.last}
+    # A path relative to the working directory keeps local folder names out of the saved plans.
+    holdings_glob = base_params(config)["holdings_glob"]
+    with contextlib.suppress(ValueError):  # different drive on Windows: keep the absolute path
+        holdings_glob = Path(os.path.relpath(holdings_glob)).as_posix()
+    return {"holdings_glob": holdings_glob, "month_label": config.months.last}
 
 
 def timed_runs(connection, path: Path, params: dict, runs: int) -> tuple[list[float], pd.DataFrame | None]:

@@ -77,3 +77,27 @@ def test_event_summary_totals(analysed):
     assert summary["changes_across_gaps"].sum() == len(EXPECTED["changes_across_gaps"])
     credit_card = summary[(summary["product_code"] == "ind_tjcr_fin_ult1") & (summary["month_label"] == "2015-04")]
     assert credit_card["adoptions"].tolist() == [1]
+
+
+def test_repeat_adoptions_are_marked(analysed):
+    config, results = analysed
+    repeats = rows(
+        config, "SELECT customer_id, product_code, month_index FROM product_events WHERE adoption_kind = 'repeat'"
+    )
+    assert labelled(repeats) == EXPECTED["repeat_adoptions"]
+    first = rows(
+        config, "SELECT customer_id, product_code, month_index FROM product_events WHERE adoption_kind = 'first'"
+    )
+    assert labelled(first) == EXPECTED["adoptions"] - EXPECTED["repeat_adoptions"]
+    assert rows(
+        config, "SELECT count(*) FROM product_events WHERE event_type = 'attrition' AND adoption_kind IS NOT NULL"
+    ) == [(0,)]
+    summary = results["10_product_events"]
+    assert summary["first_adoptions"].sum() + summary["repeat_adoptions"].sum() == summary["adoptions"].sum()
+
+
+def test_transitions_ignore_repeat_adoptions(analysed):
+    _, results = analysed
+    transitions = results["12_next_product_transitions"]
+    assert not (transitions["from_product"] == transitions["to_product"]).any()
+    assert set(zip(transitions["from_product"], transitions["to_product"], strict=True)) == set(EXPECTED["transitions"])

@@ -35,7 +35,7 @@ def test_event_pair_matches_the_planted_events(fast_config):
     events = run_variant(fast_config, "performance/01_events_self_join.sql").set_index("product_code")
     assert events["adoptions"].sum() == len(EXPECTED["adoptions"])
     assert events["attritions"].sum() == len(EXPECTED["attritions"])
-    assert events.loc["ind_ecue_fin_ult1"].tolist() == [2, 1]
+    assert events.loc["ind_ecue_fin_ult1"].tolist() == [4, 2]  # 2002, 2003, 2006 twice; 1002 and 2006 drop it
     assert "ind_recibo_ult1" in events.index, "2003 adopts direct debit"
     # The gap customer 1003 must not add a direct debit adoption: only 2003 adopts it.
     assert events.loc["ind_recibo_ult1", "adoptions"] == 1

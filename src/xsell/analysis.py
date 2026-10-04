@@ -178,20 +178,26 @@ def _rate_column(frame: pd.DataFrame, rate: str) -> pd.Series:
 
 
 def _events_section(events: pd.DataFrame) -> list[str]:
-    totals = events[["adoptions", "attritions", "changes_across_gaps"]].sum()
+    counts = ["adoptions", "first_adoptions", "repeat_adoptions", "attritions"]
+    totals = events[[*counts, "changes_across_gaps"]].sum()
     by_product = (
-        events.groupby("product_name", as_index=False)[["adoptions", "attritions"]]
+        events.groupby("product_name", as_index=False)[counts]
         .sum()
-        .sort_values(["adoptions", "product_name"], ascending=[False, True])
+        .sort_values(["first_adoptions", "product_name"], ascending=[False, True])
         .head(TOP_N)
     )
+    repeat_share = totals["repeat_adoptions"] / totals["adoptions"] if totals["adoptions"] else 0.0
     return [
         "## Product events",
         "",
-        f"Adoption events: {int(totals['adoptions']):,}. Attrition events: {int(totals['attritions']):,}. "
-        f"Flag changes across a month gap (not counted as events): {int(totals['changes_across_gaps']):,}.",
+        f"Adoption events: {int(totals['adoptions']):,}, of which {int(totals['first_adoptions']):,} first-time and "
+        f"{int(totals['repeat_adoptions']):,} repeat ({percent(repeat_share)}: the customer had dropped the same "
+        f"product earlier in the window). Attrition events: {int(totals['attritions']):,}. Flag changes across a "
+        f"month gap (not counted as events): {int(totals['changes_across_gaps']):,}.",
         "",
-        f"Top {TOP_N} products by adoptions:",
+        "Journeys (transitions, time to next product) use first-time adoptions only.",
+        "",
+        f"Top {TOP_N} products by first-time adoptions:",
         "",
         markdown_table(by_product),
     ]
@@ -236,7 +242,8 @@ def _transitions_section(transitions: pd.DataFrame) -> list[str]:
         }
     )
     return lines + [
-        "A transition A to B means the customer's most recent earlier adoption month included A.",
+        "A transition A to B: B was adopted for the first time, and the customer's most recent earlier "
+        "first-time adoption month included A. Repeat adoptions and A to A are excluded.",
         "",
         markdown_table(table),
     ]
@@ -316,7 +323,7 @@ def _time_to_next_section(times: pd.DataFrame) -> list[str]:
     observed = int(times["customers_observed"].iloc[0])
     lines.append(
         f"{adopters:,} of {observed:,} customers ({percent(adopters / observed)}) adopted at least one product "
-        f"during the window. Median months from first observed snapshot to first adoption: "
+        f"for the first time during the window. Median months from first observed snapshot to that adoption: "
         f"{times['median_months'].iloc[0]:g}. Customers without an adoption are not in the distribution."
     )
     table = pd.DataFrame(

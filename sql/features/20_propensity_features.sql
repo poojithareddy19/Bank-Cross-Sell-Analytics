@@ -6,7 +6,9 @@
 -- adopts_target: target product not held at t and held at t+1 (rows holding it at t keep
 -- holds_target_at_t = 1 and are excluded from that population in Python).
 -- adopts_any: at least one adoption event in t+1 (fallback target, see config min_base_rate).
--- The target product's own flag is not a feature column.
+-- The target product's own flag is not a feature column. held_target_before_t (held the
+-- target in any month before t) is a reporting segment, used to split results into
+-- first-time adoption versus re-adoption; it is not a model feature.
 -- Parameters: $target_product, $sample_threshold, $train_first, $train_last,
 -- $validation_first, $validation_last, $test_first, $test_last (month indexes).
 
@@ -53,6 +55,13 @@ history AS (
       ON e.customer_id = h.customer_id AND e.month_index = h.month_index
     GROUP BY b.customer_id, b.feature_month
 ),
+earlier_holders AS (
+    SELECT DISTINCT b.customer_id, b.feature_month
+    FROM base AS b
+    JOIN fact_monthly_holdings AS f
+      ON f.customer_id = b.customer_id AND f.month_index < b.feature_month
+    WHERE struct_extract(f, $target_product) = 1
+),
 next_adoptions AS (
     SELECT DISTINCT customer_id, month_index
     FROM product_events
@@ -70,6 +79,7 @@ SELECT
     b.holds_target_at_t,
     CASE WHEN b.holds_target_at_t = 0 AND b.holds_target_next = 1 THEN 1 ELSE 0 END AS adopts_target,
     CASE WHEN a.customer_id IS NOT NULL THEN 1 ELSE 0 END AS adopts_any,
+    CASE WHEN eh.customer_id IS NOT NULL THEN 1 ELSE 0 END AS held_target_before_t,
     flags.* EXCLUDE (customer_id, month_index),
     cur.n_products,
     cur.n_products - p1.n_products AS n_products_change_1m,
@@ -104,7 +114,8 @@ JOIN dim_customer AS c ON c.customer_id = b.customer_id
 JOIN history AS hist ON hist.customer_id = b.customer_id AND hist.feature_month = b.feature_month
 LEFT JOIN fact_monthly_holdings AS p1 ON p1.customer_id = b.customer_id AND p1.month_index = b.feature_month - 1
 LEFT JOIN fact_monthly_holdings AS p3 ON p3.customer_id = b.customer_id AND p3.month_index = b.feature_month - 3
-LEFT JOIN next_adoptions AS a ON a.customer_id = b.customer_id AND a.month_index = b.label_month;
+LEFT JOIN next_adoptions AS a ON a.customer_id = b.customer_id AND a.month_index = b.label_month
+LEFT JOIN earlier_holders AS eh ON eh.customer_id = b.customer_id AND eh.feature_month = b.feature_month;
 
 SELECT
     split,
