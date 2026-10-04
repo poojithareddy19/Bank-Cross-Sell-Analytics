@@ -234,9 +234,7 @@ def _stream_with_clear_errors(
     try:
         return _stream_to_parquet(zip_path, csv_member, product_codes, output_dir, sample_share, block_size)
     except (zipfile.BadZipFile, zlib.error, EOFError) as error:
-        raise ConversionError(
-            f"{zip_path.name} is not a valid zip ({error}); delete it and run fetch again"
-        ) from error
+        raise ConversionError(f"{zip_path.name} is not a valid zip ({error}); delete it and run fetch again") from error
     except pa.ArrowInvalid as error:
         raise ConversionError(f"could not parse {csv_member}: {error}") from error
 
@@ -273,14 +271,10 @@ def convert_zip_to_parquet(
                 "the file may contain embedded line breaks or be truncated"
             )
         if expected_months is not None and list(rows_per_month) != list(expected_months):
-            raise ConversionError(
-                f"expected snapshot months {list(expected_months)}, found {list(rows_per_month)}"
-            )
+            raise ConversionError(f"expected snapshot months {list(expected_months)}, found {list(rows_per_month)}")
         rows_written, customers = _validate_parquet(staging_dir)
         if rows_written != sum(rows_per_month.values()):
-            raise ConversionError(
-                f"Parquet holds {rows_written} rows but {sum(rows_per_month.values())} were written"
-            )
+            raise ConversionError(f"Parquet holds {rows_written} rows but {sum(rows_per_month.values())} were written")
         if sample_share is None and rows_written != csv_rows:
             raise ConversionError(f"Parquet holds {rows_written} rows but the CSV has {csv_rows}")
 

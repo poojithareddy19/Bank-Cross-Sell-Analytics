@@ -98,6 +98,13 @@ class MonthRange:
 
 
 @dataclass(frozen=True)
+class QualitySettings:
+    age_min: int
+    age_max: int
+    income_max_eur: float
+
+
+@dataclass(frozen=True)
 class ModelSettings:
     target_product: str
     min_base_rate: float
@@ -119,6 +126,7 @@ class Config:
     kaggle: KaggleSettings
     duckdb: DuckDBSettings
     months: MonthRange
+    quality: QualitySettings
     model: ModelSettings
     assumptions: Assumptions
     products: tuple[Product, ...]
@@ -205,6 +213,17 @@ def build_config(
     if months.count < 2:
         raise ConfigError("months.last must be after months.first")
 
+    quality_raw = _section(raw, "quality")
+    quality = QualitySettings(
+        age_min=_as_int(_require(quality_raw, "age_min", "quality"), "quality.age_min"),
+        age_max=_as_int(_require(quality_raw, "age_max", "quality"), "quality.age_max"),
+        income_max_eur=_as_float(_require(quality_raw, "income_max_eur", "quality"), "quality.income_max_eur"),
+    )
+    if quality.age_min >= quality.age_max:
+        raise ConfigError("quality.age_min must be below quality.age_max")
+    if quality.income_max_eur <= 0:
+        raise ConfigError("quality.income_max_eur must be positive")
+
     model = _build_model(_section(raw, "model"), months, codes)
 
     assumptions_raw = _section(raw, "assumptions")
@@ -225,6 +244,7 @@ def build_config(
         kaggle=kaggle,
         duckdb=duckdb_settings,
         months=months,
+        quality=quality,
         model=model,
         assumptions=assumptions,
         products=products,
@@ -256,8 +276,7 @@ def _build_products(raw_products: Mapping[str, Any]) -> tuple[Product, ...]:
         raise ConfigError(f"products.yaml: duplicate product code(s): {', '.join(duplicates)}")
     if len(products) != EXPECTED_PRODUCT_COUNT:
         raise ConfigError(
-            f"products.yaml: expected {EXPECTED_PRODUCT_COUNT} products (one per flag column), "
-            f"got {len(products)}"
+            f"products.yaml: expected {EXPECTED_PRODUCT_COUNT} products (one per flag column), got {len(products)}"
         )
     return tuple(products)
 

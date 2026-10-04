@@ -24,6 +24,12 @@ months:
   first: "2015-01"
   last: "2016-05"
 
+# Data quality thresholds. Rows outside these bounds are reported as warnings.
+quality:
+  age_min: 0
+  age_max: 110
+  income_max_eur: 10000000
+
 model:
   target_product: ind_tjcr_fin_ult1  # credit card
   min_base_rate: 0.002               # below this, switch to "adopts any new product"

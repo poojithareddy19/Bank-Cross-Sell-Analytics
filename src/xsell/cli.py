@@ -10,6 +10,8 @@ from xsell.config import Config, ConfigError, load_config
 from xsell.data.fetch import run_fetch
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger, setup_logging
+from xsell.quality import run_quality
+from xsell.warehouse import build_warehouse
 
 logger = get_logger("xsell.cli")
 
@@ -66,9 +68,7 @@ def show_config(config: Config) -> None:
     logger.info("project root: %s", config.paths.root)
     logger.info("data dir: %s", config.paths.data_dir)
     logger.info("duckdb: memory_limit=%s threads=%d", config.duckdb.memory_limit, config.duckdb.threads)
-    logger.info(
-        "months: %s to %s (%d snapshots)", config.months.first, config.months.last, config.months.count
-    )
+    logger.info("months: %s to %s (%d snapshots)", config.months.first, config.months.last, config.months.count)
     logger.info("products: %d, ladder steps: %d", len(config.products), len(config.ladder))
     logger.info(
         "target product: %s, sample share: %.0f%%",
@@ -93,6 +93,8 @@ def _not_implemented(stage: str) -> StageRunner:
 StageRunner = Callable[[Config, argparse.Namespace], None]
 STAGE_RUNNERS: dict[str, StageRunner] = {name: _not_implemented(name) for name in STAGES}
 STAGE_RUNNERS["fetch"] = run_fetch_stage
+STAGE_RUNNERS["warehouse"] = lambda config, args: build_warehouse(config)
+STAGE_RUNNERS["quality"] = lambda config, args: run_quality(config)
 
 
 def main(argv: Sequence[str] | None = None) -> int:

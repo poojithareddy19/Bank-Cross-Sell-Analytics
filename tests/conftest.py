@@ -7,6 +7,8 @@ import yaml
 
 from fixture_data import write_fixture_zip
 from xsell.config import Config, build_config
+from xsell.data.fetch import run_fetch
+from xsell.warehouse import build_warehouse
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -35,3 +37,11 @@ def fixture_config(tmp_path: Path) -> Config:
 def fixture_zip(fixture_config: Config) -> Path:
     """The synthetic CSV zipped where the fetch stage expects the Kaggle download."""
     return write_fixture_zip(fixture_config.paths.raw_dir / fixture_config.kaggle.file)
+
+
+@pytest.fixture
+def built_warehouse(fixture_config: Config, fixture_zip: Path) -> Config:
+    """Fixture data fetched into the Parquet cache and built into the DuckDB warehouse."""
+    run_fetch(fixture_config)
+    build_warehouse(fixture_config)
+    return fixture_config
