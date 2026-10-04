@@ -1,0 +1,159 @@
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- Pair 4, baseline: running count of active months per customer with a RANGE self-join. -- Every customer-month row is joined to all of that customer's rows up to the same month, -- so a customer seen n months produces n(n+1)/2 joined rows before they are summed. -- Output must equal 04_running_total_window.sql.  WITH running AS (     SELECT a.customer_id, a.month_index, sum(coalesce(b.is_active, 0)) AS active_months_so_far     FROM fact_monthly_holdings AS a     JOIN fact_monthly_holdings AS b       ON b.customer_id = a.customer_id AND b.month_index <= a.month_index     GROUP BY a.customer_id, a.month_index ) SELECT active_months_so_far, count(*) AS customer_months FROM running GROUP BY active_months_so_far ORDER BY active_months_so_far
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 49.72s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│          ORDER_BY         │
+│    ────────────────────   │
+│running.active_months_so_fa│
+│           r ASC           │
+│                           │
+│                           │
+│                           │
+│          18 rows          │
+│           0.07s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│       HASH_GROUP_BY       │
+│    ────────────────────   │
+│         Groups: #0        │
+│                           │
+│        Aggregates:        │
+│        count_star()       │
+│                           │
+│                           │
+│                           │
+│          18 rows          │
+│           1.04s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│    active_months_so_far   │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│    active_months_so_far   │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_decompress_integ│
+│   ral_bigint(#0, 15889)   │
+│__internal_decompress_integ│
+│     ral_integer(#1, 0)    │
+│             #2            │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.06s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│       HASH_GROUP_BY       │
+│    ────────────────────   │
+│          Groups:          │
+│             #0            │
+│             #1            │
+│                           │
+│    Aggregates: sum(#2)    │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│          456.20s          │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│        customer_id        │
+│        month_index        │
+│ CAST(COALESCE(is_active, 0│
+│        ) AS BIGINT)       │
+│                           │
+│                           │
+│                           │
+│      111,932,658 rows     │
+│           1.77s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #0            │
+│__internal_compress_integra│
+│   l_uinteger(#1, 15889)   │
+│__internal_compress_integra│
+│     l_utinyint(#2, 0)     │
+│                           │
+│                           │
+│                           │
+│      111,932,658 rows     │
+│           0.52s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         HASH_JOIN         │
+│    ────────────────────   │
+│      Join Type: INNER     │
+│                           │
+│        Conditions:        │
+│ customer_id = customer_id │
+│ month_index <= month_index├──────────────┐
+│                           │              │
+│                           │              │
+│                           │              │
+│      111,932,658 rows     │              │
+│           15.96s          │              │
+└─────────────┬─────────────┘              │
+┌─────────────┴─────────────┐┌─────────────┴─────────────┐
+│         TABLE_SCAN        ││         TABLE_SCAN        │
+│    ────────────────────   ││    ────────────────────   │
+│           Table:          ││           Table:          │
+│       warehouse.main      ││       warehouse.main      │
+│   .fact_monthly_holdings  ││   .fact_monthly_holdings  │
+│                           ││                           │
+│   Type: Sequential Scan   ││   Type: Sequential Scan   │
+│                           ││                           │
+│        Projections:       ││        Projections:       │
+│        customer_id        ││        customer_id        │
+│        month_index        ││        month_index        │
+│         is_active         ││                           │
+│                           ││                           │
+│      Dynamic Filters:     ││                           │
+│   optional: customer_id>  ││                           │
+│    =15889 AND optional:   ││           0.21s           │
+│    customer_id<=1553689   ││                           │
+│ optional: month_index<=16 ││                           │
+│                           ││                           │
+│                           ││                           │
+│                           ││                           │
+│      13,647,309 rows      ││      13,647,309 rows      │
+│           1.90s           ││          (0.21s)          │
+└───────────────────────────┘└───────────────────────────┘

@@ -1,0 +1,348 @@
+from_product,from_name,to_product,to_name,customers,transitions,median_months_between,share_of_from
+ind_nom_pens_ult1,Pension payments,ind_cno_fin_ult1,Payroll account,6438,6438,1.000000,0.464972
+ind_nomina_ult1,Payroll,ind_cno_fin_ult1,Payroll account,6226,6226,1.000000,0.464038
+ind_cco_fin_ult1,Current account,ind_recibo_ult1,Direct debit,3893,3893,2.000000,0.297562
+ind_recibo_ult1,Direct debit,ind_nom_pens_ult1,Pension payments,3828,3828,3.000000,0.217031
+ind_recibo_ult1,Direct debit,ind_nomina_ult1,Payroll,3651,3651,3.000000,0.206996
+ind_ctma_fin_ult1,Mas particular account,ind_ecue_fin_ult1,E-account,3427,3427,3.000000,0.715748
+ind_cno_fin_ult1,Payroll account,ind_recibo_ult1,Direct debit,3337,3337,2.000000,0.419590
+ind_nom_pens_ult1,Pension payments,ind_recibo_ult1,Direct debit,3285,3285,2.000000,0.237253
+ind_nomina_ult1,Payroll,ind_recibo_ult1,Direct debit,3198,3198,2.000000,0.238354
+ind_recibo_ult1,Direct debit,ind_cno_fin_ult1,Payroll account,3071,3071,2.000000,0.174113
+ind_cco_fin_ult1,Current account,ind_nom_pens_ult1,Pension payments,2005,2005,2.000000,0.153252
+ind_cco_fin_ult1,Current account,ind_nomina_ult1,Payroll,1928,1928,2.000000,0.147367
+ind_recibo_ult1,Direct debit,ind_tjcr_fin_ult1,Credit card,1688,1688,3.000000,0.095702
+ind_recibo_ult1,Direct debit,ind_ecue_fin_ult1,E-account,1632,1632,3.000000,0.092527
+ind_recibo_ult1,Direct debit,ind_reca_fin_ult1,Taxes,1349,1349,3.000000,0.076483
+ind_nom_pens_ult1,Pension payments,ind_tjcr_fin_ult1,Credit card,1298,1298,3.000000,0.093745
+ind_nomina_ult1,Payroll,ind_tjcr_fin_ult1,Credit card,1281,1281,3.000000,0.095476
+ind_tjcr_fin_ult1,Credit card,ind_recibo_ult1,Direct debit,1267,1267,3.000000,0.204850
+ind_ecue_fin_ult1,E-account,ind_recibo_ult1,Direct debit,1262,1262,2.000000,0.238293
+ind_cco_fin_ult1,Current account,ind_ecue_fin_ult1,E-account,1230,1230,3.000000,0.094015
+ind_cco_fin_ult1,Current account,ind_cno_fin_ult1,Payroll account,1126,1126,1.000000,0.086066
+ind_recibo_ult1,Direct debit,ind_cco_fin_ult1,Current account,1054,1054,4.000000,0.059757
+ind_cno_fin_ult1,Payroll account,ind_ecue_fin_ult1,E-account,1018,1018,2.000000,0.128002
+ind_nom_pens_ult1,Pension payments,ind_ecue_fin_ult1,E-account,885,885,2.000000,0.063917
+ind_cno_fin_ult1,Payroll account,ind_tjcr_fin_ult1,Credit card,875,875,3.000000,0.110021
+ind_ecue_fin_ult1,E-account,ind_cco_fin_ult1,Current account,859,859,3.000000,0.162198
+ind_nomina_ult1,Payroll,ind_ecue_fin_ult1,E-account,848,848,2.000000,0.063203
+ind_deco_fin_ult1,Short-term deposit,ind_ecue_fin_ult1,E-account,826,826,3.000000,0.407700
+ind_dela_fin_ult1,Long-term deposit,ind_ecue_fin_ult1,E-account,764,764,3.000000,0.287759
+ind_cno_fin_ult1,Payroll account,ind_nomina_ult1,Payroll,759,759,1.000000,0.095436
+ind_tjcr_fin_ult1,Credit card,ind_nom_pens_ult1,Pension payments,756,756,4.000000,0.122231
+ind_tjcr_fin_ult1,Credit card,ind_nomina_ult1,Payroll,753,753,4.000000,0.121746
+ind_cno_fin_ult1,Payroll account,ind_nom_pens_ult1,Pension payments,735,735,1.000000,0.092418
+ind_tjcr_fin_ult1,Credit card,ind_ecue_fin_ult1,E-account,734,734,4.000000,0.118674
+ind_tjcr_fin_ult1,Credit card,ind_cco_fin_ult1,Current account,725,725,4.000000,0.117219
+ind_ecue_fin_ult1,E-account,ind_cno_fin_ult1,Payroll account,653,653,2.000000,0.123301
+ind_nomina_ult1,Payroll,ind_reca_fin_ult1,Taxes,653,653,4.000000,0.048670
+ind_nom_pens_ult1,Pension payments,ind_reca_fin_ult1,Taxes,651,651,4.000000,0.047017
+ind_cco_fin_ult1,Current account,ind_valo_fin_ult1,Securities,601,601,3.000000,0.045937
+ind_cco_fin_ult1,Current account,ind_ctma_fin_ult1,Mas particular account,561,561,1.000000,0.042880
+ind_deco_fin_ult1,Short-term deposit,ind_dela_fin_ult1,Long-term deposit,557,557,3.000000,0.274926
+ind_ecue_fin_ult1,E-account,ind_nom_pens_ult1,Pension payments,549,549,2.000000,0.103663
+ind_recibo_ult1,Direct debit,ind_valo_fin_ult1,Securities,529,529,3.000000,0.029992
+ind_nomina_ult1,Payroll,ind_cco_fin_ult1,Current account,528,528,9.000000,0.039353
+ind_nom_pens_ult1,Pension payments,ind_cco_fin_ult1,Current account,526,526,9.000000,0.037989
+ind_ecue_fin_ult1,E-account,ind_tjcr_fin_ult1,Credit card,515,515,3.000000,0.097243
+ind_tjcr_fin_ult1,Credit card,ind_reca_fin_ult1,Taxes,515,515,3.000000,0.083266
+ind_ecue_fin_ult1,E-account,ind_nomina_ult1,Payroll,514,514,2.000000,0.097054
+ind_cco_fin_ult1,Current account,ind_tjcr_fin_ult1,Credit card,496,496,2.000000,0.037912
+ind_cno_fin_ult1,Payroll account,ind_reca_fin_ult1,Taxes,479,479,3.000000,0.060229
+ind_tjcr_fin_ult1,Credit card,ind_cno_fin_ult1,Payroll account,461,461,4.000000,0.074535
+ind_ecue_fin_ult1,E-account,ind_dela_fin_ult1,Long-term deposit,452,452,2.000000,0.085347
+ind_cco_fin_ult1,Current account,ind_dela_fin_ult1,Long-term deposit,445,445,1.000000,0.034014
+ind_dela_fin_ult1,Long-term deposit,ind_recibo_ult1,Direct debit,418,418,4.000000,0.157439
+ind_reca_fin_ult1,Taxes,ind_recibo_ult1,Direct debit,402,402,3.000000,0.176548
+ind_ctma_fin_ult1,Mas particular account,ind_recibo_ult1,Direct debit,383,383,1.000000,0.079992
+ind_recibo_ult1,Direct debit,ind_dela_fin_ult1,Long-term deposit,369,369,4.000000,0.020921
+ind_cco_fin_ult1,Current account,ind_reca_fin_ult1,Taxes,364,364,2.000000,0.027822
+ind_reca_fin_ult1,Taxes,ind_nom_pens_ult1,Pension payments,345,345,3.000000,0.151515
+ind_reca_fin_ult1,Taxes,ind_nomina_ult1,Payroll,331,331,4.000000,0.145367
+ind_dela_fin_ult1,Long-term deposit,ind_cco_fin_ult1,Current account,325,325,4.000000,0.122411
+ind_reca_fin_ult1,Taxes,ind_tjcr_fin_ult1,Credit card,325,325,3.000000,0.142732
+ind_tjcr_fin_ult1,Credit card,ind_dela_fin_ult1,Long-term deposit,319,319,4.000000,0.051576
+ind_cno_fin_ult1,Payroll account,ind_cco_fin_ult1,Current account,309,309,4.000000,0.038853
+ind_deco_fin_ult1,Short-term deposit,ind_recibo_ult1,Direct debit,301,301,3.000000,0.148569
+ind_dela_fin_ult1,Long-term deposit,ind_tjcr_fin_ult1,Credit card,275,275,3.000000,0.103578
+ind_reca_fin_ult1,Taxes,ind_cno_fin_ult1,Payroll account,235,235,3.000000,0.103206
+ind_tjcr_fin_ult1,Credit card,ind_valo_fin_ult1,Securities,212,212,4.000000,0.034276
+ind_ecue_fin_ult1,E-account,ind_reca_fin_ult1,Taxes,204,204,2.000000,0.038520
+ind_reca_fin_ult1,Taxes,ind_cco_fin_ult1,Current account,204,204,5.000000,0.089592
+ind_ctma_fin_ult1,Mas particular account,ind_cno_fin_ult1,Payroll account,193,193,1.000000,0.040309
+ind_reca_fin_ult1,Taxes,ind_ecue_fin_ult1,E-account,184,184,4.000000,0.080808
+ind_nom_pens_ult1,Pension payments,ind_dela_fin_ult1,Long-term deposit,178,178,3.000000,0.012856
+ind_dela_fin_ult1,Long-term deposit,ind_cno_fin_ult1,Payroll account,176,176,3.000000,0.066290
+ind_fond_fin_ult1,Funds,ind_ecue_fin_ult1,E-account,171,171,6.000000,0.175745
+ind_nom_pens_ult1,Pension payments,ind_valo_fin_ult1,Securities,170,170,3.000000,0.012278
+ind_ctma_fin_ult1,Mas particular account,ind_nom_pens_ult1,Pension payments,169,169,1.000000,0.035297
+ind_nomina_ult1,Payroll,ind_dela_fin_ult1,Long-term deposit,168,168,3.000000,0.012521
+ind_dela_fin_ult1,Long-term deposit,ind_fond_fin_ult1,Funds,165,165,1.000000,0.062147
+ind_cco_fin_ult1,Current account,ind_fond_fin_ult1,Funds,164,164,1.000000,0.012535
+ind_fond_fin_ult1,Funds,ind_tjcr_fin_ult1,Credit card,163,163,4.000000,0.167523
+ind_fond_fin_ult1,Funds,ind_recibo_ult1,Direct debit,162,162,4.000000,0.166495
+ind_ctma_fin_ult1,Mas particular account,ind_dela_fin_ult1,Long-term deposit,160,160,3.000000,0.033417
+ind_nomina_ult1,Payroll,ind_valo_fin_ult1,Securities,158,158,3.000000,0.011776
+ind_ctma_fin_ult1,Mas particular account,ind_nomina_ult1,Payroll,157,157,1.000000,0.032790
+ind_dela_fin_ult1,Long-term deposit,ind_nom_pens_ult1,Pension payments,151,151,3.000000,0.056874
+ind_valo_fin_ult1,Securities,ind_recibo_ult1,Direct debit,142,142,2.000000,0.176398
+ind_dela_fin_ult1,Long-term deposit,ind_nomina_ult1,Payroll,138,138,3.000000,0.051977
+ind_tjcr_fin_ult1,Credit card,ind_fond_fin_ult1,Funds,135,135,3.000000,0.021827
+ind_cno_fin_ult1,Payroll account,ind_dela_fin_ult1,Long-term deposit,132,132,3.000000,0.016598
+ind_recibo_ult1,Direct debit,ind_fond_fin_ult1,Funds,132,132,3.000000,0.007484
+ind_ctma_fin_ult1,Mas particular account,ind_tjcr_fin_ult1,Credit card,119,119,2.000000,0.024854
+ind_ecue_fin_ult1,E-account,ind_valo_fin_ult1,Securities,119,119,3.000000,0.022470
+ind_nomina_ult1,Payroll,ind_ctma_fin_ult1,Mas particular account,118,118,2.000000,0.008795
+ind_valo_fin_ult1,Securities,ind_ecue_fin_ult1,E-account,113,113,3.000000,0.140373
+ind_valo_fin_ult1,Securities,ind_tjcr_fin_ult1,Credit card,110,110,3.000000,0.136646
+ind_nom_pens_ult1,Pension payments,ind_ctma_fin_ult1,Mas particular account,109,109,2.000000,0.007872
+ind_fond_fin_ult1,Funds,ind_cco_fin_ult1,Current account,105,105,4.000000,0.107914
+ind_recibo_ult1,Direct debit,ind_ctma_fin_ult1,Mas particular account,105,105,2.000000,0.005953
+ind_ctma_fin_ult1,Mas particular account,ind_cco_fin_ult1,Current account,95,95,1.000000,0.019841
+ind_cco_fin_ult1,Current account,ind_deco_fin_ult1,Short-term deposit,88,88,1.000000,0.006726
+ind_tjcr_fin_ult1,Credit card,ind_ctop_fin_ult1,Particular account,87,87,5.000000,0.014066
+ind_cco_fin_ult1,Current account,ind_ctop_fin_ult1,Particular account,82,82,3.000000,0.006268
+ind_tjcr_fin_ult1,Credit card,ind_ctma_fin_ult1,Mas particular account,81,81,6.000000,0.013096
+ind_ecue_fin_ult1,E-account,ind_fond_fin_ult1,Funds,80,80,2.000000,0.015106
+ind_recibo_ult1,Direct debit,ind_ctop_fin_ult1,Particular account,79,79,4.000000,0.004479
+ind_ctop_fin_ult1,Particular account,ind_cco_fin_ult1,Current account,76,76,4.000000,0.152000
+ind_nom_pens_ult1,Pension payments,ind_fond_fin_ult1,Funds,76,76,3.000000,0.005489
+ind_valo_fin_ult1,Securities,ind_nom_pens_ult1,Pension payments,76,76,3.500000,0.094410
+ind_cno_fin_ult1,Payroll account,ind_ctma_fin_ult1,Mas particular account,75,75,1.000000,0.009430
+ind_deco_fin_ult1,Short-term deposit,ind_cno_fin_ult1,Payroll account,75,75,3.000000,0.037019
+ind_dela_fin_ult1,Long-term deposit,ind_valo_fin_ult1,Securities,74,74,3.000000,0.027872
+ind_nomina_ult1,Payroll,ind_fond_fin_ult1,Funds,74,74,3.000000,0.005515
+ind_ctop_fin_ult1,Particular account,ind_recibo_ult1,Direct debit,73,73,3.000000,0.146000
+ind_valo_fin_ult1,Securities,ind_nomina_ult1,Payroll,73,73,4.000000,0.090683
+ind_fond_fin_ult1,Funds,ind_valo_fin_ult1,Securities,69,69,4.000000,0.070915
+ind_reca_fin_ult1,Taxes,ind_dela_fin_ult1,Long-term deposit,69,69,3.000000,0.030303
+ind_cno_fin_ult1,Payroll account,ind_valo_fin_ult1,Securities,68,68,3.000000,0.008550
+ind_dela_fin_ult1,Long-term deposit,ind_reca_fin_ult1,Taxes,66,66,3.000000,0.024859
+ind_ctop_fin_ult1,Particular account,ind_ecue_fin_ult1,E-account,65,65,3.000000,0.130000
+ind_nom_pens_ult1,Pension payments,ind_nomina_ult1,Payroll,64,64,4.500000,0.004622
+ind_tjcr_fin_ult1,Credit card,ind_plan_fin_ult1,Pension plan,64,64,5.000000,0.010348
+ind_nom_pens_ult1,Pension payments,ind_ctop_fin_ult1,Particular account,63,63,4.000000,0.004550
+ind_ctop_fin_ult1,Particular account,ind_tjcr_fin_ult1,Credit card,62,62,3.500000,0.124000
+ind_nomina_ult1,Payroll,ind_ctop_fin_ult1,Particular account,62,62,4.500000,0.004621
+ind_fond_fin_ult1,Funds,ind_nom_pens_ult1,Pension payments,59,59,5.000000,0.060637
+ind_valo_fin_ult1,Securities,ind_cno_fin_ult1,Payroll account,56,56,2.000000,0.069565
+ind_fond_fin_ult1,Funds,ind_nomina_ult1,Payroll,54,54,5.000000,0.055498
+ind_recibo_ult1,Direct debit,ind_plan_fin_ult1,Pension plan,52,52,4.000000,0.002948
+ind_valo_fin_ult1,Securities,ind_fond_fin_ult1,Funds,52,52,2.000000,0.064596
+ind_ctpp_fin_ult1,Particular plus account,ind_tjcr_fin_ult1,Credit card,51,51,3.000000,0.159375
+ind_reca_fin_ult1,Taxes,ind_valo_fin_ult1,Securities,51,51,4.000000,0.022398
+ind_deco_fin_ult1,Short-term deposit,ind_cco_fin_ult1,Current account,50,50,3.000000,0.024679
+ind_recibo_ult1,Direct debit,ind_ctpp_fin_ult1,Particular plus account,49,49,4.000000,0.002778
+ind_deco_fin_ult1,Short-term deposit,ind_nom_pens_ult1,Pension payments,48,48,2.000000,0.023692
+ind_nom_pens_ult1,Pension payments,ind_ctpp_fin_ult1,Particular plus account,48,48,3.000000,0.003467
+ind_nomina_ult1,Payroll,ind_ctpp_fin_ult1,Particular plus account,48,48,3.000000,0.003578
+ind_valo_fin_ult1,Securities,ind_cco_fin_ult1,Current account,48,48,3.000000,0.059627
+ind_deco_fin_ult1,Short-term deposit,ind_nomina_ult1,Payroll,47,47,2.000000,0.023198
+ind_ctop_fin_ult1,Particular account,ind_nom_pens_ult1,Pension payments,46,46,4.000000,0.092000
+ind_fond_fin_ult1,Funds,ind_dela_fin_ult1,Long-term deposit,46,46,4.000000,0.047276
+ind_ctpp_fin_ult1,Particular plus account,ind_recibo_ult1,Direct debit,44,44,2.000000,0.137500
+ind_fond_fin_ult1,Funds,ind_cno_fin_ult1,Payroll account,44,44,6.500000,0.045221
+ind_cno_fin_ult1,Payroll account,ind_fond_fin_ult1,Funds,43,43,3.000000,0.005407
+ind_ctop_fin_ult1,Particular account,ind_cno_fin_ult1,Payroll account,43,43,3.000000,0.086000
+ind_ctpp_fin_ult1,Particular plus account,ind_cco_fin_ult1,Current account,43,43,5.000000,0.134375
+ind_fond_fin_ult1,Funds,ind_reca_fin_ult1,Taxes,43,43,3.000000,0.044193
+ind_valo_fin_ult1,Securities,ind_reca_fin_ult1,Taxes,43,43,2.000000,0.053416
+ind_deco_fin_ult1,Short-term deposit,ind_ctma_fin_ult1,Mas particular account,42,42,1.000000,0.020731
+ind_tjcr_fin_ult1,Credit card,ind_ctpp_fin_ult1,Particular plus account,42,42,3.500000,0.006791
+ind_cno_fin_ult1,Payroll account,ind_ctop_fin_ult1,Particular account,41,41,5.000000,0.005155
+ind_ctop_fin_ult1,Particular account,ind_nomina_ult1,Payroll,41,41,3.000000,0.082000
+ind_cco_fin_ult1,Current account,ind_plan_fin_ult1,Pension plan,39,39,4.000000,0.002981
+ind_dela_fin_ult1,Long-term deposit,ind_ctop_fin_ult1,Particular account,39,39,2.000000,0.014689
+ind_nom_pens_ult1,Pension payments,ind_plan_fin_ult1,Pension plan,37,37,4.000000,0.002672
+ind_cco_fin_ult1,Current account,ind_ctpp_fin_ult1,Particular plus account,36,36,5.000000,0.002752
+ind_nomina_ult1,Payroll,ind_plan_fin_ult1,Pension plan,36,36,4.500000,0.002683
+ind_cno_fin_ult1,Payroll account,ind_plan_fin_ult1,Pension plan,35,35,2.000000,0.004401
+ind_ctpp_fin_ult1,Particular plus account,ind_nom_pens_ult1,Pension payments,34,34,4.500000,0.106250
+ind_plan_fin_ult1,Pension plan,ind_ecue_fin_ult1,E-account,34,34,2.000000,0.172589
+ind_plan_fin_ult1,Pension plan,ind_recibo_ult1,Direct debit,34,34,1.000000,0.172589
+ind_ctpp_fin_ult1,Particular plus account,ind_ecue_fin_ult1,E-account,32,32,2.500000,0.100000
+ind_ctma_fin_ult1,Mas particular account,ind_reca_fin_ult1,Taxes,31,31,2.000000,0.006475
+ind_ctpp_fin_ult1,Particular plus account,ind_nomina_ult1,Payroll,31,31,4.000000,0.096875
+ind_reca_fin_ult1,Taxes,ind_fond_fin_ult1,Funds,30,30,4.000000,0.013175
+ind_cno_fin_ult1,Payroll account,ind_ctpp_fin_ult1,Particular plus account,29,29,4.000000,0.003646
+ind_ctma_fin_ult1,Mas particular account,ind_valo_fin_ult1,Securities,29,29,2.000000,0.006057
+ind_valo_fin_ult1,Securities,ind_dela_fin_ult1,Long-term deposit,29,29,2.000000,0.036025
+ind_deco_fin_ult1,Short-term deposit,ind_tjcr_fin_ult1,Credit card,28,28,1.000000,0.013820
+ind_ecue_fin_ult1,E-account,ind_ctma_fin_ult1,Mas particular account,27,27,2.000000,0.005098
+ind_reca_fin_ult1,Taxes,ind_ctma_fin_ult1,Mas particular account,26,26,4.000000,0.011419
+ind_valo_fin_ult1,Securities,ind_plan_fin_ult1,Pension plan,25,25,2.000000,0.031056
+ind_reca_fin_ult1,Taxes,ind_ctop_fin_ult1,Particular account,24,24,6.000000,0.010540
+ind_ctop_fin_ult1,Particular account,ind_reca_fin_ult1,Taxes,23,23,3.000000,0.046000
+ind_dela_fin_ult1,Long-term deposit,ind_ctma_fin_ult1,Mas particular account,22,22,5.000000,0.008286
+ind_plan_fin_ult1,Pension plan,ind_valo_fin_ult1,Securities,22,22,2.000000,0.111675
+ind_reca_fin_ult1,Taxes,ind_ctpp_fin_ult1,Particular plus account,22,22,2.500000,0.009662
+ind_ctop_fin_ult1,Particular account,ind_dela_fin_ult1,Long-term deposit,21,21,4.000000,0.042000
+ind_deco_fin_ult1,Short-term deposit,ind_fond_fin_ult1,Funds,21,21,3.000000,0.010365
+ind_ecue_fin_ult1,E-account,ind_plan_fin_ult1,Pension plan,21,21,2.000000,0.003965
+ind_plan_fin_ult1,Pension plan,ind_tjcr_fin_ult1,Credit card,21,21,3.000000,0.106599
+ind_ctpp_fin_ult1,Particular plus account,ind_cno_fin_ult1,Payroll account,20,20,2.000000,0.062500
+ind_ctpp_fin_ult1,Particular plus account,ind_reca_fin_ult1,Taxes,20,20,4.000000,0.062500
+ind_deme_fin_ult1,Medium-term deposit,ind_ecue_fin_ult1,E-account,19,19,6.000000,0.253333
+ind_plan_fin_ult1,Pension plan,ind_nom_pens_ult1,Pension payments,19,19,2.000000,0.096447
+ind_fond_fin_ult1,Funds,ind_ctma_fin_ult1,Mas particular account,18,18,4.000000,0.018499
+ind_plan_fin_ult1,Pension plan,ind_nomina_ult1,Payroll,18,18,2.000000,0.091371
+ind_ctop_fin_ult1,Particular account,ind_valo_fin_ult1,Securities,17,17,3.000000,0.034000
+ind_plan_fin_ult1,Pension plan,ind_cno_fin_ult1,Payroll account,17,17,3.000000,0.086294
+ind_deco_fin_ult1,Short-term deposit,ind_valo_fin_ult1,Securities,16,16,4.000000,0.007897
+ind_dela_fin_ult1,Long-term deposit,ind_ctpp_fin_ult1,Particular plus account,16,16,2.000000,0.006026
+ind_dela_fin_ult1,Long-term deposit,ind_plan_fin_ult1,Pension plan,16,16,2.000000,0.006026
+ind_ctpp_fin_ult1,Particular plus account,ind_dela_fin_ult1,Long-term deposit,15,15,3.000000,0.046875
+ind_reca_fin_ult1,Taxes,ind_plan_fin_ult1,Pension plan,15,15,6.000000,0.006588
+ind_recibo_ult1,Direct debit,ind_deco_fin_ult1,Short-term deposit,15,15,2.000000,0.000850
+ind_recibo_ult1,Direct debit,ind_deme_fin_ult1,Medium-term deposit,15,15,3.000000,0.000850
+ind_ctpp_fin_ult1,Particular plus account,ind_ctop_fin_ult1,Particular account,13,13,2.000000,0.040625
+ind_ecue_fin_ult1,E-account,ind_ctop_fin_ult1,Particular account,12,12,2.000000,0.002266
+ind_valo_fin_ult1,Securities,ind_ctma_fin_ult1,Mas particular account,12,12,2.500000,0.014907
+ind_ctma_fin_ult1,Mas particular account,ind_fond_fin_ult1,Funds,11,11,2.000000,0.002297
+ind_ctma_fin_ult1,Mas particular account,ind_plan_fin_ult1,Pension plan,11,11,1.000000,0.002297
+ind_ctop_fin_ult1,Particular account,ind_fond_fin_ult1,Funds,11,11,1.000000,0.022000
+ind_ecue_fin_ult1,E-account,ind_ctpp_fin_ult1,Particular plus account,11,11,3.000000,0.002077
+ind_fond_fin_ult1,Funds,ind_plan_fin_ult1,Pension plan,11,11,3.000000,0.011305
+ind_tjcr_fin_ult1,Credit card,ind_hip_fin_ult1,Mortgage,11,11,6.000000,0.001778
+ind_cco_fin_ult1,Current account,ind_deme_fin_ult1,Medium-term deposit,10,10,3.000000,0.000764
+ind_deco_fin_ult1,Short-term deposit,ind_reca_fin_ult1,Taxes,10,10,3.500000,0.004936
+ind_nom_pens_ult1,Pension payments,ind_pres_fin_ult1,Loan,10,10,4.500000,0.000722
+ind_nomina_ult1,Payroll,ind_pres_fin_ult1,Loan,10,10,4.500000,0.000745
+ind_plan_fin_ult1,Pension plan,ind_fond_fin_ult1,Funds,10,10,1.000000,0.050761
+ind_valo_fin_ult1,Securities,ind_ctop_fin_ult1,Particular account,10,10,2.500000,0.012422
+ind_ctop_fin_ult1,Particular account,ind_ctpp_fin_ult1,Particular plus account,9,9,7.000000,0.018000
+ind_deme_fin_ult1,Medium-term deposit,ind_cco_fin_ult1,Current account,9,9,6.000000,0.120000
+ind_fond_fin_ult1,Funds,ind_ctpp_fin_ult1,Particular plus account,9,9,4.000000,0.009250
+ind_cder_fin_ult1,Derivatives account,ind_valo_fin_ult1,Securities,8,8,3.500000,0.210526
+ind_deme_fin_ult1,Medium-term deposit,ind_recibo_ult1,Direct debit,8,8,4.000000,0.106667
+ind_ecue_fin_ult1,E-account,ind_deco_fin_ult1,Short-term deposit,8,8,1.000000,0.001511
+ind_fond_fin_ult1,Funds,ind_ctop_fin_ult1,Particular account,8,8,9.000000,0.008222
+ind_plan_fin_ult1,Pension plan,ind_reca_fin_ult1,Taxes,8,8,3.000000,0.040609
+ind_tjcr_fin_ult1,Credit card,ind_pres_fin_ult1,Loan,8,8,3.500000,0.001293
+ind_cno_fin_ult1,Payroll account,ind_pres_fin_ult1,Loan,7,7,4.000000,0.000880
+ind_ctpp_fin_ult1,Particular plus account,ind_valo_fin_ult1,Securities,7,7,2.000000,0.021875
+ind_dela_fin_ult1,Long-term deposit,ind_deme_fin_ult1,Medium-term deposit,7,7,3.000000,0.002637
+ind_hip_fin_ult1,Mortgage,ind_tjcr_fin_ult1,Credit card,7,7,1.000000,0.304348
+ind_tjcr_fin_ult1,Credit card,ind_deme_fin_ult1,Medium-term deposit,7,7,4.000000,0.001132
+ind_cder_fin_ult1,Derivatives account,ind_ecue_fin_ult1,E-account,6,6,1.500000,0.157895
+ind_cno_fin_ult1,Payroll account,ind_deco_fin_ult1,Short-term deposit,6,6,1.000000,0.000754
+ind_ctju_fin_ult1,Junior account,ind_nom_pens_ult1,Pension payments,6,6,5.500000,0.461538
+ind_deme_fin_ult1,Medium-term deposit,ind_fond_fin_ult1,Funds,6,6,4.500000,0.080000
+ind_deme_fin_ult1,Medium-term deposit,ind_nom_pens_ult1,Pension payments,6,6,5.000000,0.080000
+ind_deme_fin_ult1,Medium-term deposit,ind_nomina_ult1,Payroll,6,6,5.000000,0.080000
+ind_recibo_ult1,Direct debit,ind_hip_fin_ult1,Mortgage,6,6,4.000000,0.000340
+ind_valo_fin_ult1,Securities,ind_cder_fin_ult1,Derivatives account,6,6,5.000000,0.007453
+ind_valo_fin_ult1,Securities,ind_ctpp_fin_ult1,Particular plus account,6,6,7.000000,0.007453
+ind_cco_fin_ult1,Current account,ind_hip_fin_ult1,Mortgage,5,5,2.000000,0.000382
+ind_cco_fin_ult1,Current account,ind_pres_fin_ult1,Loan,5,5,7.000000,0.000382
+ind_cder_fin_ult1,Derivatives account,ind_cco_fin_ult1,Current account,5,5,4.000000,0.131579
+ind_ctop_fin_ult1,Particular account,ind_ctma_fin_ult1,Mas particular account,5,5,2.000000,0.010000
+ind_deme_fin_ult1,Medium-term deposit,ind_dela_fin_ult1,Long-term deposit,5,5,6.000000,0.066667
+ind_deme_fin_ult1,Medium-term deposit,ind_tjcr_fin_ult1,Credit card,5,5,3.000000,0.066667
+ind_fond_fin_ult1,Funds,ind_cder_fin_ult1,Derivatives account,5,5,2.000000,0.005139
+ind_fond_fin_ult1,Funds,ind_deme_fin_ult1,Medium-term deposit,5,5,5.000000,0.005139
+ind_pres_fin_ult1,Loan,ind_recibo_ult1,Direct debit,5,5,1.000000,0.192308
+ind_recibo_ult1,Direct debit,ind_cder_fin_ult1,Derivatives account,5,5,6.000000,0.000283
+ind_recibo_ult1,Direct debit,ind_pres_fin_ult1,Loan,5,5,8.000000,0.000283
+ind_tjcr_fin_ult1,Credit card,ind_cder_fin_ult1,Derivatives account,5,5,2.000000,0.000808
+ind_cder_fin_ult1,Derivatives account,ind_dela_fin_ult1,Long-term deposit,4,4,6.000000,0.105263
+ind_cder_fin_ult1,Derivatives account,ind_tjcr_fin_ult1,Credit card,4,4,4.000000,0.105263
+ind_ctpp_fin_ult1,Particular plus account,ind_fond_fin_ult1,Funds,4,4,7.000000,0.012500
+ind_deme_fin_ult1,Medium-term deposit,ind_valo_fin_ult1,Securities,4,4,5.000000,0.053333
+ind_ecue_fin_ult1,E-account,ind_cder_fin_ult1,Derivatives account,4,4,5.500000,0.000755
+ind_ecue_fin_ult1,E-account,ind_deme_fin_ult1,Medium-term deposit,4,4,2.500000,0.000755
+ind_plan_fin_ult1,Pension plan,ind_cco_fin_ult1,Current account,4,4,3.000000,0.020305
+ind_pres_fin_ult1,Loan,ind_tjcr_fin_ult1,Credit card,4,4,5.000000,0.153846
+ind_reca_fin_ult1,Taxes,ind_cder_fin_ult1,Derivatives account,4,4,2.500000,0.001757
+ind_cco_fin_ult1,Current account,ind_cder_fin_ult1,Derivatives account,3,3,1.000000,0.000229
+ind_ctju_fin_ult1,Junior account,ind_ecue_fin_ult1,E-account,3,3,2.000000,0.230769
+ind_ctpp_fin_ult1,Particular plus account,ind_deme_fin_ult1,Medium-term deposit,3,3,3.000000,0.009375
+ind_deco_fin_ult1,Short-term deposit,ind_deme_fin_ult1,Medium-term deposit,3,3,4.000000,0.001481
+ind_deme_fin_ult1,Medium-term deposit,ind_ctop_fin_ult1,Particular account,3,3,7.000000,0.040000
+ind_hip_fin_ult1,Mortgage,ind_cco_fin_ult1,Current account,3,3,10.000000,0.130435
+ind_nom_pens_ult1,Pension payments,ind_hip_fin_ult1,Mortgage,3,3,2.000000,0.000217
+ind_nomina_ult1,Payroll,ind_deco_fin_ult1,Short-term deposit,3,3,1.000000,0.000224
+ind_nomina_ult1,Payroll,ind_hip_fin_ult1,Mortgage,3,3,2.000000,0.000224
+ind_plan_fin_ult1,Pension plan,ind_dela_fin_ult1,Long-term deposit,3,3,7.000000,0.015228
+ind_pres_fin_ult1,Loan,ind_ecue_fin_ult1,E-account,3,3,3.000000,0.115385
+ind_pres_fin_ult1,Loan,ind_nom_pens_ult1,Pension payments,3,3,3.000000,0.115385
+ind_pres_fin_ult1,Loan,ind_nomina_ult1,Payroll,3,3,3.000000,0.115385
+ind_reca_fin_ult1,Taxes,ind_pres_fin_ult1,Loan,3,3,6.000000,0.001318
+ind_recibo_ult1,Direct debit,ind_viv_fin_ult1,Home account,3,3,6.000000,0.000170
+ind_valo_fin_ult1,Securities,ind_deco_fin_ult1,Short-term deposit,3,3,3.000000,0.003727
+ind_cco_fin_ult1,Current account,ind_viv_fin_ult1,Home account,2,2,5.500000,0.000153
+ind_cder_fin_ult1,Derivatives account,ind_nom_pens_ult1,Pension payments,2,2,2.000000,0.052632
+ind_cder_fin_ult1,Derivatives account,ind_nomina_ult1,Payroll,2,2,2.000000,0.052632
+ind_cder_fin_ult1,Derivatives account,ind_reca_fin_ult1,Taxes,2,2,5.500000,0.052632
+ind_cno_fin_ult1,Payroll account,ind_cder_fin_ult1,Derivatives account,2,2,4.500000,0.000251
+ind_cno_fin_ult1,Payroll account,ind_hip_fin_ult1,Mortgage,2,2,1.000000,0.000251
+ind_ctju_fin_ult1,Junior account,ind_cco_fin_ult1,Current account,2,2,2.000000,0.153846
+ind_ctma_fin_ult1,Mas particular account,ind_cder_fin_ult1,Derivatives account,2,2,1.500000,0.000418
+ind_ctop_fin_ult1,Particular account,ind_plan_fin_ult1,Pension plan,2,2,1.500000,0.004000
+ind_ctop_fin_ult1,Particular account,ind_pres_fin_ult1,Loan,2,2,7.500000,0.004000
+ind_ctop_fin_ult1,Particular account,ind_viv_fin_ult1,Home account,2,2,8.500000,0.004000
+ind_ctpp_fin_ult1,Particular plus account,ind_ctma_fin_ult1,Mas particular account,2,2,2.000000,0.006250
+ind_deco_fin_ult1,Short-term deposit,ind_plan_fin_ult1,Pension plan,2,2,5.500000,0.000987
+ind_dela_fin_ult1,Long-term deposit,ind_deco_fin_ult1,Short-term deposit,2,2,1.500000,0.000753
+ind_deme_fin_ult1,Medium-term deposit,ind_cno_fin_ult1,Payroll account,2,2,4.500000,0.026667
+ind_deme_fin_ult1,Medium-term deposit,ind_reca_fin_ult1,Taxes,2,2,2.000000,0.026667
+ind_ecue_fin_ult1,E-account,ind_hip_fin_ult1,Mortgage,2,2,3.500000,0.000378
+ind_hip_fin_ult1,Mortgage,ind_ecue_fin_ult1,E-account,2,2,1.000000,0.086957
+ind_hip_fin_ult1,Mortgage,ind_nom_pens_ult1,Pension payments,2,2,5.500000,0.086957
+ind_hip_fin_ult1,Mortgage,ind_nomina_ult1,Payroll,2,2,5.500000,0.086957
+ind_hip_fin_ult1,Mortgage,ind_reca_fin_ult1,Taxes,2,2,4.000000,0.086957
+ind_hip_fin_ult1,Mortgage,ind_recibo_ult1,Direct debit,2,2,1.000000,0.086957
+ind_nom_pens_ult1,Pension payments,ind_deco_fin_ult1,Short-term deposit,2,2,3.500000,0.000144
+ind_plan_fin_ult1,Pension plan,ind_ctop_fin_ult1,Particular account,2,2,1.500000,0.010152
+ind_plan_fin_ult1,Pension plan,ind_ctpp_fin_ult1,Particular plus account,2,2,5.500000,0.010152
+ind_pres_fin_ult1,Loan,ind_cco_fin_ult1,Current account,2,2,6.000000,0.076923
+ind_pres_fin_ult1,Loan,ind_cno_fin_ult1,Payroll account,2,2,2.000000,0.076923
+ind_pres_fin_ult1,Loan,ind_ctop_fin_ult1,Particular account,2,2,4.000000,0.076923
+ind_reca_fin_ult1,Taxes,ind_deco_fin_ult1,Short-term deposit,2,2,3.000000,0.000878
+ind_reca_fin_ult1,Taxes,ind_hip_fin_ult1,Mortgage,2,2,3.500000,0.000878
+ind_tjcr_fin_ult1,Credit card,ind_viv_fin_ult1,Home account,2,2,8.500000,0.000323
+ind_viv_fin_ult1,Home account,ind_cco_fin_ult1,Current account,2,2,2.000000,0.166667
+ind_viv_fin_ult1,Home account,ind_recibo_ult1,Direct debit,2,2,2.000000,0.166667
+ind_aval_fin_ult1,Guarantees,ind_tjcr_fin_ult1,Credit card,1,1,14.000000,1.000000
+ind_cder_fin_ult1,Derivatives account,ind_cno_fin_ult1,Payroll account,1,1,3.000000,0.026316
+ind_cder_fin_ult1,Derivatives account,ind_ctma_fin_ult1,Mas particular account,1,1,6.000000,0.026316
+ind_cder_fin_ult1,Derivatives account,ind_ctop_fin_ult1,Particular account,1,1,1.000000,0.026316
+ind_cder_fin_ult1,Derivatives account,ind_ctpp_fin_ult1,Particular plus account,1,1,6.000000,0.026316
+ind_cder_fin_ult1,Derivatives account,ind_pres_fin_ult1,Loan,1,1,2.000000,0.026316
+ind_cno_fin_ult1,Payroll account,ind_deme_fin_ult1,Medium-term deposit,1,1,5.000000,0.000126
+ind_ctju_fin_ult1,Junior account,ind_cno_fin_ult1,Payroll account,1,1,5.000000,0.076923
+ind_ctju_fin_ult1,Junior account,ind_nomina_ult1,Payroll,1,1,1.000000,0.076923
+ind_ctma_fin_ult1,Mas particular account,ind_ctop_fin_ult1,Particular account,1,1,2.000000,0.000209
+ind_ctop_fin_ult1,Particular account,ind_cder_fin_ult1,Derivatives account,1,1,10.000000,0.002000
+ind_ctop_fin_ult1,Particular account,ind_deme_fin_ult1,Medium-term deposit,1,1,6.000000,0.002000
+ind_ctpp_fin_ult1,Particular plus account,ind_plan_fin_ult1,Pension plan,1,1,6.000000,0.003125
+ind_dela_fin_ult1,Long-term deposit,ind_hip_fin_ult1,Mortgage,1,1,7.000000,0.000377
+ind_fond_fin_ult1,Funds,ind_pres_fin_ult1,Loan,1,1,6.000000,0.001028
+ind_hip_fin_ult1,Mortgage,ind_ctop_fin_ult1,Particular account,1,1,4.000000,0.043478
+ind_hip_fin_ult1,Mortgage,ind_dela_fin_ult1,Long-term deposit,1,1,8.000000,0.043478
+ind_hip_fin_ult1,Mortgage,ind_valo_fin_ult1,Securities,1,1,1.000000,0.043478
+ind_nom_pens_ult1,Pension payments,ind_cder_fin_ult1,Derivatives account,1,1,3.000000,0.000072
+ind_nom_pens_ult1,Pension payments,ind_deme_fin_ult1,Medium-term deposit,1,1,5.000000,0.000072
+ind_nom_pens_ult1,Pension payments,ind_viv_fin_ult1,Home account,1,1,2.000000,0.000072
+ind_nomina_ult1,Payroll,ind_cder_fin_ult1,Derivatives account,1,1,3.000000,0.000075
+ind_nomina_ult1,Payroll,ind_deme_fin_ult1,Medium-term deposit,1,1,5.000000,0.000075
+ind_nomina_ult1,Payroll,ind_viv_fin_ult1,Home account,1,1,2.000000,0.000075
+ind_plan_fin_ult1,Pension plan,ind_ctma_fin_ult1,Mas particular account,1,1,3.000000,0.005076
+ind_plan_fin_ult1,Pension plan,ind_pres_fin_ult1,Loan,1,1,1.000000,0.005076
+ind_plan_fin_ult1,Pension plan,ind_viv_fin_ult1,Home account,1,1,3.000000,0.005076
+ind_pres_fin_ult1,Loan,ind_fond_fin_ult1,Funds,1,1,7.000000,0.038462
+ind_pres_fin_ult1,Loan,ind_plan_fin_ult1,Pension plan,1,1,10.000000,0.038462
+ind_reca_fin_ult1,Taxes,ind_aval_fin_ult1,Guarantees,1,1,2.000000,0.000439
+ind_reca_fin_ult1,Taxes,ind_deme_fin_ult1,Medium-term deposit,1,1,6.000000,0.000439
+ind_reca_fin_ult1,Taxes,ind_viv_fin_ult1,Home account,1,1,5.000000,0.000439
+ind_recibo_ult1,Direct debit,ind_aval_fin_ult1,Guarantees,1,1,2.000000,0.000057
+ind_tjcr_fin_ult1,Credit card,ind_aval_fin_ult1,Guarantees,1,1,2.000000,0.000162
+ind_valo_fin_ult1,Securities,ind_hip_fin_ult1,Mortgage,1,1,5.000000,0.001242
+ind_viv_fin_ult1,Home account,ind_cno_fin_ult1,Payroll account,1,1,2.000000,0.083333
+ind_viv_fin_ult1,Home account,ind_ctma_fin_ult1,Mas particular account,1,1,1.000000,0.083333
+ind_viv_fin_ult1,Home account,ind_ctop_fin_ult1,Particular account,1,1,1.000000,0.083333
+ind_viv_fin_ult1,Home account,ind_ctpp_fin_ult1,Particular plus account,1,1,3.000000,0.083333
+ind_viv_fin_ult1,Home account,ind_ecue_fin_ult1,E-account,1,1,12.000000,0.083333
+ind_viv_fin_ult1,Home account,ind_fond_fin_ult1,Funds,1,1,1.000000,0.083333
+ind_viv_fin_ult1,Home account,ind_reca_fin_ult1,Taxes,1,1,1.000000,0.083333
+ind_viv_fin_ult1,Home account,ind_tjcr_fin_ult1,Credit card,1,1,1.000000,0.083333

@@ -1,0 +1,615 @@
+{
+  "generated_at": "2026-10-04T20:55:48+00:00",
+  "git_commit": "3dd7d08",
+  "xsell_version": "0.1.0",
+  "target": {
+    "mode": "product",
+    "label": "adopts_target",
+    "product": "ind_tjcr_fin_ult1",
+    "reason": "training base rate of ind_tjcr_fin_ult1 adoption is 0.5773%, at or above model.min_base_rate 0.20%",
+    "population": "customers present at t and t+1 who do not hold the target product at t"
+  },
+  "data": {
+    "sample_share": 0.2,
+    "splits": {
+      "train": {
+        "feature_months": [
+          "2015-04",
+          "2015-12"
+        ],
+        "rows": 1360046,
+        "customers": 179888,
+        "positives": 7852,
+        "base_rate": 0.005773334137227712
+      },
+      "validation": {
+        "feature_months": [
+          "2016-01",
+          "2016-02"
+        ],
+        "rows": 352758,
+        "customers": 178010,
+        "positives": 1692,
+        "base_rate": 0.0047964893779871755
+      },
+      "test": {
+        "feature_months": [
+          "2016-03",
+          "2016-04"
+        ],
+        "rows": 356058,
+        "customers": 179361,
+        "positives": 1688,
+        "base_rate": 0.004740800656072887
+      }
+    },
+    "features": [
+      "ind_ahor_fin_ult1",
+      "ind_aval_fin_ult1",
+      "ind_cco_fin_ult1",
+      "ind_cder_fin_ult1",
+      "ind_cno_fin_ult1",
+      "ind_ctju_fin_ult1",
+      "ind_ctma_fin_ult1",
+      "ind_ctop_fin_ult1",
+      "ind_ctpp_fin_ult1",
+      "ind_deco_fin_ult1",
+      "ind_deme_fin_ult1",
+      "ind_dela_fin_ult1",
+      "ind_ecue_fin_ult1",
+      "ind_fond_fin_ult1",
+      "ind_hip_fin_ult1",
+      "ind_plan_fin_ult1",
+      "ind_pres_fin_ult1",
+      "ind_reca_fin_ult1",
+      "ind_valo_fin_ult1",
+      "ind_viv_fin_ult1",
+      "ind_nomina_ult1",
+      "ind_nom_pens_ult1",
+      "ind_recibo_ult1",
+      "n_products",
+      "n_products_change_1m",
+      "n_products_change_3m",
+      "months_since_first_seen",
+      "adoptions_last_3m",
+      "attritions_last_3m",
+      "active_months_last_3m",
+      "seniority_months",
+      "log_income",
+      "is_active",
+      "is_new_customer",
+      "income_missing",
+      "segment",
+      "relation_type",
+      "age_band",
+      "sex",
+      "channel"
+    ]
+  },
+  "validation": {
+    "candidates": {
+      "logistic_regression": {
+        "roc_auc": 0.9483048995360418,
+        "pr_auc": 0.09305437213467659,
+        "brier": 0.08979136406612839
+      },
+      "xgboost": {
+        "roc_auc": 0.9575539719895874,
+        "pr_auc": 0.1628251873037125,
+        "brier": 0.07912564277648926
+      }
+    },
+    "selected": "xgboost",
+    "selection_metric": "pr_auc",
+    "baselines": {
+      "base_rate": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.0047964893779871755,
+        "brier": 0.004773483067634031,
+        "base_rate": 0.0047964893779871755
+      },
+      "rule": {
+        "roc_auc": 0.6498074022007055,
+        "pr_auc": 0.01947043402035078,
+        "brier": null,
+        "share_selected": 0.03220054541640445
+      }
+    },
+    "beats_baselines": true,
+    "calibration": {
+      "method": "sigmoid, fitted on validation",
+      "brier_before": 0.07912564253787836,
+      "brier_after": 0.004407815471991329
+    },
+    "operating_point": {
+      "share": 0.1,
+      "threshold": 0.006066539868629164
+    }
+  },
+  "test": {
+    "metrics": {
+      "n_boot": 1000,
+      "n_skipped": 0,
+      "unit": "customer",
+      "confidence_level": 0.95,
+      "random_state": 42,
+      "metrics": {
+        "roc_auc": {
+          "estimate": 0.9561368202057265,
+          "lower": 0.9528902192450267,
+          "upper": 0.9594160536115546
+        },
+        "pr_auc": {
+          "estimate": 0.16581861641977808,
+          "lower": 0.15060024635797586,
+          "upper": 0.1843242436066878
+        },
+        "brier": {
+          "estimate": 0.004366743164377126,
+          "lower": 0.004177074528112975,
+          "upper": 0.004569163347701077
+        },
+        "capture_top_5pct": {
+          "estimate": 0.7351895734597157,
+          "lower": 0.7144450972711842,
+          "upper": 0.7576858169938211
+        },
+        "top_decile_lift": {
+          "estimate": 8.554502369668246,
+          "lower": 8.38611323190364,
+          "upper": 8.721972310477451
+        },
+        "capture_top_10pct": {
+          "estimate": 0.8554502369668247,
+          "lower": 0.838611323190364,
+          "upper": 0.8721972310477452
+        },
+        "capture_top_20pct": {
+          "estimate": 0.955568720379147,
+          "lower": 0.9455057723019968,
+          "upper": 0.9647522986670439
+        }
+      }
+    },
+    "baselines": {
+      "base_rate": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.004740800656072887,
+        "brier": 0.004718325465212266,
+        "base_rate": 0.004740800656072887
+      },
+      "rule": {
+        "roc_auc": 0.6412029819423215,
+        "pr_auc": 0.016687775844490178,
+        "brier": null,
+        "share_selected": 0.03528357739469412
+      }
+    },
+    "at_operating_threshold": {
+      "threshold": 0.006066539868629164,
+      "share_selected": 0.09943042987378461,
+      "precision": 0.040787503883851654,
+      "recall": 0.8554502369668247
+    },
+    "per_month": [
+      {
+        "label_month": "2016-04",
+        "rows": 177786,
+        "positives": 861,
+        "base_rate": 0.004842901015828018,
+        "roc_auc": 0.9578928878733467,
+        "pr_auc": 0.1801430898339542,
+        "brier": 0.004443543351547375,
+        "capture_top_5pct": 0.7444831591173054,
+        "top_decile_lift": 8.59465737514518,
+        "capture_top_10pct": 0.859465737514518,
+        "capture_top_20pct": 0.959349593495935
+      },
+      {
+        "label_month": "2016-05",
+        "rows": 178272,
+        "positives": 827,
+        "base_rate": 0.004638978639382517,
+        "roc_auc": 0.9543759033190556,
+        "pr_auc": 0.15259148128868677,
+        "brier": 0.004290152347668668,
+        "capture_top_5pct": 0.7267230955259976,
+        "top_decile_lift": 8.536880290205561,
+        "capture_top_10pct": 0.8536880290205562,
+        "capture_top_20pct": 0.9516324062877872
+      }
+    ],
+    "by_prior_holding": [
+      {
+        "segment": "never held before t (first-time)",
+        "rows": 346818,
+        "positives": 252,
+        "base_rate": 0.0007266058855076726,
+        "roc_auc": 0.9013216143167581,
+        "pr_auc": 0.006093845233547401,
+        "brier": 0.0008559375840451985,
+        "capture_top_5pct": 0.40476190476190477,
+        "top_decile_lift": 6.309523809523809,
+        "capture_top_10pct": 0.6309523809523809,
+        "capture_top_20pct": 0.8571428571428571
+      },
+      {
+        "segment": "held earlier (re-adoption)",
+        "rows": 9240,
+        "positives": 1436,
+        "base_rate": 0.15541125541125542,
+        "roc_auc": 0.6782674034028688,
+        "pr_auc": 0.28480306422163837,
+        "brier": 0.136142778852641,
+        "capture_top_5pct": 0.12952646239554316,
+        "top_decile_lift": 2.1030640668523675,
+        "capture_top_10pct": 0.21030640668523676,
+        "capture_top_20pct": 0.3683844011142061
+      }
+    ],
+    "lift": [
+      {
+        "decile": 1,
+        "rows": 35606,
+        "adopters": 1444,
+        "adoption_rate": 0.04055496264674493,
+        "lift": 8.554454318764636,
+        "cumulative_capture": 0.8554502369668247,
+        "cumulative_lift": 8.554454318764636
+      },
+      {
+        "decile": 2,
+        "rows": 35606,
+        "adopters": 169,
+        "adoption_rate": 0.0047463910576869064,
+        "lift": 1.0011792104371353,
+        "cumulative_capture": 0.955568720379147,
+        "cumulative_lift": 4.777816764600886
+      },
+      {
+        "decile": 3,
+        "rows": 35606,
+        "adopters": 51,
+        "adoption_rate": 0.001432342863562321,
+        "lift": 0.30213100433310003,
+        "cumulative_capture": 0.985781990521327,
+        "cumulative_lift": 3.285921511178291
+      },
+      {
+        "decile": 4,
+        "rows": 35606,
+        "adopters": 19,
+        "adoption_rate": 0.0005336179295624333,
+        "lift": 0.11255860945742945,
+        "cumulative_capture": 0.9970379146919431,
+        "cumulative_lift": 2.4925807857480753
+      },
+      {
+        "decile": 5,
+        "rows": 35606,
+        "adopters": 1,
+        "adoption_rate": 2.808515418749649e-05,
+        "lift": 0.005924137339864707,
+        "cumulative_capture": 0.9976303317535545,
+        "cumulative_lift": 1.9952494560664333
+      },
+      {
+        "decile": 6,
+        "rows": 35606,
+        "adopters": 3,
+        "adoption_rate": 8.425546256248946e-05,
+        "lift": 0.01777241201959412,
+        "cumulative_capture": 0.9994075829383886,
+        "cumulative_lift": 1.6656699487252935
+      },
+      {
+        "decile": 7,
+        "rows": 35606,
+        "adopters": 1,
+        "adoption_rate": 2.808515418749649e-05,
+        "lift": 0.005924137339864707,
+        "cumulative_capture": 1.0,
+        "cumulative_lift": 1.4285634042416608
+      },
+      {
+        "decile": 8,
+        "rows": 35606,
+        "adopters": 0,
+        "adoption_rate": 0.0,
+        "lift": 0.0,
+        "cumulative_capture": 1.0,
+        "cumulative_lift": 1.249992978711453
+      },
+      {
+        "decile": 9,
+        "rows": 35605,
+        "adopters": 0,
+        "adoption_rate": 0.0,
+        "lift": 0.0,
+        "cumulative_capture": 1.0,
+        "cumulative_lift": 1.1111083372600663
+      },
+      {
+        "decile": 10,
+        "rows": 35605,
+        "adopters": 0,
+        "adoption_rate": 0.0,
+        "lift": 0.0,
+        "cumulative_capture": 1.0,
+        "cumulative_lift": 1.0
+      }
+    ],
+    "calibration": [
+      {
+        "bin": 1,
+        "rows": 35606,
+        "mean_predicted": 0.0001261443778681064,
+        "observed_rate": 0.0
+      },
+      {
+        "bin": 2,
+        "rows": 35606,
+        "mean_predicted": 0.00012685462462217977,
+        "observed_rate": 0.0
+      },
+      {
+        "bin": 3,
+        "rows": 35606,
+        "mean_predicted": 0.00012859668789266929,
+        "observed_rate": 0.0
+      },
+      {
+        "bin": 4,
+        "rows": 35605,
+        "mean_predicted": 0.00013356378848092216,
+        "observed_rate": 2.808594298553574e-05
+      },
+      {
+        "bin": 5,
+        "rows": 35606,
+        "mean_predicted": 0.00014109594299630817,
+        "observed_rate": 8.425546256248946e-05
+      },
+      {
+        "bin": 6,
+        "rows": 35606,
+        "mean_predicted": 0.00015860974970281877,
+        "observed_rate": 2.808515418749649e-05
+      },
+      {
+        "bin": 7,
+        "rows": 35605,
+        "mean_predicted": 0.00020425530444740614,
+        "observed_rate": 0.0005336329167251791
+      },
+      {
+        "bin": 8,
+        "rows": 35606,
+        "mean_predicted": 0.0005900067075446942,
+        "observed_rate": 0.001432342863562321
+      },
+      {
+        "bin": 9,
+        "rows": 35606,
+        "mean_predicted": 0.0025388916937112093,
+        "observed_rate": 0.0047463910576869064
+      },
+      {
+        "bin": 10,
+        "rows": 35606,
+        "mean_predicted": 0.04177373474838298,
+        "observed_rate": 0.04055496264674493
+      }
+    ],
+    "capacity": [
+      {
+        "share_contacted": 0.05,
+        "customers_contacted": 17803,
+        "expected_adopters": 1222.3190438314346,
+        "observed_adopters": 1241,
+        "precision": 0.06970735269336628,
+        "capture": 0.7351895734597157,
+        "assumed_value_eur": 104428.90438314345
+      },
+      {
+        "share_contacted": 0.1,
+        "customers_contacted": 35606,
+        "expected_adopters": 1487.3955994509245,
+        "observed_adopters": 1444,
+        "precision": 0.04055496264674493,
+        "capture": 0.8554502369668247,
+        "assumed_value_eur": 113133.55994509245
+      },
+      {
+        "share_contacted": 0.2,
+        "customers_contacted": 71212,
+        "expected_adopters": 1577.7953770972058,
+        "observed_adopters": 1613,
+        "precision": 0.022650676852215917,
+        "capture": 0.955568720379147,
+        "assumed_value_eur": 86567.53770972058
+      },
+      {
+        "share_contacted": 0.3,
+        "customers_contacted": 106818,
+        "expected_adopters": 1598.803155926042,
+        "observed_adopters": 1664,
+        "precision": 0.015577898855998053,
+        "capture": 0.985781990521327,
+        "assumed_value_eur": 53062.315592604224
+      },
+      {
+        "share_contacted": 0.5,
+        "customers_contacted": 178029,
+        "expected_adopters": 1611.7231247888103,
+        "observed_adopters": 1684,
+        "precision": 0.009459133062590927,
+        "capture": 0.9976303317535545,
+        "assumed_value_eur": -16856.68752111896
+      }
+    ]
+  },
+  "interpretation": {
+    "odds_ratios": [
+      {
+        "feature": "channel_KHQ",
+        "log_odds": -5.525613194582022,
+        "odds_ratio": 0.003983425328246934
+      },
+      {
+        "feature": "channel_unknown",
+        "log_odds": -4.681680401492877,
+        "odds_ratio": 0.00926343451174528
+      },
+      {
+        "feature": "ind_ctju_fin_ult1",
+        "log_odds": -4.557082644976404,
+        "odds_ratio": 0.010492625048053098
+      },
+      {
+        "feature": "relation_type_I",
+        "log_odds": -2.9672478303315843,
+        "odds_ratio": 0.0514447002217413
+      },
+      {
+        "feature": "relation_type_R",
+        "log_odds": 2.9031269770197095,
+        "odds_ratio": 18.231064450315618
+      },
+      {
+        "feature": "segment_unknown",
+        "log_odds": 2.1714218526709956,
+        "odds_ratio": 8.770745887653186
+      },
+      {
+        "feature": "channel_KFA",
+        "log_odds": 1.6528109834655669,
+        "odds_ratio": 5.221637152477729
+      },
+      {
+        "feature": "channel_KFC",
+        "log_odds": 1.4673943519649393,
+        "odds_ratio": 4.337917316600387
+      },
+      {
+        "feature": "channel_KAT",
+        "log_odds": 1.4569786669387295,
+        "odds_ratio": 4.292969424059127
+      },
+      {
+        "feature": "channel_other",
+        "log_odds": 1.447099126168795,
+        "odds_ratio": 4.250765677701754
+      },
+      {
+        "feature": "ind_pres_fin_ult1",
+        "log_odds": -1.1243148173830497,
+        "odds_ratio": 0.3248749898110862
+      },
+      {
+        "feature": "segment_01 - TOP",
+        "log_odds": -1.0920659061616582,
+        "odds_ratio": 0.3355226189675693
+      },
+      {
+        "feature": "relation_type_P",
+        "log_odds": -1.0867301475003743,
+        "odds_ratio": 0.33731767141228897
+      },
+      {
+        "feature": "segment_02 - PARTICULARES",
+        "log_odds": -1.0238002151882273,
+        "odds_ratio": 0.35922720229978505
+      },
+      {
+        "feature": "segment_03 - UNIVERSITARIO",
+        "log_odds": -1.0049773020259005,
+        "odds_ratio": 0.3660529433699488
+      }
+    ],
+    "permutation_importance": [
+      {
+        "feature": "relation_type",
+        "pr_auc_drop_mean": 0.06450226822233068,
+        "pr_auc_drop_std": 0.011505076693413002
+      },
+      {
+        "feature": "n_products",
+        "pr_auc_drop_mean": 0.05834395400215116,
+        "pr_auc_drop_std": 0.0074069397715946115
+      },
+      {
+        "feature": "attritions_last_3m",
+        "pr_auc_drop_mean": 0.05460292741413385,
+        "pr_auc_drop_std": 0.004643433425942974
+      },
+      {
+        "feature": "n_products_change_1m",
+        "pr_auc_drop_mean": 0.04880723050743826,
+        "pr_auc_drop_std": 0.004719483372072549
+      },
+      {
+        "feature": "active_months_last_3m",
+        "pr_auc_drop_mean": 0.038430141325890066,
+        "pr_auc_drop_std": 0.012482179928825195
+      },
+      {
+        "feature": "n_products_change_3m",
+        "pr_auc_drop_mean": 0.02305836081920553,
+        "pr_auc_drop_std": 0.008803540334773539
+      },
+      {
+        "feature": "ind_recibo_ult1",
+        "pr_auc_drop_mean": 0.019740447673278476,
+        "pr_auc_drop_std": 0.0038268235082009336
+      },
+      {
+        "feature": "ind_cno_fin_ult1",
+        "pr_auc_drop_mean": 0.015806057752401688,
+        "pr_auc_drop_std": 0.0024383453282625068
+      },
+      {
+        "feature": "seniority_months",
+        "pr_auc_drop_mean": 0.013046581565343163,
+        "pr_auc_drop_std": 0.005856082745238677
+      },
+      {
+        "feature": "channel",
+        "pr_auc_drop_mean": 0.012869852345827548,
+        "pr_auc_drop_std": 0.0063627470723432505
+      },
+      {
+        "feature": "ind_nom_pens_ult1",
+        "pr_auc_drop_mean": 0.012043390301767242,
+        "pr_auc_drop_std": 0.0012366072583008107
+      },
+      {
+        "feature": "age_band",
+        "pr_auc_drop_mean": 0.009899295303051326,
+        "pr_auc_drop_std": 0.004946731197356842
+      },
+      {
+        "feature": "ind_cco_fin_ult1",
+        "pr_auc_drop_mean": 0.008842516543589158,
+        "pr_auc_drop_std": 0.001832565927478405
+      },
+      {
+        "feature": "log_income",
+        "pr_auc_drop_mean": 0.0046215818757672335,
+        "pr_auc_drop_std": 0.0024885429376353936
+      },
+      {
+        "feature": "ind_ctop_fin_ult1",
+        "pr_auc_drop_mean": 0.0036686836225791166,
+        "pr_auc_drop_std": 0.0019349251719934795
+      }
+    ],
+    "permutation_rows": 50000
+  },
+  "rule_baseline": "active customers holding ind_nomina_ult1 with 3 or more products",
+  "assumptions": {
+    "margin_per_adopter_eur": 100.0,
+    "contact_cost_eur": 1.0,
+    "note": "Assumed values from config/config.yaml, not data. The source has no revenue fields."
+  }
+}

@@ -1,0 +1,449 @@
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- Pair 1, candidate: the same counts with one LAG window pass (as in -- sql/analysis/10_product_events.sql). The table is read once and sorted by customer and -- month inside the window operator; no hash table is built for a join. -- Output must equal 01_events_self_join.sql.  WITH deltas AS (     SELECT         month_index - lag(month_index) OVER w AS months_since_previous,         COLUMNS('^ind_.*_ult1$') - lag(COLUMNS('^ind_.*_ult1$')) OVER w     FROM fact_monthly_holdings     WINDOW w AS (PARTITION BY customer_id ORDER BY month_index) ), changed AS (     SELECT COLUMNS('^ind_.*_ult1$')     FROM deltas     WHERE months_since_previous = 1       AND (list_min([*COLUMNS('^ind_.*_ult1$')]) < 0 OR list_max([*COLUMNS('^ind_.*_ult1$')]) > 0) ) SELECT     product_code,     count(*) FILTER (WHERE delta = 1) AS adoptions,     count(*) FILTER (WHERE delta = -1) AS attritions FROM (UNPIVOT changed ON COLUMNS(*) INTO NAME product_code VALUE delta) WHERE delta <> 0 GROUP BY product_code ORDER BY product_code
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││               Total Time: 7.10s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│          ORDER_BY         │
+│    ────────────────────   │
+│      unnamed_subquery     │
+│     .product_code ASC     │
+│                           │
+│                           │
+│                           │
+│          24 rows          │
+│           0.01s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│       HASH_GROUP_BY       │
+│    ────────────────────   │
+│         Groups: #0        │
+│                           │
+│        Aggregates:        │
+│ count_star() FILTER (WHERE│
+│       #0) Filter: #0      │
+│ count_star() FILTER (WHERE│
+│       #1) Filter: #1      │
+│                           │
+│                           │
+│                           │
+│          24 rows          │
+│           1.77s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│        product_code       │
+│        (delta = 1)        │
+│        (delta = -1)       │
+│                           │
+│                           │
+│                           │
+│       1,094,938 rows      │
+│           0.08s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #2            │
+│             #3            │
+│                           │
+│                           │
+│                           │
+│       1,094,938 rows      │
+│           0.01s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           FILTER          │
+│    ────────────────────   │
+│ ((delta IS NOT NULL) AND  │
+│       (delta != 0))       │
+│                           │
+│                           │
+│                           │
+│       1,094,938 rows      │
+│           0.31s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           UNNEST          │
+│    ────────────────────   │
+│                           │
+│      19,218,264 rows      │
+│           0.20s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│       unpivot_names       │
+│        unpivot_list       │
+│                           │
+│                           │
+│                           │
+│        800,761 rows       │
+│           1.71s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│     ind_ahor_fin_ult1     │
+│     ind_aval_fin_ult1     │
+│      ind_cco_fin_ult1     │
+│     ind_cder_fin_ult1     │
+│      ind_cno_fin_ult1     │
+│     ind_ctju_fin_ult1     │
+│     ind_ctma_fin_ult1     │
+│     ind_ctop_fin_ult1     │
+│     ind_ctpp_fin_ult1     │
+│     ind_deco_fin_ult1     │
+│     ind_deme_fin_ult1     │
+│     ind_dela_fin_ult1     │
+│     ind_ecue_fin_ult1     │
+│     ind_fond_fin_ult1     │
+│      ind_hip_fin_ult1     │
+│     ind_plan_fin_ult1     │
+│     ind_pres_fin_ult1     │
+│     ind_reca_fin_ult1     │
+│     ind_tjcr_fin_ult1     │
+│     ind_valo_fin_ult1     │
+│      ind_viv_fin_ult1     │
+│      ind_nomina_ult1      │
+│     ind_nom_pens_ult1     │
+│      ind_recibo_ult1      │
+│                           │
+│                           │
+│                           │
+│        800,761 rows       │
+│           0.73s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #2            │
+│             #3            │
+│             #4            │
+│             #5            │
+│             #6            │
+│             #7            │
+│             #8            │
+│             #9            │
+│            #10            │
+│            #11            │
+│            #12            │
+│            #13            │
+│            #14            │
+│            #15            │
+│            #16            │
+│            ...            │
+│            #36            │
+│            #37            │
+│            #38            │
+│            #39            │
+│            #40            │
+│            #41            │
+│            #42            │
+│            #43            │
+│            #44            │
+│            #45            │
+│            #46            │
+│            #47            │
+│            #48            │
+│            #49            │
+│            #50            │
+│                           │
+│                           │
+│                           │
+│        800,761 rows       │
+│           0.08s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           FILTER          │
+│    ────────────────────   │
+│  (((list_aggr(list_value( │
+│ (ind_ahor_fin_ult1 - #27),│
+│  (ind_aval_fin_ult1 - #28)│
+│ , (ind_cco_fin_ult1 - #29)│
+│ , (ind_cder_fin_ult1 - #30│
+│ ), (ind_cno_fin_ult1 - #31│
+│  ), (ind_ctju_fin_ult1 -  │
+│ #32), (ind_ctma_fin_ult1 -│
+│  #33), (ind_ctop_fin_ult1 │
+│ - #34), (ind_ctpp_fin_ult1│
+│          - #35),          │
+│ (ind_deco_fin_ult1 - #36),│
+│  (ind_deme_fin_ult1 - #37)│
+│ , (ind_dela_fin_ult1 - #38│
+│  ), (ind_ecue_fin_ult1 -  │
+│ #39), (ind_fond_fin_ult1 -│
+│  #40), (ind_hip_fin_ult1 -│
+│  #41), (ind_plan_fin_ult1 │
+│ - #42), (ind_pres_fin_ult1│
+│          - #43),          │
+│ (ind_reca_fin_ult1 - #44),│
+│  (ind_tjcr_fin_ult1 - #45)│
+│ , (ind_valo_fin_ult1 - #46│
+│ ), (ind_viv_fin_ult1 - #47│
+│ ), (ind_nomina_ult1 - #48)│
+│ , (ind_nom_pens_ult1 - #49│
+│ ), (ind_recibo_ult1 - #50)│
+│     ), 'min') < 0) OR     │
+│   (list_aggr(list_value(  │
+│ (ind_ahor_fin_ult1 - #27),│
+│  (ind_aval_fin_ult1 - #28)│
+│ , (ind_cco_fin_ult1 - #29)│
+│ , (ind_cder_fin_ult1 - #30│
+│ ), (ind_cno_fin_ult1 - #31│
+│  ), (ind_ctju_fin_ult1 -  │
+│ #32), (ind_ctma_fin_ult1 -│
+│  #33), (ind_ctop_fin_ult1 │
+│ - #34), (ind_ctpp_fin_ult1│
+│          - #35),          │
+│ (ind_deco_fin_ult1 - #36),│
+│  (ind_deme_fin_ult1 - #37)│
+│ , (ind_dela_fin_ult1 - #38│
+│  ), (ind_ecue_fin_ult1 -  │
+│ #39), (ind_fond_fin_ult1 -│
+│  #40), (ind_hip_fin_ult1 -│
+│  #41), (ind_plan_fin_ult1 │
+│ - #42), (ind_pres_fin_ult1│
+│          - #43),          │
+│ (ind_reca_fin_ult1 - #44),│
+│  (ind_tjcr_fin_ult1 - #45)│
+│ , (ind_valo_fin_ult1 - #46│
+│ ), (ind_viv_fin_ult1 - #47│
+│ ), (ind_nomina_ult1 - #48)│
+│ , (ind_nom_pens_ult1 - #49│
+│ ), (ind_recibo_ult1 - #50)│
+│   ), 'max') > 0)) AND (   │
+│ (month_index - #26) = 1)) │
+│                           │
+│                           │
+│                           │
+│        800,761 rows       │
+│           20.51s          │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #0            │
+│             #1            │
+│             #2            │
+│             #3            │
+│             #4            │
+│             #5            │
+│             #6            │
+│             #7            │
+│             #8            │
+│             #9            │
+│            #10            │
+│            #11            │
+│            #12            │
+│            #13            │
+│            #14            │
+│            ...            │
+│            #36            │
+│            #37            │
+│            #38            │
+│            #39            │
+│            #40            │
+│            #41            │
+│            #42            │
+│            #43            │
+│            #44            │
+│            #45            │
+│            #46            │
+│            #47            │
+│            #48            │
+│            #49            │
+│            #50            │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.10s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           WINDOW          │
+│    ────────────────────   │
+│        Projections:       │
+│   LAG(month_index) OVER   │
+│ (PARTITION BY customer_id │
+│  ORDER BY month_index ASC │
+│         NULLS LAST)       │
+│   LAG(ind_ahor_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_aval_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│ LAG(ind_cco_fin_ult1) OVER│
+│  (PARTITION BY customer_id│
+│  ORDER BY month_index ASC │
+│         NULLS LAST)       │
+│   LAG(ind_cder_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│ LAG(ind_cno_fin_ult1) OVER│
+│  (PARTITION BY customer_id│
+│  ORDER BY month_index ASC │
+│         NULLS LAST)       │
+│   LAG(ind_ctju_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_ctma_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_ctop_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_ctpp_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_deco_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_deme_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_dela_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_ecue_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_fond_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│ LAG(ind_hip_fin_ult1) OVER│
+│  (PARTITION BY customer_id│
+│  ORDER BY month_index ASC │
+│         NULLS LAST)       │
+│   LAG(ind_plan_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_pres_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_reca_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_tjcr_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│   LAG(ind_valo_fin_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│ LAG(ind_viv_fin_ult1) OVER│
+│  (PARTITION BY customer_id│
+│  ORDER BY month_index ASC │
+│         NULLS LAST)       │
+│ LAG(ind_nomina_ult1) OVER │
+│ (PARTITION BY customer_id │
+│  ORDER BY month_index ASC │
+│         NULLS LAST)       │
+│   LAG(ind_nom_pens_ult1)  │
+│     OVER (PARTITION BY    │
+│    customer_id ORDER BY   │
+│    month_index ASC NULLS  │
+│            LAST)          │
+│ LAG(ind_recibo_ult1) OVER │
+│ (PARTITION BY customer_id │
+│  ORDER BY month_index ASC │
+│         NULLS LAST)       │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           43.46s          │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│           Table:          │
+│       warehouse.main      │
+│   .fact_monthly_holdings  │
+│                           │
+│   Type: Sequential Scan   │
+│                           │
+│        Projections:       │
+│        month_index        │
+│        customer_id        │
+│     ind_ahor_fin_ult1     │
+│     ind_aval_fin_ult1     │
+│      ind_cco_fin_ult1     │
+│     ind_cder_fin_ult1     │
+│      ind_cno_fin_ult1     │
+│     ind_ctju_fin_ult1     │
+│     ind_ctma_fin_ult1     │
+│     ind_ctop_fin_ult1     │
+│     ind_ctpp_fin_ult1     │
+│     ind_deco_fin_ult1     │
+│     ind_deme_fin_ult1     │
+│     ind_dela_fin_ult1     │
+│     ind_ecue_fin_ult1     │
+│     ind_fond_fin_ult1     │
+│      ind_hip_fin_ult1     │
+│     ind_plan_fin_ult1     │
+│     ind_pres_fin_ult1     │
+│     ind_reca_fin_ult1     │
+│     ind_tjcr_fin_ult1     │
+│     ind_valo_fin_ult1     │
+│      ind_viv_fin_ult1     │
+│      ind_nomina_ult1      │
+│     ind_nom_pens_ult1     │
+│      ind_recibo_ult1      │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.65s           │
+└───────────────────────────┘

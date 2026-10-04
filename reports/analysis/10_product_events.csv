@@ -1,0 +1,385 @@
+month_label,product_code,product_name,adoptions,first_adoptions,repeat_adoptions,attritions,changes_across_gaps
+2015-02,ind_ahor_fin_ult1,Saving account,1,1,0,0,0
+2015-02,ind_aval_fin_ult1,Guarantees,1,1,0,0,0
+2015-02,ind_cco_fin_ult1,Current account,2132,2132,0,5028,0
+2015-02,ind_cder_fin_ult1,Derivatives account,12,12,0,12,0
+2015-02,ind_cno_fin_ult1,Payroll account,1884,1884,0,699,0
+2015-02,ind_ctju_fin_ult1,Junior account,7,7,0,121,0
+2015-02,ind_ctma_fin_ult1,Mas particular account,291,291,0,599,0
+2015-02,ind_ctop_fin_ult1,Particular account,249,249,0,689,0
+2015-02,ind_ctpp_fin_ult1,Particular plus account,171,171,0,329,0
+2015-02,ind_deco_fin_ult1,Short-term deposit,348,348,0,266,0
+2015-02,ind_deme_fin_ult1,Medium-term deposit,33,33,0,57,0
+2015-02,ind_dela_fin_ult1,Long-term deposit,724,724,0,1175,0
+2015-02,ind_ecue_fin_ult1,E-account,1472,1472,0,793,0
+2015-02,ind_fond_fin_ult1,Funds,451,451,0,160,0
+2015-02,ind_hip_fin_ult1,Mortgage,5,5,0,12,0
+2015-02,ind_plan_fin_ult1,Pension plan,27,27,0,54,0
+2015-02,ind_pres_fin_ult1,Loan,9,9,0,14,0
+2015-02,ind_reca_fin_ult1,Taxes,217,217,0,2,0
+2015-02,ind_tjcr_fin_ult1,Credit card,3471,3471,0,4804,0
+2015-02,ind_valo_fin_ult1,Securities,259,259,0,335,0
+2015-02,ind_viv_fin_ult1,Home account,8,8,0,23,0
+2015-02,ind_nomina_ult1,Payroll,5659,5659,0,3958,0
+2015-02,ind_nom_pens_ult1,Pension payments,5656,5656,0,4235,0
+2015-02,ind_recibo_ult1,Direct debit,8285,8285,0,9345,0
+2015-03,ind_ahor_fin_ult1,Saving account,0,0,0,0,0
+2015-03,ind_aval_fin_ult1,Guarantees,1,1,0,0,0
+2015-03,ind_cco_fin_ult1,Current account,2293,1225,1068,5278,63
+2015-03,ind_cder_fin_ult1,Derivatives account,15,14,1,4,0
+2015-03,ind_cno_fin_ult1,Payroll account,1786,1360,426,951,5
+2015-03,ind_ctju_fin_ult1,Junior account,18,1,17,89,0
+2015-03,ind_ctma_fin_ult1,Mas particular account,272,258,14,761,1
+2015-03,ind_ctop_fin_ult1,Particular account,284,142,142,647,1
+2015-03,ind_ctpp_fin_ult1,Particular plus account,165,87,78,360,1
+2015-03,ind_deco_fin_ult1,Short-term deposit,481,480,1,422,1
+2015-03,ind_deme_fin_ult1,Medium-term deposit,23,23,0,59,0
+2015-03,ind_dela_fin_ult1,Long-term deposit,814,723,91,1622,6
+2015-03,ind_ecue_fin_ult1,E-account,1594,1308,286,720,4
+2015-03,ind_fond_fin_ult1,Funds,570,560,10,192,0
+2015-03,ind_hip_fin_ult1,Mortgage,7,5,2,18,0
+2015-03,ind_plan_fin_ult1,Pension plan,24,23,1,48,0
+2015-03,ind_pres_fin_ult1,Loan,12,7,5,16,0
+2015-03,ind_reca_fin_ult1,Taxes,217,216,1,0,0
+2015-03,ind_tjcr_fin_ult1,Credit card,5076,3326,1750,4535,25
+2015-03,ind_valo_fin_ult1,Securities,205,162,43,389,0
+2015-03,ind_viv_fin_ult1,Home account,4,0,4,27,0
+2015-03,ind_nomina_ult1,Payroll,4479,1980,2499,2328,1
+2015-03,ind_nom_pens_ult1,Pension payments,4473,1979,2494,5239,1
+2015-03,ind_recibo_ult1,Direct debit,9135,5305,3830,6514,9
+2015-04,ind_ahor_fin_ult1,Saving account,0,0,0,2,0
+2015-04,ind_aval_fin_ult1,Guarantees,1,1,0,1,0
+2015-04,ind_cco_fin_ult1,Current account,2366,962,1404,5257,101
+2015-04,ind_cder_fin_ult1,Derivatives account,12,10,2,14,0
+2015-04,ind_cno_fin_ult1,Payroll account,1984,1360,624,774,11
+2015-04,ind_ctju_fin_ult1,Junior account,10,0,10,89,0
+2015-04,ind_ctma_fin_ult1,Mas particular account,217,200,17,717,1
+2015-04,ind_ctop_fin_ult1,Particular account,278,132,146,800,1
+2015-04,ind_ctpp_fin_ult1,Particular plus account,167,68,99,368,0
+2015-04,ind_deco_fin_ult1,Short-term deposit,263,263,0,442,1
+2015-04,ind_deme_fin_ult1,Medium-term deposit,26,24,2,74,0
+2015-04,ind_dela_fin_ult1,Long-term deposit,775,670,105,876,3
+2015-04,ind_ecue_fin_ult1,E-account,1459,1169,290,782,3
+2015-04,ind_fond_fin_ult1,Funds,492,472,20,184,3
+2015-04,ind_hip_fin_ult1,Mortgage,4,3,1,23,0
+2015-04,ind_plan_fin_ult1,Pension plan,22,22,0,38,0
+2015-04,ind_pres_fin_ult1,Loan,17,10,7,15,0
+2015-04,ind_reca_fin_ult1,Taxes,871,870,1,1,0
+2015-04,ind_tjcr_fin_ult1,Credit card,4627,2280,2347,3638,46
+2015-04,ind_valo_fin_ult1,Securities,194,109,85,278,0
+2015-04,ind_viv_fin_ult1,Home account,5,3,2,28,0
+2015-04,ind_nomina_ult1,Payroll,2663,1644,1019,3245,6
+2015-04,ind_nom_pens_ult1,Pension payments,5628,1676,3952,3207,6
+2015-04,ind_recibo_ult1,Direct debit,8346,3760,4586,7263,20
+2015-05,ind_ahor_fin_ult1,Saving account,0,0,0,2,0
+2015-05,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2015-05,ind_cco_fin_ult1,Current account,2264,801,1463,4685,144
+2015-05,ind_cder_fin_ult1,Derivatives account,7,6,1,7,0
+2015-05,ind_cno_fin_ult1,Payroll account,1900,1275,625,817,16
+2015-05,ind_ctju_fin_ult1,Junior account,10,1,9,90,1
+2015-05,ind_ctma_fin_ult1,Mas particular account,205,184,21,694,2
+2015-05,ind_ctop_fin_ult1,Particular account,289,101,188,518,3
+2015-05,ind_ctpp_fin_ult1,Particular plus account,172,74,98,325,0
+2015-05,ind_deco_fin_ult1,Short-term deposit,238,236,2,799,1
+2015-05,ind_deme_fin_ult1,Medium-term deposit,25,23,2,61,0
+2015-05,ind_dela_fin_ult1,Long-term deposit,885,770,115,807,4
+2015-05,ind_ecue_fin_ult1,E-account,1461,1108,353,552,2
+2015-05,ind_fond_fin_ult1,Funds,396,380,16,204,3
+2015-05,ind_hip_fin_ult1,Mortgage,9,9,0,182,0
+2015-05,ind_plan_fin_ult1,Pension plan,21,20,1,31,0
+2015-05,ind_pres_fin_ult1,Loan,11,7,4,15,0
+2015-05,ind_reca_fin_ult1,Taxes,343,342,1,0,0
+2015-05,ind_tjcr_fin_ult1,Credit card,4071,1767,2304,4298,51
+2015-05,ind_valo_fin_ult1,Securities,201,129,72,196,1
+2015-05,ind_viv_fin_ult1,Home account,4,3,1,22,0
+2015-05,ind_nomina_ult1,Payroll,3369,1454,1915,4466,7
+2015-05,ind_nom_pens_ult1,Pension payments,3345,1440,1905,7517,8
+2015-05,ind_recibo_ult1,Direct debit,7085,3116,3969,8932,16
+2015-06,ind_ahor_fin_ult1,Saving account,0,0,0,2,0
+2015-06,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2015-06,ind_cco_fin_ult1,Current account,6588,4984,1604,4604,144
+2015-06,ind_cder_fin_ult1,Derivatives account,9,6,3,6,0
+2015-06,ind_cno_fin_ult1,Payroll account,1857,1306,551,5427,15
+2015-06,ind_ctju_fin_ult1,Junior account,7,2,5,91,1
+2015-06,ind_ctma_fin_ult1,Mas particular account,210,196,14,513,1
+2015-06,ind_ctop_fin_ult1,Particular account,213,89,124,506,3
+2015-06,ind_ctpp_fin_ult1,Particular plus account,151,63,88,296,1
+2015-06,ind_deco_fin_ult1,Short-term deposit,289,287,2,775,1
+2015-06,ind_deme_fin_ult1,Medium-term deposit,33,30,3,65,0
+2015-06,ind_dela_fin_ult1,Long-term deposit,939,803,136,1107,17
+2015-06,ind_ecue_fin_ult1,E-account,1204,948,256,624,1
+2015-06,ind_fond_fin_ult1,Funds,245,223,22,276,0
+2015-06,ind_hip_fin_ult1,Mortgage,4,4,0,49,0
+2015-06,ind_plan_fin_ult1,Pension plan,19,19,0,21,0
+2015-06,ind_pres_fin_ult1,Loan,8,6,2,56,0
+2015-06,ind_reca_fin_ult1,Taxes,2931,2931,0,0,2
+2015-06,ind_tjcr_fin_ult1,Credit card,4655,1623,3032,3952,30
+2015-06,ind_valo_fin_ult1,Securities,152,97,55,439,0
+2015-06,ind_viv_fin_ult1,Home account,3,0,3,19,0
+2015-06,ind_nomina_ult1,Payroll,5070,1695,3375,2992,14
+2015-06,ind_nom_pens_ult1,Pension payments,8135,1721,6414,2955,15
+2015-06,ind_recibo_ult1,Direct debit,9023,3352,5671,6856,15
+2015-07,ind_ahor_fin_ult1,Saving account,0,0,0,1,0
+2015-07,ind_aval_fin_ult1,Guarantees,0,0,0,2,0
+2015-07,ind_cco_fin_ult1,Current account,3056,1262,1794,5689,329
+2015-07,ind_cder_fin_ult1,Derivatives account,10,9,1,7,0
+2015-07,ind_cno_fin_ult1,Payroll account,2771,1768,1003,1123,37
+2015-07,ind_ctju_fin_ult1,Junior account,18,1,17,92,8
+2015-07,ind_ctma_fin_ult1,Mas particular account,191,175,16,337,2
+2015-07,ind_ctop_fin_ult1,Particular account,252,92,160,577,14
+2015-07,ind_ctpp_fin_ult1,Particular plus account,164,54,110,362,7
+2015-07,ind_deco_fin_ult1,Short-term deposit,265,264,1,484,3
+2015-07,ind_deme_fin_ult1,Medium-term deposit,24,23,1,72,0
+2015-07,ind_dela_fin_ult1,Long-term deposit,1138,953,185,1370,12
+2015-07,ind_ecue_fin_ult1,E-account,1085,756,329,722,25
+2015-07,ind_fond_fin_ult1,Funds,204,178,26,235,1
+2015-07,ind_hip_fin_ult1,Mortgage,6,6,0,20,0
+2015-07,ind_plan_fin_ult1,Pension plan,27,27,0,38,1
+2015-07,ind_pres_fin_ult1,Loan,5,4,1,21,6
+2015-07,ind_reca_fin_ult1,Taxes,589,589,0,6,2
+2015-07,ind_tjcr_fin_ult1,Credit card,4886,1811,3075,4411,148
+2015-07,ind_valo_fin_ult1,Securities,232,126,106,216,3
+2015-07,ind_viv_fin_ult1,Home account,9,1,8,19,0
+2015-07,ind_nomina_ult1,Payroll,4408,2375,2033,3155,54
+2015-07,ind_nom_pens_ult1,Pension payments,4850,2504,2346,3139,70
+2015-07,ind_recibo_ult1,Direct debit,9172,3020,6152,7990,293
+2015-08,ind_ahor_fin_ult1,Saving account,0,0,0,0,0
+2015-08,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2015-08,ind_cco_fin_ult1,Current account,5730,4172,1558,5621,21
+2015-08,ind_cder_fin_ult1,Derivatives account,10,6,4,8,0
+2015-08,ind_cno_fin_ult1,Payroll account,2412,1666,746,1058,0
+2015-08,ind_ctju_fin_ult1,Junior account,37,24,13,91,0
+2015-08,ind_ctma_fin_ult1,Mas particular account,240,207,33,293,0
+2015-08,ind_ctop_fin_ult1,Particular account,231,74,157,464,0
+2015-08,ind_ctpp_fin_ult1,Particular plus account,145,47,98,279,0
+2015-08,ind_deco_fin_ult1,Short-term deposit,322,318,4,444,3
+2015-08,ind_deme_fin_ult1,Medium-term deposit,33,25,8,51,0
+2015-08,ind_dela_fin_ult1,Long-term deposit,1024,819,205,1126,1
+2015-08,ind_ecue_fin_ult1,E-account,924,600,324,615,1
+2015-08,ind_fond_fin_ult1,Funds,223,191,32,173,1
+2015-08,ind_hip_fin_ult1,Mortgage,1,1,0,15,0
+2015-08,ind_plan_fin_ult1,Pension plan,22,22,0,21,0
+2015-08,ind_pres_fin_ult1,Loan,13,8,5,14,0
+2015-08,ind_reca_fin_ult1,Taxes,264,264,0,0,0
+2015-08,ind_tjcr_fin_ult1,Credit card,4379,1378,3001,4722,0
+2015-08,ind_valo_fin_ult1,Securities,445,274,171,197,0
+2015-08,ind_viv_fin_ult1,Home account,2,0,2,22,0
+2015-08,ind_nomina_ult1,Payroll,2950,1535,1415,5129,0
+2015-08,ind_nom_pens_ult1,Pension payments,2968,1563,1405,5527,0
+2015-08,ind_recibo_ult1,Direct debit,7115,2865,4250,11087,1
+2015-09,ind_ahor_fin_ult1,Saving account,0,0,0,1,0
+2015-09,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2015-09,ind_cco_fin_ult1,Current account,4389,2553,1836,5452,30
+2015-09,ind_cder_fin_ult1,Derivatives account,7,5,2,11,0
+2015-09,ind_cno_fin_ult1,Payroll account,1775,1107,668,1048,1
+2015-09,ind_ctju_fin_ult1,Junior account,22,13,9,87,0
+2015-09,ind_ctma_fin_ult1,Mas particular account,471,447,24,395,3
+2015-09,ind_ctop_fin_ult1,Particular account,191,72,119,562,1
+2015-09,ind_ctpp_fin_ult1,Particular plus account,122,32,90,337,0
+2015-09,ind_deco_fin_ult1,Short-term deposit,387,384,3,507,2
+2015-09,ind_deme_fin_ult1,Medium-term deposit,30,27,3,46,0
+2015-09,ind_dela_fin_ult1,Long-term deposit,1348,1058,290,1276,0
+2015-09,ind_ecue_fin_ult1,E-account,1072,804,268,803,4
+2015-09,ind_fond_fin_ult1,Funds,130,112,18,150,0
+2015-09,ind_hip_fin_ult1,Mortgage,8,8,0,19,0
+2015-09,ind_plan_fin_ult1,Pension plan,21,20,1,26,0
+2015-09,ind_pres_fin_ult1,Loan,13,12,1,11,0
+2015-09,ind_reca_fin_ult1,Taxes,271,271,0,0,0
+2015-09,ind_tjcr_fin_ult1,Credit card,4463,1046,3417,5037,1
+2015-09,ind_valo_fin_ult1,Securities,328,248,80,125,1
+2015-09,ind_viv_fin_ult1,Home account,2,0,2,19,0
+2015-09,ind_nomina_ult1,Payroll,4683,1334,3349,3841,0
+2015-09,ind_nom_pens_ult1,Pension payments,4753,1385,3368,3860,0
+2015-09,ind_recibo_ult1,Direct debit,11210,3776,7434,6589,3
+2015-10,ind_ahor_fin_ult1,Saving account,0,0,0,0,0
+2015-10,ind_aval_fin_ult1,Guarantees,0,0,0,1,0
+2015-10,ind_cco_fin_ult1,Current account,5682,3653,2029,5804,27
+2015-10,ind_cder_fin_ult1,Derivatives account,3,3,0,5,0
+2015-10,ind_cno_fin_ult1,Payroll account,2409,1476,933,760,0
+2015-10,ind_ctju_fin_ult1,Junior account,43,31,12,71,0
+2015-10,ind_ctma_fin_ult1,Mas particular account,468,438,30,318,4
+2015-10,ind_ctop_fin_ult1,Particular account,223,64,159,604,0
+2015-10,ind_ctpp_fin_ult1,Particular plus account,153,49,104,309,0
+2015-10,ind_deco_fin_ult1,Short-term deposit,349,347,2,499,1
+2015-10,ind_deme_fin_ult1,Medium-term deposit,22,19,3,46,0
+2015-10,ind_dela_fin_ult1,Long-term deposit,1390,1105,285,1393,0
+2015-10,ind_ecue_fin_ult1,E-account,1205,820,385,779,0
+2015-10,ind_fond_fin_ult1,Funds,146,121,25,148,0
+2015-10,ind_hip_fin_ult1,Mortgage,7,7,0,24,0
+2015-10,ind_plan_fin_ult1,Pension plan,19,18,1,23,0
+2015-10,ind_pres_fin_ult1,Loan,9,7,2,13,0
+2015-10,ind_reca_fin_ult1,Taxes,593,593,0,0,0
+2015-10,ind_tjcr_fin_ult1,Credit card,4461,985,3476,4657,0
+2015-10,ind_valo_fin_ult1,Securities,911,854,57,256,0
+2015-10,ind_viv_fin_ult1,Home account,2,1,1,25,0
+2015-10,ind_nomina_ult1,Payroll,4818,1728,3090,3883,0
+2015-10,ind_nom_pens_ult1,Pension payments,4790,1756,3034,3942,0
+2015-10,ind_recibo_ult1,Direct debit,12100,4662,7438,8429,2
+2015-11,ind_ahor_fin_ult1,Saving account,0,0,0,0,0
+2015-11,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2015-11,ind_cco_fin_ult1,Current account,4670,2912,1758,6711,36
+2015-11,ind_cder_fin_ult1,Derivatives account,6,4,2,4,0
+2015-11,ind_cno_fin_ult1,Payroll account,2930,2237,693,1105,6
+2015-11,ind_ctju_fin_ult1,Junior account,31,24,7,92,0
+2015-11,ind_ctma_fin_ult1,Mas particular account,633,609,24,434,8
+2015-11,ind_ctop_fin_ult1,Particular account,209,78,131,605,0
+2015-11,ind_ctpp_fin_ult1,Particular plus account,140,45,95,350,0
+2015-11,ind_deco_fin_ult1,Short-term deposit,110,106,4,537,0
+2015-11,ind_deme_fin_ult1,Medium-term deposit,1,1,0,42,0
+2015-11,ind_dela_fin_ult1,Long-term deposit,908,724,184,1418,1
+2015-11,ind_ecue_fin_ult1,E-account,1588,1244,344,675,1
+2015-11,ind_fond_fin_ult1,Funds,169,151,18,167,0
+2015-11,ind_hip_fin_ult1,Mortgage,3,3,0,22,0
+2015-11,ind_plan_fin_ult1,Pension plan,37,35,2,71,0
+2015-11,ind_pres_fin_ult1,Loan,8,6,2,11,0
+2015-11,ind_reca_fin_ult1,Taxes,416,416,0,0,0
+2015-11,ind_tjcr_fin_ult1,Credit card,4312,862,3450,4101,1
+2015-11,ind_valo_fin_ult1,Securities,133,86,47,171,0
+2015-11,ind_viv_fin_ult1,Home account,5,2,3,15,0
+2015-11,ind_nomina_ult1,Payroll,4395,1748,2647,4155,1
+2015-11,ind_nom_pens_ult1,Pension payments,4409,1781,2628,4137,1
+2015-11,ind_recibo_ult1,Direct debit,10102,3896,6206,9575,6
+2015-12,ind_ahor_fin_ult1,Saving account,0,0,0,2,0
+2015-12,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2015-12,ind_cco_fin_ult1,Current account,9077,5751,3326,6832,29
+2015-12,ind_cder_fin_ult1,Derivatives account,9,6,3,9,0
+2015-12,ind_cno_fin_ult1,Payroll account,3869,2830,1039,5172,1
+2015-12,ind_ctju_fin_ult1,Junior account,69,52,17,95,0
+2015-12,ind_ctma_fin_ult1,Mas particular account,592,564,28,454,4
+2015-12,ind_ctop_fin_ult1,Particular account,283,105,178,603,0
+2015-12,ind_ctpp_fin_ult1,Particular plus account,155,55,100,349,0
+2015-12,ind_deco_fin_ult1,Short-term deposit,8,7,1,583,0
+2015-12,ind_deme_fin_ult1,Medium-term deposit,0,0,0,59,0
+2015-12,ind_dela_fin_ult1,Long-term deposit,1199,905,294,929,1
+2015-12,ind_ecue_fin_ult1,E-account,1816,1421,395,737,0
+2015-12,ind_fond_fin_ult1,Funds,205,179,26,156,0
+2015-12,ind_hip_fin_ult1,Mortgage,3,2,1,15,0
+2015-12,ind_plan_fin_ult1,Pension plan,157,151,6,136,0
+2015-12,ind_pres_fin_ult1,Loan,11,6,5,19,0
+2015-12,ind_reca_fin_ult1,Taxes,235,235,0,1,0
+2015-12,ind_tjcr_fin_ult1,Credit card,4295,780,3515,4378,0
+2015-12,ind_valo_fin_ult1,Securities,255,184,71,226,0
+2015-12,ind_viv_fin_ult1,Home account,8,7,1,28,0
+2015-12,ind_nomina_ult1,Payroll,5071,1982,3089,2400,0
+2015-12,ind_nom_pens_ult1,Pension payments,5148,2083,3065,2385,0
+2015-12,ind_recibo_ult1,Direct debit,9888,3370,6518,7590,1
+2016-01,ind_ahor_fin_ult1,Saving account,0,0,0,1,0
+2016-01,ind_aval_fin_ult1,Guarantees,1,1,0,1,0
+2016-01,ind_cco_fin_ult1,Current account,4436,2132,2304,5659,39
+2016-01,ind_cder_fin_ult1,Derivatives account,12,5,7,8,0
+2016-01,ind_cno_fin_ult1,Payroll account,2155,1384,771,1044,0
+2016-01,ind_ctju_fin_ult1,Junior account,37,31,6,71,0
+2016-01,ind_ctma_fin_ult1,Mas particular account,545,526,19,804,38
+2016-01,ind_ctop_fin_ult1,Particular account,259,90,169,672,0
+2016-01,ind_ctpp_fin_ult1,Particular plus account,149,47,102,378,0
+2016-01,ind_deco_fin_ult1,Short-term deposit,0,0,0,466,0
+2016-01,ind_deme_fin_ult1,Medium-term deposit,0,0,0,49,0
+2016-01,ind_dela_fin_ult1,Long-term deposit,447,340,107,1328,0
+2016-01,ind_ecue_fin_ult1,E-account,2272,1860,412,635,2
+2016-01,ind_fond_fin_ult1,Funds,145,124,21,197,0
+2016-01,ind_hip_fin_ult1,Mortgage,2,2,0,29,0
+2016-01,ind_plan_fin_ult1,Pension plan,104,101,3,85,0
+2016-01,ind_pres_fin_ult1,Loan,7,4,3,12,0
+2016-01,ind_reca_fin_ult1,Taxes,445,444,1,0,0
+2016-01,ind_tjcr_fin_ult1,Credit card,3792,716,3076,4647,0
+2016-01,ind_valo_fin_ult1,Securities,739,661,78,160,0
+2016-01,ind_viv_fin_ult1,Home account,2,2,0,26,0
+2016-01,ind_nomina_ult1,Payroll,2437,1232,1205,9911,1
+2016-01,ind_nom_pens_ult1,Pension payments,2892,1316,1576,13046,1
+2016-01,ind_recibo_ult1,Direct debit,10078,2872,7206,10393,3
+2016-02,ind_ahor_fin_ult1,Saving account,0,0,0,0,0
+2016-02,ind_aval_fin_ult1,Guarantees,0,0,0,2,0
+2016-02,ind_cco_fin_ult1,Current account,3988,1960,2028,6081,26
+2016-02,ind_cder_fin_ult1,Derivatives account,9,7,2,5,0
+2016-02,ind_cno_fin_ult1,Payroll account,2211,1387,824,1035,2
+2016-02,ind_ctju_fin_ult1,Junior account,48,37,11,76,0
+2016-02,ind_ctma_fin_ult1,Mas particular account,770,745,25,905,17
+2016-02,ind_ctop_fin_ult1,Particular account,217,76,141,650,0
+2016-02,ind_ctpp_fin_ult1,Particular plus account,141,37,104,345,0
+2016-02,ind_deco_fin_ult1,Short-term deposit,1,1,0,143,0
+2016-02,ind_deme_fin_ult1,Medium-term deposit,0,0,0,59,0
+2016-02,ind_dela_fin_ult1,Long-term deposit,684,505,179,1058,3
+2016-02,ind_ecue_fin_ult1,E-account,2342,1950,392,695,1
+2016-02,ind_fond_fin_ult1,Funds,82,69,13,199,0
+2016-02,ind_hip_fin_ult1,Mortgage,6,5,1,24,0
+2016-02,ind_plan_fin_ult1,Pension plan,45,44,1,39,0
+2016-02,ind_pres_fin_ult1,Loan,6,2,4,8,0
+2016-02,ind_reca_fin_ult1,Taxes,557,557,0,1,0
+2016-02,ind_tjcr_fin_ult1,Credit card,3881,667,3214,4828,0
+2016-02,ind_valo_fin_ult1,Securities,320,270,50,167,0
+2016-02,ind_viv_fin_ult1,Home account,2,1,1,22,0
+2016-02,ind_nomina_ult1,Payroll,9499,1512,7987,4338,0
+2016-02,ind_nom_pens_ult1,Pension payments,12687,1553,11134,4773,0
+2016-02,ind_recibo_ult1,Direct debit,11528,3312,8216,9938,0
+2016-03,ind_ahor_fin_ult1,Saving account,0,0,0,0,0
+2016-03,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2016-03,ind_cco_fin_ult1,Current account,4551,2175,2376,5689,38
+2016-03,ind_cder_fin_ult1,Derivatives account,5,4,1,14,0
+2016-03,ind_cno_fin_ult1,Payroll account,2428,1475,953,953,1
+2016-03,ind_ctju_fin_ult1,Junior account,45,32,13,81,0
+2016-03,ind_ctma_fin_ult1,Mas particular account,643,609,34,609,16
+2016-03,ind_ctop_fin_ult1,Particular account,225,78,147,576,0
+2016-03,ind_ctpp_fin_ult1,Particular plus account,131,36,95,302,0
+2016-03,ind_deco_fin_ult1,Short-term deposit,0,0,0,19,0
+2016-03,ind_deme_fin_ult1,Medium-term deposit,0,0,0,54,0
+2016-03,ind_dela_fin_ult1,Long-term deposit,239,110,129,912,0
+2016-03,ind_ecue_fin_ult1,E-account,1909,1581,328,670,2
+2016-03,ind_fond_fin_ult1,Funds,92,67,25,131,0
+2016-03,ind_hip_fin_ult1,Mortgage,2,2,0,25,0
+2016-03,ind_plan_fin_ult1,Pension plan,30,27,3,33,0
+2016-03,ind_pres_fin_ult1,Loan,7,3,4,13,0
+2016-03,ind_reca_fin_ult1,Taxes,199,198,1,0,0
+2016-03,ind_tjcr_fin_ult1,Credit card,4401,679,3722,4466,0
+2016-03,ind_valo_fin_ult1,Securities,163,125,38,261,0
+2016-03,ind_viv_fin_ult1,Home account,4,2,2,15,0
+2016-03,ind_nomina_ult1,Payroll,4974,1545,3429,3416,0
+2016-03,ind_nom_pens_ult1,Pension payments,5038,1611,3427,4029,0
+2016-03,ind_recibo_ult1,Direct debit,10117,3257,6860,7898,3
+2016-04,ind_ahor_fin_ult1,Saving account,0,0,0,1,0
+2016-04,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2016-04,ind_cco_fin_ult1,Current account,4027,1694,2333,5387,24
+2016-04,ind_cder_fin_ult1,Derivatives account,5,3,2,10,0
+2016-04,ind_cno_fin_ult1,Payroll account,2381,1406,975,808,2
+2016-04,ind_ctju_fin_ult1,Junior account,40,30,10,89,0
+2016-04,ind_ctma_fin_ult1,Mas particular account,596,571,25,917,32
+2016-04,ind_ctop_fin_ult1,Particular account,240,72,168,577,0
+2016-04,ind_ctpp_fin_ult1,Particular plus account,161,40,121,317,0
+2016-04,ind_deco_fin_ult1,Short-term deposit,0,0,0,9,0
+2016-04,ind_deme_fin_ult1,Medium-term deposit,0,0,0,41,0
+2016-04,ind_dela_fin_ult1,Long-term deposit,99,32,67,932,0
+2016-04,ind_ecue_fin_ult1,E-account,2249,1904,345,598,0
+2016-04,ind_fond_fin_ult1,Funds,83,67,16,163,0
+2016-04,ind_hip_fin_ult1,Mortgage,5,5,0,26,0
+2016-04,ind_plan_fin_ult1,Pension plan,21,21,0,23,0
+2016-04,ind_pres_fin_ult1,Loan,4,3,1,13,0
+2016-04,ind_reca_fin_ult1,Taxes,807,807,0,0,0
+2016-04,ind_tjcr_fin_ult1,Credit card,4100,591,3509,3629,0
+2016-04,ind_valo_fin_ult1,Securities,128,76,52,206,0
+2016-04,ind_viv_fin_ult1,Home account,3,2,1,23,0
+2016-04,ind_nomina_ult1,Payroll,3790,1428,2362,4720,1
+2016-04,ind_nom_pens_ult1,Pension payments,4424,1497,2927,4714,1
+2016-04,ind_recibo_ult1,Direct debit,9799,2691,7108,8981,4
+2016-05,ind_ahor_fin_ult1,Saving account,1,0,1,0,0
+2016-05,ind_aval_fin_ult1,Guarantees,0,0,0,0,0
+2016-05,ind_cco_fin_ult1,Current account,3854,1660,2194,5686,24
+2016-05,ind_cder_fin_ult1,Derivatives account,5,2,3,3,0
+2016-05,ind_cno_fin_ult1,Payroll account,2346,1514,832,1063,1
+2016-05,ind_ctju_fin_ult1,Junior account,40,25,15,101,0
+2016-05,ind_ctma_fin_ult1,Mas particular account,512,486,26,1268,20
+2016-05,ind_ctop_fin_ult1,Particular account,226,69,157,677,0
+2016-05,ind_ctpp_fin_ult1,Particular plus account,131,44,87,333,0
+2016-05,ind_deco_fin_ult1,Short-term deposit,0,0,0,5,0
+2016-05,ind_deme_fin_ult1,Medium-term deposit,0,0,0,14,0
+2016-05,ind_dela_fin_ult1,Long-term deposit,46,11,35,1186,0
+2016-05,ind_ecue_fin_ult1,E-account,2709,2361,348,603,3
+2016-05,ind_fond_fin_ult1,Funds,60,47,13,189,1
+2016-05,ind_hip_fin_ult1,Mortgage,3,3,0,19,0
+2016-05,ind_plan_fin_ult1,Pension plan,22,21,1,28,0
+2016-05,ind_pres_fin_ult1,Loan,7,5,2,3,0
+2016-05,ind_reca_fin_ult1,Taxes,279,278,1,0,0
+2016-05,ind_tjcr_fin_ult1,Credit card,4248,663,3585,4237,0
+2016-05,ind_valo_fin_ult1,Securities,183,79,104,142,0
+2016-05,ind_viv_fin_ult1,Home account,7,2,5,10,0
+2016-05,ind_nomina_ult1,Payroll,5488,1564,3924,3354,0
+2016-05,ind_nom_pens_ult1,Pension payments,5513,1678,3835,3363,0
+2016-05,ind_recibo_ult1,Direct debit,10163,2614,7549,8893,4

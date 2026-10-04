@@ -1,0 +1,167 @@
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- Pair 3, baseline: every query recomputes per-customer aggregates from the 24-flag fact -- table (one GROUP BY over all customer-month rows) before answering its question. -- Output must equal 03_summary_materialised.sql.  WITH customer_summary AS (     SELECT         customer_id,         count(*) AS months_present,         avg(n_products) AS avg_products,         max(n_products) AS max_products,         max(is_active) AS ever_active     FROM fact_monthly_holdings     GROUP BY customer_id ) SELECT     max_products,     ever_active,     count(*) AS customers,     round(avg(avg_products), 6) AS mean_avg_products,     round(avg(months_present), 6) AS mean_months_present FROM customer_summary GROUP BY max_products, ever_active ORDER BY max_products, ever_active
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││               Total Time: 6.08s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│          ORDER_BY         │
+│    ────────────────────   │
+│      customer_summary     │
+│     .max_products ASC     │
+│      customer_summary     │
+│      .ever_active ASC     │
+│                           │
+│                           │
+│                           │
+│          33 rows          │
+│           0.05s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│        max_products       │
+│        ever_active        │
+│         customers         │
+│     mean_avg_products     │
+│    mean_months_present    │
+│                           │
+│                           │
+│                           │
+│          33 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│       HASH_GROUP_BY       │
+│    ────────────────────   │
+│          Groups:          │
+│             #0            │
+│             #1            │
+│                           │
+│        Aggregates:        │
+│        count_star()       │
+│          avg(#2)          │
+│          avg(#3)          │
+│                           │
+│                           │
+│                           │
+│          33 rows          │
+│           0.66s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│        max_products       │
+│        ever_active        │
+│        avg_products       │
+│       months_present      │
+│                           │
+│                           │
+│                           │
+│        956,645 rows       │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│       months_present      │
+│        avg_products       │
+│        max_products       │
+│        ever_active        │
+│                           │
+│                           │
+│                           │
+│        956,645 rows       │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_decompress_integ│
+│   ral_bigint(#0, 15889)   │
+│             #1            │
+│             #2            │
+│             #3            │
+│             #4            │
+│                           │
+│                           │
+│                           │
+│        956,645 rows       │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│       HASH_GROUP_BY       │
+│    ────────────────────   │
+│         Groups: #0        │
+│                           │
+│        Aggregates:        │
+│        count_star()       │
+│          avg(#1)          │
+│          max(#2)          │
+│          max(#3)          │
+│                           │
+│                           │
+│                           │
+│        956,645 rows       │
+│           56.16s          │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│        customer_id        │
+│ CAST(n_products AS BIGINT)│
+│         n_products        │
+│         is_active         │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.01s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_compress_integra│
+│   l_uinteger(#0, 15889)   │
+│             #1            │
+│             #2            │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.03s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│           Table:          │
+│       warehouse.main      │
+│   .fact_monthly_holdings  │
+│                           │
+│   Type: Sequential Scan   │
+│                           │
+│        Projections:       │
+│        customer_id        │
+│         n_products        │
+│         is_active         │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│           0.93s           │
+└───────────────────────────┘

@@ -1,0 +1,68 @@
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- Pair 2, candidate: partition pruning + projection pushdown. The month filter is on the -- hive partition column, so only the one month=YYYY-MM folder is opened, and only the -- two columns used are read from it. -- Output must equal 02_scan_load_then_filter.sql. Parameters: $holdings_glob, $month_label.  SELECT count(*) AS customers, sum(ind_tjcr_fin_ult1) AS credit_card_holders FROM read_parquet($holdings_glob, hive_partitioning = true, hive_types = {'month': VARCHAR}) WHERE month = $month_label
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.0591s             ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│    UNGROUPED_AGGREGATE    │
+│    ────────────────────   │
+│        Aggregates:        │
+│        count_star()       │
+│          sum(#0)          │
+│                           │
+│                           │
+│                           │
+│           1 row           │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│ CAST(ind_tjcr_fin_ult1 AS │
+│           BIGINT)         │
+│                           │
+│                           │
+│                           │
+│        931,453 rows       │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│         Function:         │
+│        READ_PARQUET       │
+│                           │
+│        Projections:       │
+│     ind_tjcr_fin_ult1     │
+│                           │
+│       File Filters:       │
+│    (month = '2016-05')    │
+│                           │
+│    Scanning Files: 1/17   │
+│    Total Files Read: 1    │
+│                           │
+│        Filename(s):       │
+│ data\cache\holdings\month │
+│  =2016-05\part-0.parquet  │
+│                           │
+│                           │
+│                           │
+│        931,453 rows       │
+│           0.30s           │
+└───────────────────────────┘

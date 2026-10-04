@@ -1,0 +1,143 @@
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- Pair 2, baseline: "load everything, then filter". Every column of every monthly file is -- copied into a table before the one month and two columns that are needed are selected. -- (A plain SELECT * subquery would not show this: DuckDB pushes projections and filters -- into it. The anti-pattern is materialising the full data first, as pandas code does.) -- Output must equal 02_scan_pruned.sql. Parameters: $holdings_glob, $month_label.  CREATE OR REPLACE TEMP TABLE perf_all_rows AS SELECT * FROM read_parquet($holdings_glob, hive_partitioning = false)
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 65.19s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      CREATE_TABLE_AS      │
+│    ────────────────────   │
+│                           │
+│           1 row           │
+│          337.03s          │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│         Function:         │
+│        READ_PARQUET       │
+│                           │
+│        Projections:       │
+│         fecha_dato        │
+│          ncodpers         │
+│        ind_empleado       │
+│      pais_residencia      │
+│            sexo           │
+│            age            │
+│         fecha_alta        │
+│         ind_nuevo         │
+│         antiguedad        │
+│           indrel          │
+│       ult_fec_cli_1t      │
+│        indrel_1mes        │
+│        tiprel_1mes        │
+│          indresi          │
+│            ...            │
+│     ind_deco_fin_ult1     │
+│     ind_deme_fin_ult1     │
+│     ind_dela_fin_ult1     │
+│     ind_ecue_fin_ult1     │
+│     ind_fond_fin_ult1     │
+│      ind_hip_fin_ult1     │
+│     ind_plan_fin_ult1     │
+│     ind_pres_fin_ult1     │
+│     ind_reca_fin_ult1     │
+│     ind_tjcr_fin_ult1     │
+│     ind_valo_fin_ult1     │
+│      ind_viv_fin_ult1     │
+│      ind_nomina_ult1      │
+│     ind_nom_pens_ult1     │
+│      ind_recibo_ult1      │
+│                           │
+│    Total Files Read: 17   │
+│                           │
+│        Filename(s):       │
+│  data/cache/holdings/*/*  │
+│       .parquet, ...       │
+│                           │
+│                           │
+│                           │
+│      13,647,309 rows      │
+│          262.40s          │
+└───────────────────────────┘
+
+
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE SELECT count(*) AS customers, sum(ind_tjcr_fin_ult1) AS credit_card_holders FROM perf_all_rows WHERE strftime(fecha_dato, '%Y-%m') = $month_label
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.301s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│    UNGROUPED_AGGREGATE    │
+│    ────────────────────   │
+│        Aggregates:        │
+│        count_star()       │
+│    sum_no_overflow(#0)    │
+│                           │
+│                           │
+│                           │
+│           1 row           │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│ CAST(ind_tjcr_fin_ult1 AS │
+│           BIGINT)         │
+│                           │
+│                           │
+│                           │
+│        931,453 rows       │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│           Table:          │
+│ "temp".main.perf_all_rows │
+│                           │
+│   Type: Sequential Scan   │
+│                           │
+│        Projections:       │
+│     ind_tjcr_fin_ult1     │
+│                           │
+│          Filters:         │
+│ (strftime(fecha_dato, '%Y-│
+│     %m') = '2016-05')     │
+│                           │
+│                           │
+│                           │
+│        931,453 rows       │
+│           2.87s           │
+└───────────────────────────┘
