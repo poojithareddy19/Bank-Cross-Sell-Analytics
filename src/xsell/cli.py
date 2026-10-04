@@ -3,30 +3,15 @@
 from __future__ import annotations
 
 import argparse
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 
 from xsell import __version__
-from xsell.analysis import run_analysis
 from xsell.config import Config, ConfigError, load_config
-from xsell.data.fetch import run_fetch
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger, setup_logging
-from xsell.performance import run_performance
-from xsell.quality import run_quality
-from xsell.train import run_training
-from xsell.warehouse import build_warehouse
+from xsell.pipeline import STAGES, FetchOptions, run_all, run_stages
 
 logger = get_logger("xsell.cli")
-
-# Pipeline stages in run order, with the milestone that implements each one.
-STAGES: dict[str, tuple[str, int]] = {
-    "fetch": ("download the Kaggle file and build the Parquet cache", 1),
-    "warehouse": ("build the DuckDB staging table and star schema", 2),
-    "quality": ("run data quality checks and write reports/data_quality.md", 2),
-    "analyze": ("run the SQL analyses and write reports/analysis/", 3),
-    "performance": ("time naive vs optimised query pairs", 5),
-    "train": ("build features, train and evaluate the propensity model", 6),
-}
 
 
 def _share(text: str) -> float:
@@ -61,9 +46,13 @@ def build_parser() -> argparse.ArgumentParser:
     fetch_options.add_argument("--force", action="store_true", help="rebuild the cache even if it is current")
 
     subparsers.add_parser("config", help="validate the configuration and print a summary")
-    for name, (help_text, _) in STAGES.items():
-        subparsers.add_parser(name, help=help_text, parents=[fetch_options] if name == "fetch" else [])
-    subparsers.add_parser("all", help="run every stage in order", parents=[fetch_options])
+    for stage in STAGES:
+        subparsers.add_parser(
+            stage.name, help=stage.description, parents=[fetch_options] if stage.name == "fetch" else []
+        )
+    subparsers.add_parser(
+        "all", help="run every stage in order and write reports/pipeline_run.md", parents=[fetch_options]
+    )
     return parser
 
 
@@ -82,27 +71,6 @@ def show_config(config: Config) -> None:
         logger.info("split %s: t from %s to %s", name, start, end)
 
 
-def run_fetch_stage(config: Config, args: argparse.Namespace) -> None:
-    run_fetch(config, sample_share=args.sample_customers, keep_zip=args.keep_zip, force=args.force)
-
-
-def _not_implemented(stage: str) -> StageRunner:
-    def run(config: Config, args: argparse.Namespace) -> None:
-        raise NotImplementedError(f"stage '{stage}' is not implemented yet (milestone {STAGES[stage][1]})")
-
-    return run
-
-
-StageRunner = Callable[[Config, argparse.Namespace], None]
-STAGE_RUNNERS: dict[str, StageRunner] = {name: _not_implemented(name) for name in STAGES}
-STAGE_RUNNERS["fetch"] = run_fetch_stage
-STAGE_RUNNERS["warehouse"] = lambda config, args: build_warehouse(config)
-STAGE_RUNNERS["quality"] = lambda config, args: run_quality(config)
-STAGE_RUNNERS["analyze"] = lambda config, args: run_analysis(config)
-STAGE_RUNNERS["performance"] = lambda config, args: run_performance(config)
-STAGE_RUNNERS["train"] = lambda config, args: run_training(config)
-
-
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     setup_logging(args.log_level)
@@ -116,16 +84,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         show_config(config)
         return 0
 
-    stages = list(STAGES) if args.stage == "all" else [args.stage]
-    for stage in stages:
-        logger.info("stage %s: starting", stage)
-        try:
-            STAGE_RUNNERS[stage](config, args)
-        except NotImplementedError as error:
-            logger.error("%s", error)
-            return 2
-        except XsellError as error:
-            logger.error("stage %s failed: %s", stage, error)
-            return 1
-        logger.info("stage %s: done", stage)
+    options = FetchOptions(
+        sample_customers=getattr(args, "sample_customers", None),
+        keep_zip=getattr(args, "keep_zip", False),
+        force=getattr(args, "force", False),
+    )
+    try:
+        if args.stage == "all":
+            run_all(config, options)
+        else:
+            run_stages(config, (args.stage,), options)
+    except XsellError as error:
+        logger.error("stage failed: %s", error)
+        return 1
     return 0
