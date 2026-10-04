@@ -123,6 +123,9 @@ class ModelSettings:
     sample_share: float
     seed: int
     bootstrap_resamples: int
+    capacity_shares: tuple[float, ...]
+    permutation_rows: int
+    xgboost: Mapping[str, float]
     splits: Mapping[str, tuple[str, str]]
 
 
@@ -344,6 +347,21 @@ def _build_model(model_raw: Mapping[str, Any], months: MonthRange, codes: set[st
     if resamples < 1:
         raise ConfigError(f"model.bootstrap_resamples must be at least 1, got {resamples}")
 
+    shares_raw = _require(model_raw, "capacity_shares", "model")
+    if not isinstance(shares_raw, list) or not shares_raw:
+        raise ConfigError("model.capacity_shares must be a non-empty list of shares")
+    capacity_shares = tuple(_as_float(value, "model.capacity_shares") for value in shares_raw)
+    if any(not 0 < share <= 1 for share in capacity_shares):
+        raise ConfigError("model.capacity_shares must all be in (0, 1]")
+    permutation_rows = _as_int(_require(model_raw, "permutation_rows", "model"), "model.permutation_rows")
+    if permutation_rows < 100:
+        raise ConfigError("model.permutation_rows must be at least 100")
+    xgboost_raw = _section(model_raw, "xgboost", "model")
+    xgboost = {key: _as_float(value, f"model.xgboost.{key}") for key, value in xgboost_raw.items()}
+    for key in ("n_estimators", "max_depth"):
+        if key in xgboost:
+            xgboost[key] = _as_int(xgboost[key], f"model.xgboost.{key}")
+
     splits_raw = _section(model_raw, "splits", "model")
     splits: dict[str, tuple[str, str]] = {}
     for name in SPLIT_NAMES:
@@ -374,6 +392,9 @@ def _build_model(model_raw: Mapping[str, Any], months: MonthRange, codes: set[st
         sample_share=sample_share,
         seed=_as_int(_require(model_raw, "seed", "model"), "model.seed"),
         bootstrap_resamples=resamples,
+        capacity_shares=capacity_shares,
+        permutation_rows=permutation_rows,
+        xgboost=xgboost,
         splits=splits,
     )
 

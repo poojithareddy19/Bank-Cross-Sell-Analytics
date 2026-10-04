@@ -211,3 +211,80 @@ def write_fixture_zip(path: Path, member: str = "train_ver2.csv", csv_text: str 
     with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         archive.writestr(member, csv_text if csv_text is not None else fixture_csv_text())
     return path
+
+
+MODEL_CHANNELS = [f"K{letter}{letter}" for letter in "ABCDEFGHIJKLMNO"]  # 15 channels, skewed below
+
+
+def model_fixture_rows(n_customers: int = 2000, seed: int = 7) -> list[dict[str, str]]:
+    """Larger synthetic data with a learnable credit-card signal, for the propensity model.
+
+    Each month a customer without a credit card adopts one with a probability that rises
+    with holding an e-account, being active and being under 35. The rule baseline
+    (active, payroll, 3+ products) does not use that signal, so a model can beat it.
+    About 5% of customers join late and 5% leave early. Seeded, so fully reproducible.
+    """
+    import numpy as np
+
+    rng = np.random.default_rng(seed)
+    channel_weights = np.linspace(15, 1, len(MODEL_CHANNELS))
+    channel_weights /= channel_weights.sum()
+    rows = []
+    for number in range(n_customers):
+        customer_id = 100_000 + number
+        first = int(rng.integers(1, 4)) if rng.random() < 0.05 else 0
+        last = int(rng.integers(4, 7)) if rng.random() < 0.05 else 7
+        age = int(rng.integers(18, 81))
+        channel = str(rng.choice(MODEL_CHANNELS, p=channel_weights))
+        sex = "H" if rng.random() < 0.5 else "V"
+        segment = str(rng.choice(["01 - TOP", "02 - PARTICULARES", "03 - UNIVERSITARIO"], p=[0.05, 0.6, 0.35]))
+        income = "" if rng.random() < 0.1 else f"{rng.lognormal(11, 0.5):.2f}"
+        active = rng.random() < 0.6
+        holds = {code: 0 for code in PRODUCT_COLUMNS}
+        holds["ind_cco_fin_ult1"] = int(rng.random() < 0.9)
+        holds["ind_recibo_ult1"] = int(rng.random() < 0.3)
+        holds["ind_ecue_fin_ult1"] = int(rng.random() < 0.2)
+        payroll = int(rng.random() < 0.15)
+        holds["ind_cno_fin_ult1"] = holds["ind_nomina_ult1"] = holds["ind_nom_pens_ult1"] = payroll
+        holds["ind_tjcr_fin_ult1"] = int(rng.random() < 0.1)
+        for month_index in range(8):
+            if month_index > 0:
+                if rng.random() < 0.05:
+                    active = not active
+                if not holds["ind_ecue_fin_ult1"] and rng.random() < 0.03:
+                    holds["ind_ecue_fin_ult1"] = 1
+                if holds["ind_tjcr_fin_ult1"]:
+                    holds["ind_tjcr_fin_ult1"] = int(rng.random() >= 0.03)
+                else:
+                    chance = 0.005 + 0.12 * holds["ind_ecue_fin_ult1"] + 0.03 * active + 0.04 * (age < 35)
+                    holds["ind_tjcr_fin_ult1"] = int(rng.random() < chance)
+            if not first <= month_index <= last:
+                continue
+            row = {column: "" for column in COLUMNS}
+            row.update(
+                fecha_dato=MONTHS[month_index],
+                ncodpers=str(customer_id),
+                ind_empleado="N",
+                pais_residencia="ES",
+                sexo=sex,
+                age=f"{age + month_index // 12:>3}",
+                fecha_alta="2014-06-01" if first == 0 else f"2015-{first + 1:02d}-03",
+                ind_nuevo=" 1" if first > 0 else " 0",
+                antiguedad=f"{12 + number % 100 + month_index:>7}",
+                indrel=" 1",
+                indrel_1mes="1",
+                tiprel_1mes="A" if active else "I",
+                indresi="S",
+                indext="N",
+                canal_entrada=channel,
+                indfall="N",
+                tipodom=" 1",
+                cod_prov="28",
+                nomprov="MADRID",
+                ind_actividad_cliente=" 1" if active else " 0",
+                renta=income,
+                segmento=segment,
+            )
+            row.update({code: str(value) for code, value in holds.items()})
+            rows.append(row)
+    return sorted(rows, key=lambda row: (row["fecha_dato"], int(row["ncodpers"])))

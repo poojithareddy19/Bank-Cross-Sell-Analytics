@@ -41,6 +41,14 @@ model:
   sample_share: 0.20                 # deterministic customer sample for train/validation/test
   seed: 42
   bootstrap_resamples: 1000
+  capacity_shares: [0.05, 0.10, 0.20, 0.30, 0.50]  # contact the top share of customers by score
+  permutation_rows: 50000           # validation rows sampled for permutation importance
+  xgboost:
+    n_estimators: 300
+    max_depth: 4
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
   # Feature month t ranges (inclusive). Labels come from t+1.
   splits:
     train: ["2015-04", "2015-12"]

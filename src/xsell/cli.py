@@ -13,6 +13,7 @@ from xsell.errors import XsellError
 from xsell.logging_utils import get_logger, setup_logging
 from xsell.performance import run_performance
 from xsell.quality import run_quality
+from xsell.train import run_training
 from xsell.warehouse import build_warehouse
 
 logger = get_logger("xsell.cli")
@@ -99,6 +100,7 @@ STAGE_RUNNERS["warehouse"] = lambda config, args: build_warehouse(config)
 STAGE_RUNNERS["quality"] = lambda config, args: run_quality(config)
 STAGE_RUNNERS["analyze"] = lambda config, args: run_analysis(config)
 STAGE_RUNNERS["performance"] = lambda config, args: run_performance(config)
+STAGE_RUNNERS["train"] = lambda config, args: run_training(config)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
