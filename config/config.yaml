@@ -30,6 +30,10 @@ quality:
   age_max: 110
   income_max_eur: 10000000
 
+# Analysis settings.
+analysis:
+  top_channels: 10                   # joining channels shown separately; the rest are 'other'
+
 model:
   target_product: ind_tjcr_fin_ult1  # credit card
   min_base_rate: 0.002               # below this, switch to "adopts any new product"

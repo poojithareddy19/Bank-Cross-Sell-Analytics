@@ -52,9 +52,34 @@ def test_unknown_target_product_is_named(raw, raw_products):
         build(raw, raw_products)
 
 
+LADDER = [
+    {"name": "Current account", "products": ["ind_cco_fin_ult1"]},
+    {"name": "Direct debit or e-account", "products": ["ind_recibo_ult1", "ind_ecue_fin_ult1"]},
+]
+
+
+def test_ladder_steps_are_loaded(raw, raw_products):
+    raw_products["ladder"] = LADDER
+    ladder = build(raw, raw_products).ladder
+    assert [step.name for step in ladder] == ["Current account", "Direct debit or e-account"]
+    assert ladder[1].products == ("ind_recibo_ult1", "ind_ecue_fin_ult1")
+
+
 def test_unknown_ladder_product_is_named(raw, raw_products):
-    raw_products["ladder"] = ["ind_cco_fin_ult1", "ind_nope_fin_ult1"]
+    raw_products["ladder"] = [LADDER[0], {"name": "Other", "products": ["ind_nope_fin_ult1"]}]
     with pytest.raises(ConfigError, match="ladder contains unknown.*ind_nope_fin_ult1"):
+        build(raw, raw_products)
+
+
+def test_product_on_two_ladder_steps(raw, raw_products):
+    raw_products["ladder"] = [LADDER[0], {"name": "Again", "products": ["ind_cco_fin_ult1"]}]
+    with pytest.raises(ConfigError, match="only one ladder step"):
+        build(raw, raw_products)
+
+
+def test_ladder_needs_two_steps(raw, raw_products):
+    raw_products["ladder"] = [LADDER[0]]
+    with pytest.raises(ConfigError, match="at least two steps"):
         build(raw, raw_products)
 
 

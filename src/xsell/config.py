@@ -40,6 +40,12 @@ class Product:
 
 
 @dataclass(frozen=True)
+class LadderStep:
+    name: str
+    products: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class Paths:
     root: Path
     data_dir: Path
@@ -105,6 +111,11 @@ class QualitySettings:
 
 
 @dataclass(frozen=True)
+class AnalysisSettings:
+    top_channels: int
+
+
+@dataclass(frozen=True)
 class ModelSettings:
     target_product: str
     min_base_rate: float
@@ -127,10 +138,11 @@ class Config:
     duckdb: DuckDBSettings
     months: MonthRange
     quality: QualitySettings
+    analysis: AnalysisSettings
     model: ModelSettings
     assumptions: Assumptions
     products: tuple[Product, ...]
-    ladder: tuple[str, ...]
+    ladder: tuple[LadderStep, ...]
 
     @property
     def product_codes(self) -> tuple[str, ...]:
@@ -172,12 +184,7 @@ def build_config(
     products = _build_products(raw_products)
     codes = {product.code for product in products}
 
-    ladder = tuple(str(code) for code in (raw_products.get("ladder") or []))
-    unknown = [code for code in ladder if code not in codes]
-    if unknown:
-        raise ConfigError(f"products.yaml: ladder contains unknown product code(s): {', '.join(unknown)}")
-    if len(set(ladder)) != len(ladder):
-        raise ConfigError("products.yaml: ladder lists the same product more than once")
+    ladder = _build_ladder(raw_products.get("ladder") or [], codes)
 
     paths_raw = _section(raw, "paths")
     data_dir = env.get("XSELL_DATA_DIR") or _require(paths_raw, "data_dir", "paths")
@@ -224,6 +231,13 @@ def build_config(
     if quality.income_max_eur <= 0:
         raise ConfigError("quality.income_max_eur must be positive")
 
+    analysis_raw = _section(raw, "analysis")
+    analysis = AnalysisSettings(
+        top_channels=_as_int(_require(analysis_raw, "top_channels", "analysis"), "analysis.top_channels")
+    )
+    if analysis.top_channels < 1:
+        raise ConfigError("analysis.top_channels must be at least 1")
+
     model = _build_model(_section(raw, "model"), months, codes)
 
     assumptions_raw = _section(raw, "assumptions")
@@ -245,6 +259,7 @@ def build_config(
         duckdb=duckdb_settings,
         months=months,
         quality=quality,
+        analysis=analysis,
         model=model,
         assumptions=assumptions,
         products=products,
@@ -279,6 +294,35 @@ def _build_products(raw_products: Mapping[str, Any]) -> tuple[Product, ...]:
             f"products.yaml: expected {EXPECTED_PRODUCT_COUNT} products (one per flag column), got {len(products)}"
         )
     return tuple(products)
+
+
+def _build_ladder(entries: Any, codes: set[str]) -> tuple[LadderStep, ...]:
+    """Ladder steps in order; each step is reached by holding any one of its products."""
+    if not isinstance(entries, list):
+        raise ConfigError("products.yaml: 'ladder' must be a list of steps")
+    steps = []
+    seen: set[str] = set()
+    for position, entry in enumerate(entries, start=1):
+        if not isinstance(entry, Mapping):
+            raise ConfigError(f"products.yaml: ladder step {position} must be a mapping with name and products")
+        name = str(_require(entry, "name", f"ladder[{position}]")).strip()
+        products = _require(entry, "products", f"ladder[{position}]")
+        if not name:
+            raise ConfigError(f"products.yaml: ladder step {position} needs a name")
+        if not isinstance(products, list) or not products:
+            raise ConfigError(f"products.yaml: ladder step {position} ({name}) needs a non-empty products list")
+        products = tuple(str(code) for code in products)
+        unknown = [code for code in products if code not in codes]
+        if unknown:
+            raise ConfigError(f"products.yaml: ladder contains unknown product code(s): {', '.join(unknown)}")
+        repeated = [code for code in products if code in seen]
+        if repeated or len(set(products)) != len(products):
+            raise ConfigError(f"products.yaml: a product can sit on only one ladder step ({name})")
+        seen.update(products)
+        steps.append(LadderStep(name=name, products=products))
+    if len(steps) == 1:
+        raise ConfigError("products.yaml: a ladder needs at least two steps")
+    return tuple(steps)
 
 
 def _build_model(model_raw: Mapping[str, Any], months: MonthRange, codes: set[str]) -> ModelSettings:

@@ -24,13 +24,14 @@ WAREHOUSE_SQL = (
 
 
 def products_frame(config: Config) -> pd.DataFrame:
-    ladder_steps = {code: step for step, code in enumerate(config.ladder, start=1)}
+    steps = {code: (number, step.name) for number, step in enumerate(config.ladder, start=1) for code in step.products}
     return pd.DataFrame(
         {
             "product_code": [product.code for product in config.products],
             "product_name": [product.name for product in config.products],
             "family": [product.family for product in config.products],
-            "ladder_step": pd.array([ladder_steps.get(p.code) for p in config.products], dtype="Int64"),
+            "ladder_step": pd.array([steps.get(p.code, (None,))[0] for p in config.products], dtype="Int64"),
+            "ladder_step_name": [steps.get(p.code, (None, None))[1] for p in config.products],
             "catalogue_order": range(1, len(config.products) + 1),
         }
     )

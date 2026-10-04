@@ -1,6 +1,13 @@
 # Product catalogue: raw Santander flag column, English name and family.
-# The ladder is discovered from the transition matrix in Milestone 4 and
-# frozen here only after review; until then it stays empty.
+#
+# ladder: ordered steps of the product ladder funnel. A customer reaches a step by
+# holding any one of its products in or after the month they reached the previous
+# step. The ladder is proposed from the transition matrix (reports/ladder_proposal.md)
+# and frozen here only after review; while it is empty the funnel is skipped.
+# Example shape:
+#   ladder:
+#     - {name: Current account, products: [ind_cco_fin_ult1]}
+#     - {name: Direct debit or e-account, products: [ind_recibo_ult1, ind_ecue_fin_ult1]}
 
 products:
   - {code: ind_ahor_fin_ult1, name: Saving account, family: savings}
