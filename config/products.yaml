@@ -1,0 +1,31 @@
+# Product catalogue: raw Santander flag column, English name and family.
+# The ladder is discovered from the transition matrix in Milestone 4 and
+# frozen here only after review; until then it stays empty.
+
+products:
+  - {code: ind_ahor_fin_ult1, name: Saving account, family: savings}
+  - {code: ind_aval_fin_ult1, name: Guarantees, family: other}
+  - {code: ind_cco_fin_ult1, name: Current account, family: core}
+  - {code: ind_cder_fin_ult1, name: Derivatives account, family: investment}
+  - {code: ind_cno_fin_ult1, name: Payroll account, family: core}
+  - {code: ind_ctju_fin_ult1, name: Junior account, family: core}
+  - {code: ind_ctma_fin_ult1, name: Mas particular account, family: core}
+  - {code: ind_ctop_fin_ult1, name: Particular account, family: core}
+  - {code: ind_ctpp_fin_ult1, name: Particular plus account, family: core}
+  - {code: ind_deco_fin_ult1, name: Short-term deposit, family: savings}
+  - {code: ind_deme_fin_ult1, name: Medium-term deposit, family: savings}
+  - {code: ind_dela_fin_ult1, name: Long-term deposit, family: savings}
+  - {code: ind_ecue_fin_ult1, name: E-account, family: digital}
+  - {code: ind_fond_fin_ult1, name: Funds, family: investment}
+  - {code: ind_hip_fin_ult1, name: Mortgage, family: lending}
+  - {code: ind_plan_fin_ult1, name: Pension plan, family: investment}
+  - {code: ind_pres_fin_ult1, name: Loan, family: lending}
+  - {code: ind_reca_fin_ult1, name: Taxes, family: services}
+  - {code: ind_tjcr_fin_ult1, name: Credit card, family: card}
+  - {code: ind_valo_fin_ult1, name: Securities, family: investment}
+  - {code: ind_viv_fin_ult1, name: Home account, family: savings}
+  - {code: ind_nomina_ult1, name: Payroll, family: services}
+  - {code: ind_nom_pens_ult1, name: Pension payments, family: services}
+  - {code: ind_recibo_ult1, name: Direct debit, family: services}
+
+ladder: []

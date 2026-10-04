@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xsell"
+version = "0.1.0"
+description = "SQL-first cross-sell and customer journey analytics over the Santander product holdings data"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+authors = [{ name = "Gorla Poojitha" }]
+# Exact pins live in requirements.txt; these are the minimum versions the code relies on.
+dependencies = [
+    "duckdb>=1.1",
+    "joblib>=1.4",
+    "kaggle>=1.6",
+    "pandas>=2.2",
+    "pyarrow>=16",
+    "pyyaml>=6",
+    "scikit-learn>=1.5",
+    "statsmodels>=0.14",
+    "xgboost>=2.1",
+]
+
+[project.scripts]
+xsell = "xsell.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

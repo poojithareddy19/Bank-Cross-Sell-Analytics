@@ -1,0 +1,42 @@
+# Pipeline configuration. Relative paths resolve against the project root
+# (the folder that contains this config/ folder). Environment overrides:
+# XSELL_DATA_DIR, XSELL_DUCKDB_MEMORY_LIMIT, XSELL_THREADS.
+
+paths:
+  data_dir: data                    # raw/, cache/ and warehouse.duckdb live under here
+  sql_dir: sql
+  reports_dir: reports
+  artifacts_dir: artifacts
+
+kaggle:
+  competition: santander-product-recommendation
+  file: train_ver2.csv.zip
+  csv_member: train_ver2.csv
+
+# Set from the environment check on the build machine (15.3 GB RAM, 12 logical cores).
+# memory_limit is below the 40%-of-RAM rule because free memory is usually ~6 GB.
+duckdb:
+  memory_limit: 4GB
+  threads: 10
+
+# Monthly snapshots in the source file (fecha_dato is always the 28th).
+months:
+  first: "2015-01"
+  last: "2016-05"
+
+model:
+  target_product: ind_tjcr_fin_ult1  # credit card
+  min_base_rate: 0.002               # below this, switch to "adopts any new product"
+  sample_share: 0.20                 # deterministic customer sample for train/validation/test
+  seed: 42
+  bootstrap_resamples: 1000
+  # Feature month t ranges (inclusive). Labels come from t+1.
+  splits:
+    train: ["2015-04", "2015-12"]
+    validation: ["2016-01", "2016-02"]
+    test: ["2016-03", "2016-04"]
+
+# ASSUMPTIONS, not data: the source has no revenue fields.
+assumptions:
+  margin_per_adopter_eur: 100.0
+  contact_cost_eur: 1.0
