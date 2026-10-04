@@ -53,10 +53,12 @@ in the fact table. A flag is 1 if the customer holds the product in that month. 
 | Table | Grain | Columns |
 |---|---|---|
 | `stg_holdings` | customer x month | every column above plus the 24 flags |
+| `product_events` | customer x month x product | `customer_id`, `month_index`, `product_code`, `event_type` (adoption or attrition); consecutive months only |
+| `product_changes_across_gaps` | customer x month x product | flag changes where the previous observation is more than one month earlier; reported, never counted as events |
 | `dim_customer` | customer | `customer_id`, `join_date`, `join_month`, `first_seen_month_index`, `last_seen_month_index`, `months_present`, `latest_segment`, `sex`, `age_at_first_seen`, `province`, `channel`, `income` |
 | `dim_product` | product | `product_code`, `product_name`, `family`, `ladder_step` (NULL until the ladder is confirmed), `catalogue_order` |
 | `dim_month` | snapshot month | `month_index`, `snapshot_date`, `month_label` (YYYY-MM), `customers` |
-| `fact_monthly_holdings` | customer x month | `customer_id`, `month_index`, 24 flags (TINYINT), `n_products`, `is_active`, `segment`, `relation_type`, `is_new_customer` |
+| `fact_monthly_holdings` | customer x month | `customer_id`, `month_index`, 24 flags (TINYINT), `n_products`, `is_active`, `seniority_months`, `segment`, `relation_type`, `is_new_customer` |
 
 In `dim_customer`, "latest" attributes (segment, sex, province, channel, income) come from the
 most recent month where the value is not NULL. `join_date` is the earliest one reported, and

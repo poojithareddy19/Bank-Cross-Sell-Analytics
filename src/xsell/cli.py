@@ -6,6 +6,7 @@ import argparse
 from collections.abc import Callable, Sequence
 
 from xsell import __version__
+from xsell.analysis import run_analysis
 from xsell.config import Config, ConfigError, load_config
 from xsell.data.fetch import run_fetch
 from xsell.errors import XsellError
@@ -95,6 +96,7 @@ STAGE_RUNNERS: dict[str, StageRunner] = {name: _not_implemented(name) for name i
 STAGE_RUNNERS["fetch"] = run_fetch_stage
 STAGE_RUNNERS["warehouse"] = lambda config, args: build_warehouse(config)
 STAGE_RUNNERS["quality"] = lambda config, args: run_quality(config)
+STAGE_RUNNERS["analyze"] = lambda config, args: run_analysis(config)
 
 
 def main(argv: Sequence[str] | None = None) -> int:

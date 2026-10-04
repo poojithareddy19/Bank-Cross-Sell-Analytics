@@ -9,6 +9,7 @@ SELECT
     COLUMNS('^ind_.*_ult1$'),
     list_sum([*COLUMNS('^ind_.*_ult1$')])::TINYINT AS n_products,
     is_active,
+    seniority_months,
     segment,
     relation_type,
     is_new_customer

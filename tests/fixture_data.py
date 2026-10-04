@@ -13,11 +13,15 @@ Planted customers (month index m0 = 2015-01):
   1006  seniority (antiguedad) -999999
   1007  ind_nomina_ult1 and ind_nom_pens_ult1 are NA at m2 (2 flags filled)
   1008  joins 2015-03-05, first seen m2; adopts payroll account and payroll at m5
-  1009  last seen m4
+  1009  joins 2015-01-20, last seen m4 (join cohort 2015-01 loses it from m5)
   1010  active, payroll + current account + direct debit (rule baseline shape)
   1011  age 115 (impossible)
   1012  join date (fecha_alta) missing
-  2001-2048  constant holdings, present every month, no events
+  2002  adopts e-account at m2, then credit card at m5 (transition e-account -> credit card)
+  2003  adopts e-account at m2, then direct debit at m4 (transition e-account -> direct debit)
+  2005  joins 2015-01-10, present every month (join cohort 2015-01)
+  2041-2048  inactive (ind_actividad_cliente 0) every month
+  other 2001-2048  constant holdings, present every month, no events
 """
 
 from __future__ import annotations
@@ -61,10 +65,32 @@ EXPECTED = {
         (1001, "ind_tjcr_fin_ult1", "2015-04"),
         (1008, "ind_cno_fin_ult1", "2015-06"),
         (1008, "ind_nomina_ult1", "2015-06"),
+        (2002, "ind_ecue_fin_ult1", "2015-03"),
+        (2002, "ind_tjcr_fin_ult1", "2015-06"),
+        (2003, "ind_ecue_fin_ult1", "2015-03"),
+        (2003, "ind_recibo_ult1", "2015-05"),
     },
     "attritions": {(1002, "ind_ecue_fin_ult1", "2015-05")},
     "gap_customers": {1003},
+    # Flag changes across the 1003 gap (m2 -> m4) that must not count as events.
+    "changes_across_gaps": {(1003, "ind_recibo_ult1", "2015-05")},
+    # (from product, to product): (customers, months between adoptions)
+    "transitions": {
+        ("ind_ecue_fin_ult1", "ind_tjcr_fin_ult1"): (1, 3),
+        ("ind_ecue_fin_ult1", "ind_recibo_ult1"): (1, 2),
+    },
+    # join month: (cohort size, customers retained at k = 0, 1, ... months after joining)
+    "cohorts": {
+        "2015-01": (2, [2, 2, 2, 2, 2, 1, 1, 1]),
+        "2015-03": (1, [1, 1, 1, 1, 1, 1]),
+    },
     "flags_filled_from_null": 2,
+    # Latest month (2015-08): products held -> (customers, active customers)
+    "engagement_by_products": {"1": (41, 35), "2": (14, 12), "3": (4, 4)},
+    # Latest month: product families held -> customers
+    "families_held": {"1": 41, "2": 16, "3+": 2},
+    # Latest month holders of selected products (59 customers present)
+    "latest_holders": {"ind_cco_fin_ult1": 59, "ind_tjcr_fin_ult1": 2, "ind_recibo_ult1": 15},
 }  # fmt: skip
 
 
@@ -143,8 +169,20 @@ def _customer_rows(customer_id: int) -> list[dict[str, str]]:
             row["age"] = "115"
         elif customer_id == 1012:
             row["fecha_alta"] = ""
+        elif customer_id == 1009:
+            row["fecha_alta"] = "2015-01-20"
+        elif customer_id == 2002:
+            row["ind_ecue_fin_ult1"] = "1" if month_index >= 2 else "0"
+            row["ind_tjcr_fin_ult1"] = "1" if month_index >= 5 else "0"
+        elif customer_id == 2003:
+            row["ind_ecue_fin_ult1"] = "1" if month_index >= 2 else "0"
+            row["ind_recibo_ult1"] = "1" if month_index >= 4 else "0"
+        elif customer_id == 2005:
+            row["fecha_alta"] = "2015-01-10"
         elif customer_id >= 2001 and customer_id % 4 == 0:
             row["ind_recibo_ult1"] = "1"
+        if 2041 <= customer_id <= 2048:
+            row["ind_actividad_cliente"] = " 0"
         rows.append(row)
     return rows
 
