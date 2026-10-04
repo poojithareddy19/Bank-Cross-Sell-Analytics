@@ -33,6 +33,7 @@ quality:
 # Analysis settings.
 analysis:
   top_channels: 10                   # joining channels shown separately; the rest are 'other'
+  timing_runs: 5                     # timed runs per query in the performance stage (median reported)
 
 model:
   target_product: ind_tjcr_fin_ult1  # credit card

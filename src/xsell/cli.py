@@ -11,6 +11,7 @@ from xsell.config import Config, ConfigError, load_config
 from xsell.data.fetch import run_fetch
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger, setup_logging
+from xsell.performance import run_performance
 from xsell.quality import run_quality
 from xsell.warehouse import build_warehouse
 
@@ -97,6 +98,7 @@ STAGE_RUNNERS["fetch"] = run_fetch_stage
 STAGE_RUNNERS["warehouse"] = lambda config, args: build_warehouse(config)
 STAGE_RUNNERS["quality"] = lambda config, args: run_quality(config)
 STAGE_RUNNERS["analyze"] = lambda config, args: run_analysis(config)
+STAGE_RUNNERS["performance"] = lambda config, args: run_performance(config)
 
 
 def main(argv: Sequence[str] | None = None) -> int:

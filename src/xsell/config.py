@@ -113,6 +113,7 @@ class QualitySettings:
 @dataclass(frozen=True)
 class AnalysisSettings:
     top_channels: int
+    timing_runs: int
 
 
 @dataclass(frozen=True)
@@ -233,10 +234,13 @@ def build_config(
 
     analysis_raw = _section(raw, "analysis")
     analysis = AnalysisSettings(
-        top_channels=_as_int(_require(analysis_raw, "top_channels", "analysis"), "analysis.top_channels")
+        top_channels=_as_int(_require(analysis_raw, "top_channels", "analysis"), "analysis.top_channels"),
+        timing_runs=_as_int(_require(analysis_raw, "timing_runs", "analysis"), "analysis.timing_runs"),
     )
     if analysis.top_channels < 1:
         raise ConfigError("analysis.top_channels must be at least 1")
+    if analysis.timing_runs < 1:
+        raise ConfigError("analysis.timing_runs must be at least 1")
 
     model = _build_model(_section(raw, "model"), months, codes)
 

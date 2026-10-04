@@ -23,7 +23,8 @@ EXPECTED_FUNNEL = [(1, 60, 60), (2, 60, 17), (3, 17, 1)]  # (step, previous_reac
 
 
 def with_ladder(config, top_channels: int = 10):
-    return dataclasses.replace(config, ladder=FIXTURE_LADDER, analysis=AnalysisSettings(top_channels))
+    analysis = AnalysisSettings(top_channels=top_channels, timing_runs=config.analysis.timing_runs)
+    return dataclasses.replace(config, ladder=FIXTURE_LADDER, analysis=analysis)
 
 
 @pytest.fixture
