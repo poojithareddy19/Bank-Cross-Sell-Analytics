@@ -28,7 +28,7 @@ conversion, so every cleaning decision is visible in SQL and covered by tests.
 | `tiprel_1mes` | `relation_type` | VARCHAR | Relation type at the start of the month: A active, I inactive, P former, R potential | trim, empty to NULL |
 | `indresi` | `is_resident` | BOOLEAN | Residence country is the bank's country | `S` to true |
 | `indext` | `is_foreign_born` | BOOLEAN | Birth country differs from the bank's country | `S` to true |
-| `conyuemp` | `is_employee_spouse` | BOOLEAN | Customer is the spouse of an employee (mostly empty) | `S` to true; to be confirmed against the real file |
+| `conyuemp` | `is_employee_spouse` | BOOLEAN | Customer is the spouse of an employee | `S` to true; empty in 13,645,501 of 13,647,309 rows (`reports/data_quality.md`), the rest are `N` or `S` |
 | `canal_entrada` | `channel` | VARCHAR | Channel the customer joined through | trim, empty to NULL |
 | `indfall` | `is_deceased` | BOOLEAN | Deceased flag | `S` to true |
 | `tipodom` | `address_type` | TINYINT | Address type (1 primary address) | trim and cast |

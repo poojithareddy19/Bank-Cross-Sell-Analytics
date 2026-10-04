@@ -8,9 +8,48 @@ and attrition with window functions, maps product journeys, cohorts and engageme
 query performance, and trains a calibrated next-month cross-sell propensity model with a strict
 time-based evaluation.
 
-> **Status:** the pipeline is complete and tested on synthetic data with known answers. The first
-> full run on the real Kaggle data is pending; the results sections below will be filled only
-> from the generated reports.
+The full pipeline ran on all 13,647,309 customer-month rows (956,645 customers) in 26 minutes on a
+15 GB laptop. Every number below comes from a file in [reports/](reports/); the one-page summary for
+decision makers is [docs/stakeholder_memo.md](docs/stakeholder_memo.md).
+
+## Findings
+
+**Customers stall at the first product** ([customer_analytics.md](reports/customer_analytics.md)).
+On the confirmed ladder, 65.1% of customers reach a current account, 18.6% of those add direct
+debit, 22.0% of those the payroll package and 31.7% of those a credit card: 0.8% reach the top.
+The first step is weakest for university-segment customers (8.6%) and for channels KHE (6.9%) and
+KHQ (3.1%), against about 29% for channels KAT and KFC
+([13_ladder_funnel.csv](reports/analysis/13_ladder_funnel.csv)).
+
+**Half of all adoptions are products switching back on.** 290,392 of 561,710 adoption events
+(51.7%) are products the customer had dropped earlier in the window, mostly payment products such
+as direct debit, payroll, pension payments and credit card. Journeys and transitions therefore use
+first-time adoptions only.
+
+**Engagement follows product breadth and is falling.** The active share fell from 53.2% (January
+2015) to 42.5% (May 2016). In May 2016, 0.7% of customers with no product were active, against
+84.3% with two and 98.8% with three; 25.2% of customers held no product.
+
+**The credit card propensity model** ([model_report.md](reports/model_report.md), test months
+March and April 2016, 95% customer-level bootstrap intervals):
+
+| Measure | All adopters | First-time adopters only |
+|---|---|---|
+| Adopters in the test sample | 1,688 | 252 |
+| Base rate | 0.47% | 0.07% |
+| ROC-AUC | 0.956 (0.953 to 0.959) | 0.901 |
+| PR-AUC | 0.166 (0.151 to 0.184) | 0.006 |
+| Share of adopters in the top 10% of scores | 85.5% (83.9% to 87.2%) | 63.1% |
+| Top-decile lift | 8.55x (8.39x to 8.72x) | 6.31x |
+
+85% of credit card adopters had held the card earlier, and those re-adoptions are what make the
+overall numbers look so strong. The first-time column is the cross-sell result (point estimates).
+
+**Query performance** ([performance.md](reports/performance.md)): partition pruning answered a
+monthly snapshot 1,397x faster than loading everything first, and a materialised customer table
+was 654x faster per query, paying back its build after 0.9 queries. A cumulative window beat a
+range self-join 8.9x, but for this month-to-previous-month lookup DuckDB's hash self-join was 2.1x
+faster than `LAG`. The report shows that result as measured.
 
 ## Problem statement
 
@@ -101,17 +140,30 @@ reports/           generated reports (small, committed after the real run)
 
 Kaggle competition [Santander Product Recommendation](https://www.kaggle.com/competitions/santander-product-recommendation)
 (2016), file `train_ver2.csv.zip`: one row per customer per month, 24 customer attributes (Spanish
-column names) and 24 product flags; the converter checks the header for exactly these columns. Column meanings and cleaning rules are in
-[docs/data_dictionary.md](docs/data_dictionary.md). Row, customer and month counts will be added
-here from the verified manifest after the first run. The data must be downloaded by each user
-under the competition rules and is never committed to this repository.
+column names) and 24 product flags; the converter checks the header for exactly these columns.
+Column meanings and cleaning rules are in [docs/data_dictionary.md](docs/data_dictionary.md).
+
+Verified on the first run (`data/cache/manifest.json`, [data_quality.md](reports/data_quality.md)):
+
+| Fact | Value |
+|---|---|
+| Zip | `train_ver2.csv.zip`, 224,672,878 bytes |
+| CSV inside the zip | `train_ver2.csv`, 13,647,309 data lines, streamed and never extracted |
+| Rows | 13,647,309 customer-month rows |
+| Customers | 956,645 |
+| Months | 17 snapshots, 2015-01-28 to 2016-05-28 |
+| Parquet cache | 182.5 MB, peak memory 635 MB during conversion |
+| Data quality | all critical checks pass; 760 impossible-age rows, 1,123 incomes above 10M EUR, 8,018 customers with month gaps, 16,063 rows with NULL flags filled, 7,031 customers without a join date |
+
+The data must be downloaded by each user under the competition rules and is never committed to
+this repository.
 
 ## Data loading approach
 
 1. **Download once** with the Kaggle API, only the one file needed, into `data/raw/`.
 2. **Stream-convert** the CSV out of the zip with `pyarrow.csv.open_csv` in 4 MB blocks, split each
    block by month and write zstd Parquet row groups to `data/cache/holdings/month=YYYY-MM/`. Peak
-   memory stays flat as the file grows (measured on synthetic files of 1.9M and 7.6M rows).
+   memory on the real file was 635 MB.
 3. **Validate**: the CSV line count must equal the parsed rows, the months must match the config,
    and the Parquet is read back for row and customer counts. Results go to
    `data/cache/manifest.json` with file sizes and the zip's SHA-256.
@@ -207,10 +259,21 @@ Commands are the same in PowerShell.
 
 ## Evaluation results
 
-Pending the first full run on the real data. When it is done, this section will summarise
-`reports/model_report.md` (test PR-AUC, ROC-AUC, Brier score and lift with bootstrap intervals,
-against both baselines), `reports/customer_analytics.md`, `reports/performance.md` and
-`reports/pipeline_run.md`. No number will appear here that is not in those files.
+From [reports/model_report.md](reports/model_report.md). Training used a deterministic 20% customer
+sample: 1,360,046 training rows (7,852 adopters), 352,758 validation rows and 356,058 test rows.
+
+**Model selection on validation (PR-AUC):** XGBoost 0.1628, logistic regression 0.0931, rule
+baseline 0.0195, base rate 0.0048. XGBoost was selected and beats both baselines. Sigmoid calibration on
+validation brought the Brier score from 0.0791 to 0.0044.
+
+**Test months, scored once:** see the table under [Findings](#findings). The model was stable
+across the two test months (PR-AUC 0.180 and 0.153). At the operating threshold chosen on
+validation (top 10%), 9.9% of test rows were selected, with precision 0.041 and recall 0.855.
+
+**Pipeline run** ([reports/pipeline_run.md](reports/pipeline_run.md)): 1,583 s in total (fetch 171,
+warehouse 79, quality 7, analyze 15, performance 1,044, train 267) on an AMD Ryzen 5 5500U, 12
+logical cores, 15.3 GB RAM, with DuckDB limited to 4 GB and 10 threads; peak process memory
+4,249 MB.
 
 ## Testing
 
@@ -232,6 +295,11 @@ Kaggle.
 ## Limitations
 
 - No revenue data: value is a proxy, and money figures rest on assumed margin and contact cost.
+- Product flags switch off and on (51.7% of adoptions are repeats), so raw adoption counts
+  overstate new sales; journeys use first-time adoptions, and the model report splits first-time
+  from re-adoption.
+- The logistic regression odds ratios are dominated by sparse categories (single channels,
+  relation types), so they are a weak guide; XGBoost permutation importance is the better one.
 - Propensity is not uplift: the model ranks likely adopters, including those who would adopt
   anyway; measuring a campaign's effect needs a randomised experiment.
 - Only 17 months of history, from a Spanish bank in 2015 to 2016 (not the UK market).
