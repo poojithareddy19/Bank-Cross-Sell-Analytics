@@ -17,7 +17,7 @@ def load_all(config) -> pd.DataFrame:
 
 def scramble_months_after(config, cutoff: int) -> None:
     """Change every product flag, activity, segment, age and income after the cutoff month."""
-    flags = [code for code in config.product_codes]
+    flags = list(config.product_codes)
     flips = ", ".join(f"{code} = 1 - {code}" for code in flags)
     with connect(config) as connection:
         connection.execute(

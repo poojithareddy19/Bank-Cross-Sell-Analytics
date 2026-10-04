@@ -43,6 +43,8 @@ model:
   bootstrap_resamples: 1000
   capacity_shares: [0.05, 0.10, 0.20, 0.30, 0.50]  # contact the top share of customers by score
   permutation_rows: 50000           # validation rows sampled for permutation importance
+  rule_payroll_product: ind_nomina_ult1  # rule baseline: active + this product + enough products
+  rule_min_products: 3
   xgboost:
     n_estimators: 300
     max_depth: 4

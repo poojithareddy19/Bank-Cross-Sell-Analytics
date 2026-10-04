@@ -45,11 +45,21 @@ STAGES = (
             config, sample_share=options.sample_customers, keep_zip=options.keep_zip, force=options.force
         ),
     ),
-    Stage("warehouse", "build the DuckDB staging table and star schema", lambda c, o: build_warehouse(c)),
-    Stage("quality", "run data quality checks and write reports/data_quality.md", lambda c, o: run_quality(c)),
-    Stage("analyze", "run the SQL analyses and write reports/analysis/", lambda c, o: run_analysis(c)),
-    Stage("performance", "time baseline vs candidate query pairs", lambda c, o: run_performance(c)),
-    Stage("train", "build features, train and evaluate the propensity model", lambda c, o: run_training(c)),
+    Stage(
+        "warehouse", "build the DuckDB staging table and star schema", lambda config, _options: build_warehouse(config)
+    ),
+    Stage(
+        "quality",
+        "run data quality checks and write reports/data_quality.md",
+        lambda config, _options: run_quality(config),
+    ),
+    Stage("analyze", "run the SQL analyses and write reports/analysis/", lambda config, _options: run_analysis(config)),
+    Stage("performance", "time baseline vs candidate query pairs", lambda config, _options: run_performance(config)),
+    Stage(
+        "train",
+        "build features, train and evaluate the propensity model",
+        lambda config, _options: run_training(config),
+    ),
 )
 STAGE_NAMES = tuple(stage.name for stage in STAGES)
 

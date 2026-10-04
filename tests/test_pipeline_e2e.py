@@ -54,7 +54,8 @@ def no_kaggle_credentials(monkeypatch, tmp_path):
     monkeypatch.setattr(Path, "home", lambda: tmp_path / "empty_home")
 
 
-def test_full_pipeline_runs_end_to_end(tmp_path, no_kaggle_credentials, caplog):
+@pytest.mark.usefixtures("no_kaggle_credentials")
+def test_full_pipeline_runs_end_to_end(tmp_path, caplog):
     project = tmp_path / "project"
     config_path = write_project(project)
     zip_path = write_fixture_zip(
@@ -111,13 +112,15 @@ def test_stage_without_its_inputs_explains_what_to_run(tmp_path, caplog):
     assert "run `python -m xsell warehouse` first" in caplog.text
 
 
-def test_fetch_without_data_or_credentials_fails_cleanly(tmp_path, no_kaggle_credentials, caplog):
+@pytest.mark.usefixtures("no_kaggle_credentials")
+def test_fetch_without_data_or_credentials_fails_cleanly(tmp_path, caplog):
     config_path = write_project(tmp_path / "project")
     assert main(["--config", str(config_path), "fetch"]) == 1
     assert "Kaggle credentials not found" in caplog.text
 
 
-def test_all_stops_at_the_first_failing_stage(tmp_path, no_kaggle_credentials, caplog):
+@pytest.mark.usefixtures("no_kaggle_credentials")
+def test_all_stops_at_the_first_failing_stage(tmp_path, caplog):
     config_path = write_project(tmp_path / "project")
     assert main(["--config", str(config_path), "all"]) == 1
     assert "stage warehouse: starting" not in caplog.text

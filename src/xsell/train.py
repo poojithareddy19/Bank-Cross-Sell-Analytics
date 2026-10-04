@@ -61,16 +61,14 @@ from xsell.reporting import markdown_table, write_text
 logger = get_logger("xsell.train")
 
 ARTIFACT_NAME = "propensity_model.joblib"
-MAX_CATEGORIES = 11  # top 10 categories per column plus one "infrequent" bucket
-RULE_PAYROLL_COLUMN = "ind_nomina_ult1"
-RULE_MIN_PRODUCTS = 3
 STAMP_KEYS = ("generated_at", "git_commit")
 
 
-def build_preprocessor(flags: tuple[str, ...]) -> ColumnTransformer:
+def build_preprocessor(flags: tuple[str, ...], top_categories: int) -> ColumnTransformer:
+    """top_categories most frequent values per categorical column; the rest share one bucket."""
     numeric = Pipeline([("impute", SimpleImputer(strategy="median", add_indicator=True)), ("scale", StandardScaler())])
     categorical = OneHotEncoder(
-        handle_unknown="infrequent_if_exist", max_categories=MAX_CATEGORIES, sparse_output=False
+        handle_unknown="infrequent_if_exist", max_categories=top_categories + 1, sparse_output=False
     )
     return ColumnTransformer(
         [
@@ -85,16 +83,17 @@ def build_preprocessor(flags: tuple[str, ...]) -> ColumnTransformer:
 def candidate_models(config: Config, flags: tuple[str, ...], positive_weight: float) -> dict[str, Pipeline]:
     seed = config.model.seed
     xgboost_settings = dict(config.model.xgboost)
+    top_categories = config.analysis.top_channels
     return {
         "logistic_regression": Pipeline(
             [
-                ("preprocess", build_preprocessor(flags)),
+                ("preprocess", build_preprocessor(flags, top_categories)),
                 ("model", LogisticRegression(class_weight="balanced", max_iter=2000, random_state=seed)),
             ]
         ),
         "xgboost": Pipeline(
             [
-                ("preprocess", build_preprocessor(flags)),
+                ("preprocess", build_preprocessor(flags, top_categories)),
                 (
                     "model",
                     XGBClassifier(
@@ -111,12 +110,12 @@ def candidate_models(config: Config, flags: tuple[str, ...], positive_weight: fl
     }
 
 
-def rule_scores(features: pd.DataFrame) -> np.ndarray:
-    """Rule baseline: active customers with payroll and at least 3 products (1 or 0)."""
+def rule_scores(features: pd.DataFrame, config: Config) -> np.ndarray:
+    """Rule baseline: active customers holding the payroll product with enough products (1 or 0)."""
     rule = (
         (features["is_active"] == 1)
-        & (features[RULE_PAYROLL_COLUMN] == 1)
-        & (features["n_products"] >= RULE_MIN_PRODUCTS)
+        & (features[config.model.rule_payroll_product] == 1)
+        & (features["n_products"] >= config.model.rule_min_products)
     )
     return rule.to_numpy(dtype=float)
 
@@ -144,7 +143,11 @@ def git_commit(root: Path) -> str:
             ["git", "rev-parse", "--short", "HEAD"], cwd=root, capture_output=True, text=True, check=True
         ).stdout.strip()
         dirty = subprocess.run(
-            ["git", "status", "--porcelain", "--untracked-files=no"], cwd=root, capture_output=True, text=True
+            ["git", "status", "--porcelain", "--untracked-files=no"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=False,
         ).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         return "unknown"
@@ -191,13 +194,14 @@ def train_and_evaluate(config: Config) -> tuple[dict[str, Any], Any]:
     baselines = {}
     for split_name, features, labels in (("validation", x_valid, y_valid), ("test", x_test, y_test)):
         constant = np.full(len(labels), labels.mean())
+        rule = rule_scores(features, config)
         baselines[split_name] = {
             "base_rate": {**sklearn_metrics(labels, constant), "base_rate": float(labels.mean())},
             "rule": {
-                **sklearn_metrics(labels, rule_scores(features)),
+                **sklearn_metrics(labels, rule),
                 # A 0/1 rule is not a probability, so a Brier score would be meaningless.
                 "brier": None,
-                "share_selected": float(rule_scores(features).mean()),
+                "share_selected": float(rule.mean()),
             },
         }
     best_pr = validation_scores[selected]["pr_auc"]
@@ -290,6 +294,10 @@ def train_and_evaluate(config: Config) -> tuple[dict[str, Any], Any]:
             "permutation_importance": importance.head(15).to_dict(orient="records"),
             "permutation_rows": int(min(config.model.permutation_rows, len(x_valid))),
         },
+        "rule_baseline": (
+            f"active customers holding {config.model.rule_payroll_product} with "
+            f"{config.model.rule_min_products} or more products"
+        ),
         "assumptions": {
             "margin_per_adopter_eur": config.assumptions.margin_per_adopter_eur,
             "contact_cost_eur": config.assumptions.contact_cost_eur,
@@ -355,7 +363,7 @@ def render_report(report: dict[str, Any]) -> str:
     lines += [
         "",
         f"Selected: **{validation['selected']}** (highest validation PR-AUC). It {verdict} both baselines on "
-        "validation PR-AUC. Rule baseline: active customers with payroll and 3 or more products.",
+        f"validation PR-AUC. Rule baseline: {report['rule_baseline']}.",
         "",
         f"Calibration ({validation['calibration']['method']}): Brier {validation['calibration']['brier_before']:.4f} "
         f"before, {validation['calibration']['brier_after']:.4f} after (measured on the validation rows used to fit "

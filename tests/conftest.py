@@ -47,6 +47,7 @@ def fixture_zip(fixture_config: Config) -> Path:
 @pytest.fixture
 def built_warehouse(fixture_config: Config, fixture_zip: Path) -> Config:
     """Fixture data fetched into the Parquet cache and built into the DuckDB warehouse."""
+    assert fixture_zip.is_file()
     run_fetch(fixture_config)
     build_warehouse(fixture_config)
     return fixture_config

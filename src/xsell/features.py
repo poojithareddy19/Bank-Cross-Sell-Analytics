@@ -12,7 +12,7 @@ from dataclasses import dataclass
 import pandas as pd
 
 from xsell.config import Config
-from xsell.db import connect, run_sql_file, sql_path
+from xsell.db import connect, require_warehouse, run_sql_file, sql_path
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger
 from xsell.sampling import sample_threshold
@@ -73,8 +73,7 @@ def feature_params(config: Config) -> dict[str, object]:
 
 def build_features(config: Config) -> pd.DataFrame:
     """(Re)build product_events and propensity_dataset; returns row counts per split."""
-    if not config.paths.warehouse.is_file():
-        raise XsellError(f"warehouse not found at {config.paths.warehouse}; run `python -m xsell warehouse` first")
+    require_warehouse(config)
     with connect(config) as connection:
         # Events feed the 3-month history features; rebuild so they match the current fact table.
         run_sql_file(connection, sql_path(config, "analysis/10_product_events.sql"))
@@ -99,11 +98,12 @@ def load_dataset(config: Config, target_mode: str) -> Dataset:
     """Pull the sampled dataset into pandas for one target definition."""
     if target_mode not in TARGET_MODES:
         raise ValueError(f"target_mode must be one of {TARGET_MODES}")
+    # Product population: customers who do not hold the target product at t (filtered in DuckDB).
+    population = "WHERE holds_target_at_t = 0" if target_mode == "product" else ""
     with connect(config, read_only=True) as connection:
-        frame = connection.execute("SELECT * FROM propensity_dataset ORDER BY feature_month, customer_id").df()
-    if target_mode == "product":
-        # Population: customers who do not hold the target product at t.
-        frame = frame[frame["holds_target_at_t"] == 0]
+        frame = connection.execute(
+            f"SELECT * FROM propensity_dataset {population} ORDER BY feature_month, customer_id"
+        ).df()
     label = "adopts_target" if target_mode == "product" else "adopts_any"
     flags = tuple(column for column in frame.columns if column.startswith("ind_"))
     for column in CATEGORICAL_FEATURES:

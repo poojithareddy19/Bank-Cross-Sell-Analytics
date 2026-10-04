@@ -43,7 +43,8 @@ def test_fetch_converts_fixture_and_matches_known_counts(fixture_config, fixture
     assert partitions == [f"month={month}" for month in EXPECTED["rows_per_month"]]
 
 
-def test_raw_text_is_preserved_for_staging(fixture_config, fixture_zip):
+@pytest.mark.usefixtures("fixture_zip")
+def test_raw_text_is_preserved_for_staging(fixture_config):
     run_fetch(fixture_config, downloader=fail_download)
     frame = read_holdings(fixture_config.paths.cache_dir).set_index(["ncodpers", "fecha_dato"]).sort_index()
     by_customer = frame.groupby(level=0).first()
@@ -198,7 +199,7 @@ def test_credential_source_never_contains_the_secret(tmp_path):
 )
 def test_http_errors_are_explained(tmp_path, status, message):
     class RefusingApi:
-        def competition_download_file(self, *args, **kwargs):
+        def competition_download_file(self, *_args, **_kwargs):
             response = requests.Response()
             response.status_code = status
             raise requests.HTTPError("refused", response=response)

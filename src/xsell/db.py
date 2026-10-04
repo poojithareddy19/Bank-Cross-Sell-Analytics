@@ -11,6 +11,7 @@ import duckdb
 import pandas as pd
 
 from xsell.config import Config
+from xsell.data.convert import holdings_path
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger
 
@@ -41,6 +42,19 @@ def connect(config: Config, database: Path | str | None = None, read_only: bool 
     # Row order inside a table is never relied on; dropping it lets DuckDB stream with less memory.
     connection.execute("SET preserve_insertion_order = false")
     return connection
+
+
+def require_warehouse(config: Config) -> None:
+    if not config.paths.warehouse.is_file():
+        raise XsellError(f"warehouse not found at {config.paths.warehouse}; run `python -m xsell warehouse` first")
+
+
+def base_params(config: Config) -> dict[str, str]:
+    """Parameters several SQL files share: the Parquet cache files and the first snapshot month."""
+    return {
+        "holdings_glob": (holdings_path(config.paths.cache_dir) / "*" / "*.parquet").as_posix(),
+        "first_month": f"{config.months.first}-01",
+    }
 
 
 def sql_path(config: Config, relative: str) -> Path:

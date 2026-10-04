@@ -15,7 +15,7 @@ from statsmodels.stats.proportion import proportion_confint
 
 from xsell.config import Config
 from xsell.data.convert import read_manifest
-from xsell.db import connect, run_sql_file, sql_path
+from xsell.db import base_params, connect, require_warehouse, run_sql_file, sql_path
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger
 from xsell.reporting import markdown_table, write_text
@@ -66,9 +66,8 @@ def add_wilson_interval(frame: pd.DataFrame, successes: str, trials: str, rate: 
 
 def run_analyses(config: Config) -> dict[str, pd.DataFrame]:
     """Run every analysis query (in order) and write one CSV per query."""
-    if not config.paths.warehouse.is_file():
-        raise XsellError(f"warehouse not found at {config.paths.warehouse}; run `python -m xsell warehouse` first")
-    params = {"first_month": f"{config.months.first}-01", "top_channels": config.analysis.top_channels}
+    require_warehouse(config)
+    params = {**base_params(config), "top_channels": config.analysis.top_channels}
     output_dir = config.paths.reports_dir / "analysis"
     output_dir.mkdir(parents=True, exist_ok=True)
     results: dict[str, pd.DataFrame] = {}

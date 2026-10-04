@@ -15,7 +15,7 @@ import pandas as pd
 
 from xsell.config import Config
 from xsell.data.convert import read_manifest
-from xsell.db import connect, run_sql_file
+from xsell.db import connect, require_warehouse, run_sql_file
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger
 from xsell.reporting import markdown_table, write_text
@@ -132,8 +132,7 @@ def render_report(results: list[CheckResult], manifest: dict | None) -> str:
 
 def run_quality(config: Config) -> list[CheckResult]:
     """Run all checks, write the report, raise QualityError on critical failures."""
-    if not config.paths.warehouse.is_file():
-        raise XsellError(f"warehouse not found at {config.paths.warehouse}; run `python -m xsell warehouse` first")
+    require_warehouse(config)
     results = run_checks(config)
     report = write_text(
         config.paths.reports_dir / "data_quality.md",

@@ -35,7 +35,7 @@ target-version = "py311"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "ARG", "C4", "PLW1510"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

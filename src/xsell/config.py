@@ -125,6 +125,8 @@ class ModelSettings:
     bootstrap_resamples: int
     capacity_shares: tuple[float, ...]
     permutation_rows: int
+    rule_payroll_product: str
+    rule_min_products: int
     xgboost: Mapping[str, float]
     splits: Mapping[str, tuple[str, str]]
 
@@ -165,16 +167,36 @@ def load_config(
     products_path: Path | str | None = None,
     env: Mapping[str, str] | None = None,
 ) -> Config:
-    """Read both YAML files, apply XSELL_* environment overrides and validate."""
+    """Read both YAML files, apply XSELL_* overrides and validate.
+
+    Overrides come from env when given; otherwise from the project's .env file, with
+    variables already set in the shell taking precedence.
+    """
     config_path = Path(config_path) if config_path is not None else DEFAULT_CONFIG_PATH
     products_path = Path(products_path) if products_path is not None else config_path.parent / "products.yaml"
     root = config_path.resolve().parent.parent
-    return build_config(
-        _read_yaml(config_path),
-        _read_yaml(products_path),
-        root=root,
-        env=os.environ if env is None else env,
-    )
+    if env is None:
+        env = {**read_env_file(root / ".env"), **os.environ}
+    return build_config(_read_yaml(config_path), _read_yaml(products_path), root=root, env=env)
+
+
+def read_env_file(path: Path) -> dict[str, str]:
+    """KEY=VALUE lines from a .env file; blank lines and # comments are ignored."""
+    if not path.is_file():
+        return {}
+    values = {}
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        key, separator, value = line.partition("=")
+        if not separator or not key.strip():
+            raise ConfigError(f"{path}:{number}: expected KEY=VALUE, got {line!r}")
+        value = value.split(" #", 1)[0].strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        values[key.strip()] = value
+    return values
 
 
 def build_config(
@@ -356,6 +378,12 @@ def _build_model(model_raw: Mapping[str, Any], months: MonthRange, codes: set[st
     permutation_rows = _as_int(_require(model_raw, "permutation_rows", "model"), "model.permutation_rows")
     if permutation_rows < 100:
         raise ConfigError("model.permutation_rows must be at least 100")
+    rule_product = str(_require(model_raw, "rule_payroll_product", "model"))
+    if rule_product not in codes:
+        raise ConfigError(f"model.rule_payroll_product {rule_product!r} is not a product code in products.yaml")
+    rule_min_products = _as_int(_require(model_raw, "rule_min_products", "model"), "model.rule_min_products")
+    if rule_min_products < 1:
+        raise ConfigError("model.rule_min_products must be at least 1")
     xgboost_raw = _section(model_raw, "xgboost", "model")
     xgboost = {key: _as_float(value, f"model.xgboost.{key}") for key, value in xgboost_raw.items()}
     for key in ("n_estimators", "max_depth"):
@@ -394,6 +422,8 @@ def _build_model(model_raw: Mapping[str, Any], months: MonthRange, codes: set[st
         bootstrap_resamples=resamples,
         capacity_shares=capacity_shares,
         permutation_rows=permutation_rows,
+        rule_payroll_product=rule_product,
+        rule_min_products=rule_min_products,
         xgboost=xgboost,
         splits=splits,
     )

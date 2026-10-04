@@ -7,7 +7,7 @@ import pytest
 import yaml
 
 from xsell.cli import main
-from xsell.config import ConfigError, build_config, load_config, month_offset
+from xsell.config import ConfigError, build_config, load_config, month_offset, read_env_file
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "config" / "config.yaml"
@@ -184,4 +184,42 @@ def test_month_labels_cover_every_snapshot():
 def test_quality_bounds_are_checked(raw, raw_products):
     raw["quality"]["age_min"] = 120
     with pytest.raises(ConfigError, match="age_min must be below"):
+        build(raw, raw_products)
+
+
+def copy_config(project: Path) -> Path:
+    (project / "config").mkdir(parents=True)
+    for name in ("config.yaml", "products.yaml"):
+        source = (ROOT / "config" / name).read_text(encoding="utf-8")
+        (project / "config" / name).write_text(source, encoding="utf-8")
+    return project / "config" / "config.yaml"
+
+
+def test_env_file_is_read_and_shell_wins(tmp_path, monkeypatch):
+    config_path = copy_config(tmp_path)
+    lines = ["# local overrides", "XSELL_THREADS=3  # comment", 'XSELL_DUCKDB_MEMORY_LIMIT="2GB"', ""]
+    (tmp_path / ".env").write_text("\n".join(lines), encoding="utf-8")
+    monkeypatch.delenv("XSELL_THREADS", raising=False)
+    monkeypatch.setenv("XSELL_DUCKDB_MEMORY_LIMIT", "1GB")
+    config = load_config(config_path)
+    assert config.duckdb.threads == 3
+    assert config.duckdb.memory_limit == "1GB", "the shell value wins over .env"
+
+
+def test_explicit_env_ignores_env_file(tmp_path):
+    config_path = copy_config(tmp_path)
+    (tmp_path / ".env").write_text("XSELL_THREADS=3\n", encoding="utf-8")
+    assert load_config(config_path, env={}).duckdb.threads == 10
+
+
+def test_malformed_env_file_line(tmp_path):
+    env_file = tmp_path / ".env"
+    env_file.write_text("XSELL_THREADS\n", encoding="utf-8")
+    with pytest.raises(ConfigError, match=r"\.env:1: expected KEY=VALUE"):
+        read_env_file(env_file)
+
+
+def test_rule_baseline_product_must_exist(raw, raw_products):
+    raw["model"]["rule_payroll_product"] = "ind_nope_fin_ult1"
+    with pytest.raises(ConfigError, match="rule_payroll_product"):
         build(raw, raw_products)

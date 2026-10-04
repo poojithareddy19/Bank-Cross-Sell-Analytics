@@ -7,8 +7,8 @@ import time
 import pandas as pd
 
 from xsell.config import Config
-from xsell.data.convert import holdings_path, read_manifest
-from xsell.db import connect, run_sql_file, sql_path, table_count
+from xsell.data.convert import read_manifest
+from xsell.db import base_params, connect, run_sql_file, sql_path, table_count
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger
 
@@ -37,19 +37,12 @@ def products_frame(config: Config) -> pd.DataFrame:
     )
 
 
-def warehouse_params(config: Config) -> dict[str, str]:
-    return {
-        "holdings_glob": (holdings_path(config.paths.cache_dir) / "*" / "*.parquet").as_posix(),
-        "first_month": f"{config.months.first}-01",
-    }
-
-
 def build_warehouse(config: Config) -> dict[str, int]:
     """Rebuild every warehouse table from the Parquet cache; returns row counts."""
     if read_manifest(config.paths.cache_dir) is None:
         raise XsellError(f"no Parquet cache in {config.paths.cache_dir}; run `python -m xsell fetch` first")
 
-    params = warehouse_params(config)
+    params = base_params(config)
     counts: dict[str, int] = {}
     with connect(config) as connection:
         connection.register("products_config", products_frame(config))

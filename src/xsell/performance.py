@@ -18,8 +18,8 @@ from pathlib import Path
 import pandas as pd
 
 from xsell.config import Config
-from xsell.data.convert import holdings_path, read_manifest
-from xsell.db import connect, run_sql_file, sql_path
+from xsell.data.convert import read_manifest
+from xsell.db import base_params, connect, require_warehouse, run_sql_file, sql_path
 from xsell.errors import XsellError
 from xsell.logging_utils import get_logger
 from xsell.machine import machine_spec
@@ -131,11 +131,7 @@ class PairResult:
 
 
 def performance_params(config: Config) -> dict[str, str]:
-    return {
-        "holdings_glob": (holdings_path(config.paths.cache_dir) / "*" / "*.parquet").as_posix(),
-        "month_label": config.months.last,
-        "snapshot_date": f"{config.months.last}-28",
-    }
+    return {"holdings_glob": base_params(config)["holdings_glob"], "month_label": config.months.last}
 
 
 def timed_runs(connection, path: Path, params: dict, runs: int) -> tuple[list[float], pd.DataFrame | None]:
@@ -172,8 +168,7 @@ def _same_result(left: pd.DataFrame | None, right: pd.DataFrame | None) -> bool:
 
 
 def run_pairs(config: Config, runs: int) -> list[PairResult]:
-    if not config.paths.warehouse.is_file():
-        raise XsellError(f"warehouse not found at {config.paths.warehouse}; run `python -m xsell warehouse` first")
+    require_warehouse(config)
     params = performance_params(config)
     plans_dir = config.paths.reports_dir / "performance" / "plans"
     plans_dir.mkdir(parents=True, exist_ok=True)

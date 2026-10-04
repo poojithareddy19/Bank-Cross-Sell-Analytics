@@ -95,7 +95,7 @@ EXPECTED = {
 
 
 def _base_row(customer_id: int) -> dict[str, str]:
-    row = {column: "" for column in COLUMNS}
+    row = dict.fromkeys(COLUMNS, "")
     row.update(
         ncodpers=str(customer_id),
         ind_empleado="N",
@@ -240,7 +240,7 @@ def model_fixture_rows(n_customers: int = 2000, seed: int = 7) -> list[dict[str,
         segment = str(rng.choice(["01 - TOP", "02 - PARTICULARES", "03 - UNIVERSITARIO"], p=[0.05, 0.6, 0.35]))
         income = "" if rng.random() < 0.1 else f"{rng.lognormal(11, 0.5):.2f}"
         active = rng.random() < 0.6
-        holds = {code: 0 for code in PRODUCT_COLUMNS}
+        holds = dict.fromkeys(PRODUCT_COLUMNS, 0)
         holds["ind_cco_fin_ult1"] = int(rng.random() < 0.9)
         holds["ind_recibo_ult1"] = int(rng.random() < 0.3)
         holds["ind_ecue_fin_ult1"] = int(rng.random() < 0.2)
@@ -260,7 +260,7 @@ def model_fixture_rows(n_customers: int = 2000, seed: int = 7) -> list[dict[str,
                     holds["ind_tjcr_fin_ult1"] = int(rng.random() < chance)
             if not first <= month_index <= last:
                 continue
-            row = {column: "" for column in COLUMNS}
+            row = dict.fromkeys(COLUMNS, "")
             row.update(
                 fecha_dato=MONTHS[month_index],
                 ncodpers=str(customer_id),
