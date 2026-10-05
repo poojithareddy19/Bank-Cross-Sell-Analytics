@@ -22,7 +22,8 @@ families AS (
     GROUP BY u.customer_id
 ),
 income_quartiles AS (
-    SELECT h.customer_id, ntile(4) OVER (ORDER BY c.income) AS quartile
+    -- Ties in income are broken by customer id so the quartile split is the same on every run.
+    SELECT h.customer_id, ntile(4) OVER (ORDER BY c.income, h.customer_id) AS quartile
     FROM holdings AS h
     JOIN dim_customer AS c USING (customer_id)
     WHERE c.income IS NOT NULL
